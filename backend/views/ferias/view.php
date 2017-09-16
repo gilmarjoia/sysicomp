@@ -35,17 +35,18 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             'nomeusuario',
             'emailusuario:email',
-                [
-                     'attribute' => 'tipo',
-                     'format'=>'raw',
-                     'value' => $model->tipo == 1 ? 'Usufruto' : 'Oficial',
-                ],
+            [
+                'attribute' => 'tipo',
+                'format'=>'raw',
+                'value' => $model->tipo == 1 ? 'Usufruto' : 'Oficial',
+            ],
             [
                 'label' => 'Data Início',
                 'attribute' => 'dataSaida',
                 'value' => date("d-m-Y", strtotime($model->dataSaida)),
 
             ],
+			
             [
                 'label' => 'Data Término',
                 'attribute' => 'dataRetorno',

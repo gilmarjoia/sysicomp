@@ -99,14 +99,44 @@ if( isset($_GET["ano"]) && isset($_GET["prof"]) ){
                         return date('d-m-Y', strtotime($model->dataRetorno));
              },
              ],
-             [
-                 'attribute' => 'diferencaData',
-                 'label' => "Nº de Dias",
-                 'value' => function ($model){
+			 
+            [
+                'attribute' => 'diferencaData',
+                'label' => "Nº de Dias",
+                'value' => function ($model){
                             return ($model->diferencaData + 1);
+                },
+            ],
+			
+			 /********************ADIANTAMENTO DECIMO E FERIAS********************/
+			[
+                 'attribute' => 'adiantamentoDecimo',
+                 'label' => "Adiantamento 50% do 13º",
+                 'value' => function ($model){
+							if($model->adiantamentoFerias == 1){
+								return "Sim";
+							}
+							else{
+								return "Não";
+							}
                  },
             ],
-                     
+			[
+                 'attribute' => 'adiantamentoFerias',
+                 'label' => "Adiantamento Férias",
+                 'value' => function ($model){
+							if($model->adiantamentoFerias == 1){
+								return "Sim";
+							}
+							else{
+								return "Não";
+							}
+                 },
+            ],
+			
+            /********************************************************************/   
+
+			
             [
             "attribute" =>'tipo',
             "value" => function ($model){

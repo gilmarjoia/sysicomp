@@ -19,7 +19,7 @@ class FeriasSearch extends Ferias
     {
         return [
             [['id', 'idusuario', 'tipo'], 'integer'],
-            [['nomeusuario', 'emailusuario', 'dataSaida', 'dataRetorno', 'dataPedido'], 'safe'],
+            [['nomeusuario', 'emailusuario', 'dataSaida', 'dataRetorno', 'dataPedido', 'adiantamentoDecimo', 'adiantamentoFerias'], 'safe'],
         ];
     }
 
@@ -77,6 +77,8 @@ class FeriasSearch extends Ferias
             'dataSaida' => $this->dataSaida,
             'dataRetorno' => $this->dataRetorno,
             'dataPedido' => $this->dataPedido,
+			'adiantamentoDecimo' => $this->adiantamentoDecimo,
+			'adiantamentoFerias' => $this->adiantamentoFerias,
         ]);
 
         $query->andFilterWhere(['like', 'nomeusuario', $this->nomeusuario])
@@ -122,6 +124,8 @@ class FeriasSearch extends Ferias
             'dataSaida' => $this->dataSaida,
             'dataRetorno' => $this->dataRetorno,
             'dataPedido' => $this->dataPedido,
+			'adiantamentoDecimo' =>$this->adiantamentoDecimo,
+			'adiantamentoFerias' => $this->adiantamentoFerias,
         ]);
 
         $query->andFilterWhere(['like', 'nomeusuario', $this->nomeusuario])
@@ -165,6 +169,8 @@ class FeriasSearch extends Ferias
             'dataSaida' => $this->dataSaida,
             'dataRetorno' => $this->dataRetorno,
             'dataPedido' => $this->dataPedido,
+			'adiantamentoDecimo' => $this->adiantamentoDecimo,
+			'adiantamentoFerias' => $this->adiantamentoFerias,
         ]);
 
         $query->andFilterWhere(['like', 'nomeusuario', $this->nomeusuario])

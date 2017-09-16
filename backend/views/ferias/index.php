@@ -98,6 +98,23 @@ $this->params['breadcrumbs'][] = $this->title;
                         return date('d-m-Y', strtotime($model->dataRetorno));
              },
              ],
+			 
+			 /********************ADIANTAMENTO DECIMO E FERIAS********************/
+			 
+			 ['attribute' => 'adiantamentoDecimo',
+             'value' => function ($model){
+                        return ($model->adiantamentoDecimo);
+             },
+             ],
+			 ['attribute' => 'adiantamentoFerias',
+             'value' => function ($model){
+                        return ($model->adiantamentoFerias);
+             },
+             ],
+			 
+			 /*********************************************************************/
+			 
+			 
              [
                  'attribute' => 'diferencaData',
                  'label' => "Nº de Dias",

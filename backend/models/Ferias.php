@@ -28,6 +28,7 @@ class Ferias extends \yii\db\ActiveRecord
     public $detalharTotalUsufruto;
     public $detalharRestoUsufruto;
     public $totalFeriasOficial;
+	
 
     
     /**
@@ -44,7 +45,7 @@ class Ferias extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['idusuario', 'nomeusuario', 'emailusuario', 'tipo', 'dataSaida', 'dataRetorno'], 'required'],
+            [['idusuario', 'nomeusuario', 'emailusuario', 'tipo', 'dataSaida', 'dataRetorno', 'adiantamentoDecimo', 'adiantamentoFerias'], 'required'],
             [['idusuario', 'tipo'], 'integer'],
             [['dataSaida', 'dataRetorno', 'dataPedido','diferencaData2','diferencaData', 'nomeProfessor'], 'safe'],
             [['nomeusuario', 'emailusuario'], 'string', 'max' => 60],
@@ -64,6 +65,12 @@ class Ferias extends \yii\db\ActiveRecord
             'tipo' => 'Tipo Férias',
             'dataSaida' => 'Data Início',
             'dataRetorno' => 'Data Término',
+			
+			//***************Novos adicionados***************************************
+			'adiantamentoDecimo' => 'Adiantamento 50% do 13º',
+			'adiantamentoFerias' => 'Adiantamento Férias',
+			
+			//************************************************************************
         ];
     }
     
