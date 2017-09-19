@@ -252,6 +252,8 @@ class FeriasController extends Controller
 
                     if( ($totalDiasFeriasAno+$diferencaDias) <= $limiteDias && $model->save()){
 
+                    $model->adiantamentoDecimo;
+                    $model->adiantamentoFerias;
 			$this->enviarEmailFerias($model);
                         $this->mensagens('success', 'Registro Férias',  'Registro de Férias realizado com sucesso!');
 
@@ -332,19 +334,22 @@ class FeriasController extends Controller
 
                 }
 
-                    if( ($totalDiasFeriasAno+$diferencaDias) <= $limiteDias && $model->save()){
+                if( ($totalDiasFeriasAno+$diferencaDias) <= $limiteDias && $model->save()){
 
-                        $this->mensagens('success', 'Registro Férias',  'Registro de Férias realizado com sucesso!');
+                    $model->adiantamentoDecimo;
+                    $model->adiantamentoFerias;
 
-                        return $this->redirect(['detalhar', 'id' => $model->idusuario, 'ano' => date("Y") ,"prof" => $model_User->professor]);
+                    $this->mensagens('success', 'Registro Férias',  'Registro de Férias realizado com sucesso!');
 
-                    }
+                    return $this->redirect(['detalhar', 'id' => $model->idusuario, 'ano' => date("Y") ,"prof" => $model_User->professor]);
 
-                    else {
+                }
 
-                        $this->mensagens('danger', 'Registro Férias', 'Não foi possível registrar o pedido de férias. Você ultrapassou o limite de '.$limiteDias.' dias');
+                else {
 
-                    }
+                    $this->mensagens('danger', 'Registro Férias', 'Não foi possível registrar o pedido de férias. Você ultrapassou o limite de '.$limiteDias.' dias');
+
+                }
 
                 $model->dataSaida = date('d-m-Y', strtotime($model->dataSaida));
                 $model->dataRetorno =  date('d-m-Y', strtotime($model->dataRetorno));

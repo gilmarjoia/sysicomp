@@ -47,7 +47,7 @@ class Ferias extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['idusuario', 'nomeusuario', 'emailusuario', 'tipo', 'dataSaida', 'dataRetorno', 'decimoTerceiro', 'adiantamentoSalario'], 'required'],
+            [['idusuario', 'nomeusuario', 'emailusuario', 'tipo', 'dataSaida', 'dataRetorno', 'adiantamentoDecimo', 'adiantamentoFerias'], 'required'],
             [['idusuario', 'tipo'], 'integer'],
             [['adiantamentoDecimo','adiantamentoFerias'], 'boolean'],
             [['dataSaida', 'dataRetorno', 'dataPedido','diferencaData2','diferencaData', 'nomeProfessor'], 'safe'],
