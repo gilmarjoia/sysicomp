@@ -15,6 +15,8 @@ use Yii;
  * @property string $dataSaida
  * @property string $dataRetorno
  * @property string $dataPedido
+ * @property  boolean $adiantamentoDecimo
+ * @property  boolean $adiantamentoFerias
  */
 class Ferias extends \yii\db\ActiveRecord
 {
@@ -45,8 +47,9 @@ class Ferias extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['idusuario', 'nomeusuario', 'emailusuario', 'tipo', 'dataSaida', 'dataRetorno', 'adiantamentoDecimo', 'adiantamentoFerias'], 'required'],
+            [['idusuario', 'nomeusuario', 'emailusuario', 'tipo', 'dataSaida', 'dataRetorno', 'decimoTerceiro', 'adiantamentoSalario'], 'required'],
             [['idusuario', 'tipo'], 'integer'],
+            [['adiantamentoDecimo','adiantamentoFerias'], 'boolean'],
             [['dataSaida', 'dataRetorno', 'dataPedido','diferencaData2','diferencaData', 'nomeProfessor'], 'safe'],
             [['nomeusuario', 'emailusuario'], 'string', 'max' => 60],
         ];
@@ -67,8 +70,8 @@ class Ferias extends \yii\db\ActiveRecord
             'dataRetorno' => 'Data Término',
 			
 			//***************Novos adicionados***************************************
-			'adiantamentoDecimo' => 'Adiantamento 50% do 13º',
-			'adiantamentoFerias' => 'Adiantamento Férias',
+			'adiantamentoDecimo' => 'Adiantamento de 50% do 13º',
+			'adiantamentoFerias' => 'Adiantamento do Próximo Salário',
 			
 			//************************************************************************
         ];

@@ -111,9 +111,9 @@ if( isset($_GET["ano"]) && isset($_GET["prof"]) ){
 			 /********************ADIANTAMENTO DECIMO E FERIAS********************/
 			[
                  'attribute' => 'adiantamentoDecimo',
-                 'label' => "Adiantamento 50% do 13º",
+                 'label' => "Adiantamento de 50% do 13º",
                  'value' => function ($model){
-							if($model->adiantamentoFerias == 1){
+							if($model->adiantamentoDecimo == 1){
 								return "Sim";
 							}
 							else{
@@ -123,7 +123,7 @@ if( isset($_GET["ano"]) && isset($_GET["prof"]) ){
             ],
 			[
                  'attribute' => 'adiantamentoFerias',
-                 'label' => "Adiantamento Férias",
+                 'label' => "Adiantamento do Próximo Salário",
                  'value' => function ($model){
 							if($model->adiantamentoFerias == 1){
 								return "Sim";
