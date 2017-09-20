@@ -426,18 +426,24 @@ class FeriasController extends Controller
 
                     return $this->render('update', [
                             'model' => $model,
-                        ]);
+                    ]);
 
                 }
 
                     if( ($ehProfessor == 1 ) && ($totalDiasFeriasAno+$diferencaDiasUpdate) <=45 && $model->save()){
 
+                        $model->adiantamentoDecimo;
+                        $model->adiantamentoFerias;
+
                         $this->mensagens('success', 'Registro Férias',  'Registro de Férias realizado com sucesso!');
 
-                        return $this->redirect(['listar', 'ano' => $anoSaida]);
+                        return $this->redirect(['listar', "ano" => $anoSaida]);
 
                     }
                     else if( $ehSecretario == 1  && ($totalDiasFeriasAno+$diferencaDiasUpdate) <= 30 && $model->save()){
+
+                        $model->adiantamentoDecimo;
+                        $model->adiantamentoFerias;
 
                         $this->mensagens('success', 'Registro Férias',  'Registro de Férias realizado com sucesso!');
 

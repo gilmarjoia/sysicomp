@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use kartik\widgets\DatePicker;
+use kartik\widgets\SwitchInput;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Ferias */
@@ -44,6 +45,30 @@ $arrayTipoferias = array ("1" => "Oficial", "2" => "Usufruto");
 		        ])->label("<font color='#FF0000'>*</font> <b>Data Término:</b>")
 		    ?>
     </div>
+
+    <!------------------------- Novos adicionados-------------------------------------->
+
+    <div class="row">
+        <?= $form->field($model, 'adiantamentoDecimo', ['options' => ['class' => 'col-md-3']])->widget(SwitchInput::className(), [
+            'type' => SwitchInput::CHECKBOX,
+            'pluginOptions' => [
+                'onText' => 'Sim',
+                'offText' => 'Não'
+            ],
+        ]) ?>
+    </div>
+
+    <div class="row">
+        <?= $form->field($model, 'adiantamentoFerias', ['options' => ['class' => 'col-md-3']])->widget(SwitchInput::className(), [
+            'type' => SwitchInput::CHECKBOX,
+            'pluginOptions' => [
+                'onText' => 'Sim',
+                'offText' => 'Não'
+            ],
+        ]) ?>
+    </div>
+
+    <!--------------------------------------------------------------------------------->
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Registrar Férias' : 'Editar Registro de Férias', ['id' => $model->idusuario,'class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

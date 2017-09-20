@@ -152,21 +152,26 @@ if( isset($_GET["ano"]) && isset($_GET["prof"]) ){
 
             ],
             ['class' => 'yii\grid\ActionColumn',
-              'template'=>'{delete}',
+                'template'=>'{update} {delete}',
                 'buttons'=>[
-                  'delete' => function ($url, $model) {
-                    return Html::a('<span class="glyphicon glyphicon-remove"></span>', ['deletesecretaria', 'id' => $model->id, 'idUsuario' => $model->idusuario , 'ano'=>$_GET['ano'], 'prof' => $_GET["prof"],], [
+                    'update' => function ($url, $model) {
+                        return Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['update', 'id' => $model->id , "ano" => $_GET["ano"]], [
+                            'title' => Yii::t('yii', 'Editar Férias'),
+                        ]);
+                    },
+                        'delete' => function ($url, $model) {
+                            return Html::a('<span class="glyphicon glyphicon-remove"></span>', ['deletesecretaria', 'id' => $model->id, 'idUsuario' => $model->idusuario , 'ano'=>$_GET['ano'], 'prof' => $_GET["prof"],], [
 
                         'data' => [
-                                        'confirm' => "Você realmente deseja excluir o registro dessas férias?",
-                                        'method' => 'post',
-                                    ],
+                            'confirm' => "Você realmente deseja excluir o registro dessas férias?",
+                            'method' => 'post',
+                        ],
 
                             'title' => Yii::t('yii', 'Remover Férias'),
                     ]);   
                   }
               ]                            
-                ],
+            ],
         ],
     ]); ?>
 </div>
