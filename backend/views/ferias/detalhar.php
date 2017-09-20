@@ -151,6 +151,8 @@ if( isset($_GET["ano"]) && isset($_GET["prof"]) ){
             },
 
             ],
+
+            /////////////////////////////////////////////Somente para secretaria//////////////////////////////////////////////
             ['class' => 'yii\grid\ActionColumn',
                 'template'=>'{update} {delete}',
                 'buttons'=>[
