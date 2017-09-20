@@ -26,8 +26,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>
         <?= Html::a('<span class="glyphicon glyphicon-arrow-left"></span> Voltar  ', ['site/index'], ['class' => 'btn btn-warning']) ?>   
-        <?php //Html::a('Registrar Novas Férias', ['create', "ano" => $_GET["ano"]], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Registrar Novas Férias', ['create', "ano" => $_GET["ano"]], ['class' => 'btn btn-success']) ?>
     </p>
+
 
 
 <div class="ferias-index">
@@ -124,20 +125,16 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
                      
             [
-            "attribute" =>'tipo',
-            "value" => function ($model){
-
-              if($model->tipo == 1){
-                return "Usufruto";
-              }
-              else{
-                return "Oficial";
-              }
-
-            },
-
+                "attribute" =>'tipo',
+                "value" => function ($model){
+                     if($model->tipo == 1){
+                         return "Usufruto";
+                     }else{
+                         return "Oficial";
+                     }
+                 },
             ],
-            /*['class' => 'yii\grid\ActionColumn',
+            ['class' => 'yii\grid\ActionColumn',
               'template'=>'{update} {delete}',
                 'buttons'=>[
                   'update' => function ($url, $model) {
@@ -157,7 +154,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     ]);   
                   }
               ]                            
-                ],*/
+                ],
         ],
     ]); ?>
 </div>

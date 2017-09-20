@@ -5,8 +5,8 @@ namespace backend\controllers;
 use Yii;
 use app\models\Ferias;
 use yii\filters\AccessControl;
-use app\models\Professor;
-use app\models\Funcionario;
+//use app\models\Professor;
+//use app\models\Funcionario;
 use common\models\User;
 use app\models\FeriasSearch;
 use yii\web\Controller;
@@ -531,6 +531,8 @@ class FeriasController extends Controller
         $message .= "E-mail: ".$model->emailusuario."\r\n";
         $message .= "Data de Saída: ".date("d/m/Y", strtotime($model->dataSaida))."\r\n";
         $message .= "Data de Retorno: ".date("d/m/Y", strtotime($model->dataRetorno))."\r\n";
+        $message .= "Adiantamento do Décimo Terceiro:".$model->adiantamentoDecimo."\r\n";
+        $message .= "Adiantamento do Próximo Salário:".$model->adiantamentoFerias."\r\n";
         $message .= "Data e Hora do envio: ".date("d/m/Y H:i:s", strtotime($model->dataPedido))."\r\n";
 
         $chefe = "tanara@icomp.ufam.edu.br";
