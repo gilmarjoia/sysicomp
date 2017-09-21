@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use xj\bootbox\BootboxAsset;
-
+use app\models\Ferias;
 BootboxAsset::register($this);
 BootboxAsset::registerWithOverride($this);
 
@@ -11,6 +11,8 @@ BootboxAsset::registerWithOverride($this);
 /* @var $searchModel app\models\FeriasSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
+//$var = new Ferias();
+//var_dump($var->diasRestantesParaGozoDeFerias('595'));
 $this->title = 'Solicitações de Férias';
 $this->params['breadcrumbs'][] = $this->title;
 
@@ -80,6 +82,12 @@ $this->params['breadcrumbs'][] = $this->title;
                             return $model->feriasAno($model->id, $_GET["ano"] , 1 );
                  },
             ],
+            [
+                'label' => 'Dias restantes para usufruto' ,
+                 'value' => function ($model){
+                            return $model->diasRestantesParaGozoDeFerias($model->id);
+                 }
+            ],
             ['class' => 'yii\grid\ActionColumn',
               'template'=>'{view}',
                 'buttons'=>[
@@ -89,8 +97,8 @@ $this->params['breadcrumbs'][] = $this->title;
                             'title' => Yii::t('yii', 'Visualizar Detalhes'),
                     ]);   
                   }
-              ]                            
-                ],
+                ]                            
+            ],
         ],
     ]); ?>
 
