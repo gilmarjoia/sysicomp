@@ -124,6 +124,14 @@ class User extends \yii\db\ActiveRecord
         return $model_ferias;
     }
 
+    public function diasRestantesParaGozoDeFerias($idusuario){
+
+       $model_ferias = new Ferias();
+       $model_ferias = $model_ferias->diasRestantesParaGozoDeFerias($idusuario);
+
+        return $model_ferias;
+    }
+
     public function getAlunos($idusuario)
     {
         $model_alunos = new Aluno();

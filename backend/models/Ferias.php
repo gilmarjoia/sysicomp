@@ -30,6 +30,8 @@ class Ferias extends \yii\db\ActiveRecord
     public $detalharTotalUsufruto;
     public $detalharRestoUsufruto;
     public $totalFeriasOficial;
+    public $dias;
+
 	
 
     
@@ -79,7 +81,7 @@ class Ferias extends \yii\db\ActiveRecord
     
     
     
-    public function getDAiferencaData(){
+    public function getDiferencaData(){
         
                 $dataSaida = date('Y-m-d', strtotime($this->dataSaida));
                 $dataRetorno =  date('Y-m-d', strtotime($this->dataRetorno));
@@ -141,6 +143,20 @@ class Ferias extends \yii\db\ActiveRecord
 
     }
 
+    public function diasRestantesParaGozoDeFerias($idusuario){
+
+        $sql="SELECT DATEDIFF(dataSaida,now()) AS dias FROM j17_ferias WHERE idusuario=:id and dataSaida>=now() ORDER BY dataSaida";
+        $params=array(':id'=>$idusuario);
+        $ferias = Ferias::findBySql($sql, $params);
+
+        if($ferias->exists()){
+            return $ferias->one()->dias;
+        }else{
+            return 0;
+        }
+        //return $ferias;
+
+    }
     
     public function feriasAnoTodos($ano,$tipo){
 
