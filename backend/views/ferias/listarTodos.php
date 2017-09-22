@@ -49,6 +49,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <h3 style = "text-align: center; border: solid 1px; padding: 5px 5px 5px 5px; background-color: lightblue ; font-weight: bold ; margin: 20px 0px 20px 0px"> Solicitações de Férias de Professores </h3>
 
 <div class="ferias-index">
+<h5 style="background-color: lightblue">
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
 
@@ -101,9 +102,10 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ],
     ]); ?>
+</h5>
 
 <h3 style = "text-align: center; border: solid 1px; padding: 5px 5px 5px 5px; background-color: lightblue ; font-weight: bold; margin: 20px 0px 20px 0px"> Solicitações de Férias de Funcionários </h3>
-
+<h5 style="background-color: lightblue">
  <?= GridView::widget([
         'dataProvider' => $dataProvider2,
 
@@ -150,5 +152,5 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
         ],
     ]); ?>
-
+</h5>
 </div>

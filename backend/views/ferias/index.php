@@ -74,7 +74,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php } ?>
     </select>
 </p>
-
+<h5 style="background-color: lightblue">
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         //'filterModel' => $searchModel,
@@ -177,4 +177,5 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ],
     ]); ?>
+</h5>
 </div>

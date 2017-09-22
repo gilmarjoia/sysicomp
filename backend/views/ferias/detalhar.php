@@ -69,6 +69,7 @@ if( isset($_GET["ano"]) && isset($_GET["prof"]) ){
     ]) ?>
 
 <div class="ferias-index">
+<h5 style="background-color: lightblue">
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         //'filterModel' => $searchModel,
@@ -175,5 +176,6 @@ if( isset($_GET["ano"]) && isset($_GET["prof"]) ){
               ]                            
             ],
         ],
-    ]); ?>
+    ]); ?>,
+</h5>
 </div>
