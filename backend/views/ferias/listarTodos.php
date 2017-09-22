@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 use xj\bootbox\BootboxAsset;
 use app\models\Ferias;
+use yii\bootstrap\Progress;
 BootboxAsset::register($this);
 BootboxAsset::registerWithOverride($this);
 
@@ -84,10 +85,24 @@ $this->params['breadcrumbs'][] = $this->title;
                  },
             ],
             [
-                'label' => 'Dias restantes para usufruto' ,
-                 'value' => function ($model){
-                            return $model->diasRestantesParaGozoDeFerias($model->id);
-                 }
+                 'label' => 'Dias restantes para usufruto' ,
+                 'content' => function($model) {
+                     if ($model->diasRestantesParaGozoDeFerias($model->id)<=30){
+                         return Progress::widget([
+                             'label' => $model->diasRestantesParaGozoDeFerias($model->id),
+                             'percent' => $model->diasRestantesParaGozoDeFerias($model->id),
+                             'barOptions' => ['class' => 'progress-bar-danger'],
+                             'options' => ['class' => 'active progress-striped']
+                         ]);
+                     }else{
+                         return Progress::widget([
+                             'label' => $model->diasRestantesParaGozoDeFerias($model->id),
+                             'percent' => $model->diasRestantesParaGozoDeFerias($model->id),
+                             'barOptions' => ['class' => 'progress-bar-info'],
+                             'options' => ['class' => 'active progress-striped']
+                         ]);
+                     }
+                }
             ],
             ['class' => 'yii\grid\ActionColumn',
               'template'=>'{view}',
@@ -138,6 +153,26 @@ $this->params['breadcrumbs'][] = $this->title;
                  'value' => function ($model){
                             return $model->feriasAno($model->id, $_GET["ano"] , 1 );
                  },
+            ],
+            [
+                'label' => 'Dias restantes para usufruto' ,
+                'content' => function($model) {
+                    if ($model->diasRestantesParaGozoDeFerias($model->id)<=30){
+                        return Progress::widget([
+                            'label' => $model->diasRestantesParaGozoDeFerias($model->id),
+                            'percent' => $model->diasRestantesParaGozoDeFerias($model->id),
+                            'barOptions' => ['class' => 'progress-bar-danger'],
+                            'options' => ['class' => 'active progress-striped']
+                        ]);
+                    }else{
+                        return Progress::widget([
+                            'label' => $model->diasRestantesParaGozoDeFerias($model->id),
+                            'percent' => $model->diasRestantesParaGozoDeFerias($model->id),
+                            'barOptions' => ['class' => 'progress-bar-info'],
+                            'options' => ['class' => 'active progress-striped']
+                        ]);
+                    }
+                }
             ],
             ['class' => 'yii\grid\ActionColumn',
               'template'=>'{view}',
