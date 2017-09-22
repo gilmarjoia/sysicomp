@@ -338,7 +338,16 @@ class FeriasController extends Controller
                      }if ($value->datasaida >= $model->dataSaida and $value->dataretorno <= $model->dataRetorno){
                          $cont++;
                      }
-                 }
+                }
+		if($cont != 0){
+                    $this->mensagens('danger', 'Registro Férias',  'Datas inválidas, afastamento cadastrado no mesmo período !');
+                    $model->dataSaida = date('d-m-Y', strtotime($model->dataSaida));
+                    $model->dataRetorno =  date('d-m-Y', strtotime($model->dataRetorno));
+                    return $this->render('createsecretaria', [
+                        'model' => $model,
+                        'nome' => $model->nomeusuario,
+                    ]);
+                }
              }
 
 
