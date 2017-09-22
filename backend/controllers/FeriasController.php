@@ -8,10 +8,12 @@ use yii\filters\AccessControl;
 //use app\models\Professor;
 //use app\models\Funcionario;
 use common\models\User;
+use app\models\Afastamentos;
 use app\models\FeriasSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii2fullcalendar\yii2fullcalendar;
 
 /**
  * FeriasController implements the CRUD actions for Ferias model.
@@ -377,6 +379,10 @@ class FeriasController extends Controller
      */
     public function actionUpdate($id)
     {
+        $idUsuarioFerias = Ferias::find()->where(["id" => $id])->one()->idusuario;
+        $dataAfastamento = Afastamentos::find()->where(["idusuario" => $idUsuarioFerias])->all();
+
+
         $model = $this->findModel($id);
 
         $ehProfessor = Yii::$app->user->identity->professor;
@@ -430,16 +436,48 @@ class FeriasController extends Controller
 
                 }
 
-                    if( ($ehProfessor == 1 ) && ($totalDiasFeriasAno+$diferencaDiasUpdate) <=45 && $model->save()){
+                $cont = 0;
 
-                        $model->adiantamentoDecimo;
-                        $model->adiantamentoFerias;
-
-                        $this->mensagens('success', 'Registro Férias',  'Registro de Férias realizado com sucesso!');
-
-                        return $this->redirect(['listar', "ano" => $anoSaida]);
-
+                if($dataAfastamento != null){
+                    foreach ($dataAfastamento as $value){
+                        if ($value->datasaida <= $model->dataSaida and $value->dataretorno >= $model->dataSaida){
+                            $cont++;
+                        }elseif ($value->datasaida >= $model->dataSaida and $value->datasaida <= $model->dataSaida and $value->dataretorno >= $model->dataRetorno) {
+                            $cont++;
+                        }elseif ($value->datasaida <= $model->dataSaida and $value->datasaida <= $model->dataRetorno and $value->dataretorno >= $model->dataRetorno){
+                            $cont++;
+                        }elseif ($value->datasaida >= $model->dataSaida and $value->dataretorno <= $model->dataRetorno){
+                            $cont++;
+                        }
                     }
+                }
+
+                //print_r($cont);
+
+                if($cont != 0){
+                    $this->mensagens('danger', 'Registro Férias',  'Datas inválidas, afastamento cadastrado no mesmo período !');
+
+                    $model->dataSaida = date('d-m-Y', strtotime($model->dataSaida));
+                    $model->dataRetorno =  date('d-m-Y', strtotime($model->dataRetorno));
+
+                    return $this->render('update', [
+                        'model' => $model,
+                    ]);
+                }
+
+
+
+
+                if( ($ehProfessor == 1 ) && ($totalDiasFeriasAno+$diferencaDiasUpdate) <=45 && $model->save()){
+
+                    $model->adiantamentoDecimo;
+                    $model->adiantamentoFerias;
+
+                    $this->mensagens('success', 'Registro Férias',  'Registro de Férias realizado com sucesso!');
+
+                    return $this->redirect(['listar', "ano" => $anoSaida]);
+
+                }
                     else if( $ehSecretario == 1  && ($totalDiasFeriasAno+$diferencaDiasUpdate) <= 30 && $model->save()){
 
                         $model->adiantamentoDecimo;

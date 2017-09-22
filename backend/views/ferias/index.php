@@ -99,24 +99,37 @@ $this->params['breadcrumbs'][] = $this->title;
                         return date('d-m-Y', strtotime($model->dataRetorno));
              },
              ],
-			 
-			 /********************ADIANTAMENTO DECIMO E FERIAS********************/
-			 
-			 ['attribute' => 'adiantamentoDecimo',
-             'value' => function ($model){
-                        return ($model->adiantamentoDecimo);
-             },
-             ],
-			 ['attribute' => 'adiantamentoFerias',
-             'value' => function ($model){
-                        return ($model->adiantamentoFerias);
-             },
-             ],
-			 
-			 /*********************************************************************/
-			 
-			 
-             [
+
+            /********************ADIANTAMENTO DECIMO E FERIAS********************/
+            [
+                'attribute' => 'adiantamentoDecimo',
+                'label' => "Adiantamento de 50% do 13º",
+                'value' => function ($model){
+                    if($model->adiantamentoDecimo == 1){
+                        return "Sim";
+                    }
+                    else{
+                        return "Não";
+                    }
+                },
+            ],
+            [
+                'attribute' => 'adiantamentoFerias',
+                'label' => "Adiantamento do Próximo Salário",
+                'value' => function ($model){
+                    if($model->adiantamentoFerias == 1){
+                        return "Sim";
+                    }
+                    else{
+                        return "Não";
+                    }
+                },
+            ],
+
+            /********************************************************************/
+
+
+            [
                  'attribute' => 'diferencaData',
                  'label' => "Nº de Dias",
                  'value' => function ($model){
