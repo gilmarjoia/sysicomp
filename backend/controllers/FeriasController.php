@@ -285,12 +285,8 @@ class FeriasController extends Controller
 
     public function actionCreatesecretaria($id)
     {
-
         $model = new Ferias();
-
         $model_User = User::find()->where(["id" => $id])->one();
-
-
         if($model_User->professor == 1){
             $limiteDias = 45;
         }
@@ -298,72 +294,70 @@ class FeriasController extends Controller
             $limiteDias = 30;
         }
 
-
         $model->idusuario = $id;
         $model->nomeusuario = $model_User->nome;
         $model->emailusuario = $model_User->email;
         $model->dataPedido = date("Y-m-d H:i:s");
 
+        
+        $dataAfastamento = Afastamentos::find()->where(["idusuario" => $model->idusuario])->all();
+
 
         if ($model->load(Yii::$app->request->post())) {
-
-
                 $model->dataSaida = date('Y-m-d', strtotime($model->dataSaida));
                 $model->dataRetorno =  date('Y-m-d', strtotime($model->dataRetorno));
-
-
                 $feriasAno = new Ferias();
                 $anoSaida = date('Y', strtotime($model->dataSaida));
                 $totalDiasFeriasAno = $feriasAno->feriasAno($model->idusuario,$anoSaida,$model->tipo);
-
                 $datetime1 = new \DateTime($model->dataSaida);
                 $datetime2 = new \DateTime($model->dataRetorno);
                 $interval = $datetime1->diff($datetime2);
                 $diferencaDias =  $interval->format('%a');
                 $diferencaDias++;
-
-
                 if( $diferencaDias < 0 || $interval->format('%R') == "-"){
-
                     $this->mensagens('danger', 'Registro Férias',  'Datas inválidas!');
-
                         $model->dataSaida = date('d-m-Y', strtotime($model->dataSaida));
                         $model->dataRetorno =  date('d-m-Y', strtotime($model->dataRetorno));
-
                     return $this->render('createsecretaria', [
                             'model' => $model,
                         ]);
-
                 }
+
+
+                 $cont = 0;
+                if($dataAfastamento != null){
+
+                 foreach ($dataAfastamento as $value){
+                     if ($value->datasaida <= $model->dataSaida and $value->dataretorno >= $model->dataSaida){
+                         $cont++;
+                     }
+                     if ($value->datasaida >= $model->dataSaida and $value->datasaida <= $model->dataRetorno and $value->dataretorno >= $model->dataRetorno) {
+                         $cont++;
+                     }if ($value->datasaida <= $model->dataSaida and $value->datasaida <= $model->dataRetorno and $value->dataretorno >= $model->dataRetorno){
+                         $cont++;
+                     }if ($value->datasaida >= $model->dataSaida and $value->dataretorno <= $model->dataRetorno){
+                         $cont++;
+                     }
+                 }
+             }
+
 
                 if( ($totalDiasFeriasAno+$diferencaDias) <= $limiteDias && $model->save()){
-
                     $model->adiantamentoDecimo;
                     $model->adiantamentoFerias;
-
                     $this->mensagens('success', 'Registro Férias',  'Registro de Férias realizado com sucesso!');
-
                     return $this->redirect(['detalhar', 'id' => $model->idusuario, 'ano' => date("Y") ,"prof" => $model_User->professor]);
-
                 }
-
                 else {
-
                     $this->mensagens('danger', 'Registro Férias', 'Não foi possível registrar o pedido de férias. Você ultrapassou o limite de '.$limiteDias.' dias');
-
                 }
-
                 $model->dataSaida = date('d-m-Y', strtotime($model->dataSaida));
                 $model->dataRetorno =  date('d-m-Y', strtotime($model->dataRetorno));
-
                 return $this->render('createsecretaria', [
                         'model' => $model,
                         'nome' => $model->nomeusuario,
                     ]);
-
-
         } else {
-
             return $this->render('createsecretaria', [
                 'model' => $model,
                 'nome' => $model->nomeusuario,
@@ -452,7 +446,7 @@ class FeriasController extends Controller
                     }
                 }
 
-                //print_r($cont);
+     
 
                 if($cont != 0){
                     $this->mensagens('danger', 'Registro Férias',  'Datas inválidas, afastamento cadastrado no mesmo período !');
