@@ -434,16 +434,15 @@ class FeriasController extends Controller
 
                 if($dataAfastamento != null){
                     foreach ($dataAfastamento as $value){
-                        if ($value->datasaida <= $model->dataSaida and $value->dataretorno >= $model->dataSaida){
-                            $cont++;
-                        }elseif ($value->datasaida >= $model->dataSaida and $value->datasaida <= $model->dataSaida and $value->dataretorno >= $model->dataRetorno) {
-                            $cont++;
-                        }elseif ($value->datasaida <= $model->dataSaida and $value->datasaida <= $model->dataRetorno and $value->dataretorno >= $model->dataRetorno){
-                            $cont++;
-                        }elseif ($value->datasaida >= $model->dataSaida and $value->dataretorno <= $model->dataRetorno){
-                            $cont++;
-                        }
-                    }
+                     	if ($value->datasaida <= $model->dataSaida and $value->dataretorno >= $model->dataSaida){
+                        	$cont++;
+                     	}if ($value->datasaida >= $model->dataSaida and $value->datasaida <= $model->dataRetorno and $value->dataretorno >= $model->dataRetorno) {
+                        	$cont++;
+                     }if ($value->datasaida <= $model->dataSaida and $value->datasaida <= $model->dataRetorno and $value->dataretorno >= $model->dataRetorno){
+                         $cont++;
+                     }if ($value->datasaida >= $model->dataSaida and $value->dataretorno <= $model->dataRetorno){
+                         $cont++;
+                     }
                 }
 
      
