@@ -10,8 +10,9 @@ use kartik\widgets\SwitchInput;
 /* @var $model app\models\Ferias */
 /* @var $form yii\widgets\ActiveForm */
 
-$arrayTipoferias = array ("1" => "Usufruto", "2" => "Oficial"); 
 
+
+$arrayTipoferias = array ("1" => "Usufruto", "2" => "Oficial");
 ?>
 
 <div class="ferias-form">
@@ -19,9 +20,8 @@ $arrayTipoferias = array ("1" => "Usufruto", "2" => "Oficial");
     <?php $form = ActiveForm::begin(); ?>
 
     <div class = "row">
-    <?= $form->field($model, 'tipo' , ['options' => ['class' => 'col-md-3']])->dropDownlist($arrayTipoferias, ['prompt' => 'Selecione um tipo de Férias'])->label("<font color='#FF0000'>*</font> <b>Tipo:</b>") ?>
+        <?= $form->field($model, 'tipo' , ['options' => ['class' => 'col-md-3']])->dropDownlist($arrayTipoferias, ['prompt' => 'Selecione um tipo de Férias'],['disabled' => false])->label("<font color='#FF0000'>*</font> <b>Tipo:</b>")?>
     </div>
-
     <div class = "row">
 	        <?= $form->field($model, 'dataSaida', ['options' => ['class' => 'col-md-3']])->widget(DatePicker::classname(), [
 	                'language' => Yii::$app->language,
@@ -32,7 +32,6 @@ $arrayTipoferias = array ("1" => "Usufruto", "2" => "Oficial");
 				    ]
 		        ])->label("<font color='#FF0000'>*</font> <b>Data Início:</b>")
 		    ?>
-
 	</div>
 	<div class = "row">
 		    
@@ -48,15 +47,15 @@ $arrayTipoferias = array ("1" => "Usufruto", "2" => "Oficial");
     </div>
 
     <!------------------------- Novos adicionados-------------------------------------->
-
     <div class="row">
         <?= $form->field($model, 'adiantamentoDecimo', ['options' => ['class' => 'col-md-3']])->widget(SwitchInput::className(), [
             'type' => SwitchInput::CHECKBOX,
             'pluginOptions' => [
                 'onText' => 'Sim',
-                'offText' => 'Não'
+                'offText' => 'Não',
             ],
-        ]) ?>
+        ])
+        ?>
     </div>
 
     <div class="row">
@@ -66,7 +65,9 @@ $arrayTipoferias = array ("1" => "Usufruto", "2" => "Oficial");
                 'onText' => 'Sim',
                 'offText' => 'Não'
             ],
-        ]) ?>
+            'disabled' => $model->tipo
+        ])
+        ?>
     </div>
 
     <!--------------------------------------------------------------------------------->

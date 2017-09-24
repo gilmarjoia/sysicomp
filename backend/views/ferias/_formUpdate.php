@@ -8,7 +8,6 @@ use kartik\widgets\SwitchInput;
 /* @var $this yii\web\View */
 /* @var $model app\models\Ferias */
 /* @var $form yii\widgets\ActiveForm */
-
 $arrayTipoferias = array ("1" => "Oficial", "2" => "Usufruto"); 
 
 ?>
@@ -55,7 +54,8 @@ $arrayTipoferias = array ("1" => "Oficial", "2" => "Usufruto");
                 'onText' => 'Sim',
                 'offText' => 'Não'
             ],
-        ]) ?>
+        ]);
+        ?>
     </div>
 
     <div class="row">
@@ -65,7 +65,8 @@ $arrayTipoferias = array ("1" => "Oficial", "2" => "Usufruto");
                 'onText' => 'Sim',
                 'offText' => 'Não'
             ],
-        ]) ?>
+        ]);
+        ?>
     </div>
 
     <!--------------------------------------------------------------------------------->

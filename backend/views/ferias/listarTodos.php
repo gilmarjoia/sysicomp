@@ -87,11 +87,18 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                  'label' => 'Dias restantes para usufruto' ,
                  'content' => function($model) {
-                     if ($model->diasRestantesParaGozoDeFerias($model->id)<=30){
+                     if ($model->diasRestantesParaGozoDeFerias($model->id)<=20){
                          return Progress::widget([
                              'label' => $model->diasRestantesParaGozoDeFerias($model->id),
                              'percent' => $model->diasRestantesParaGozoDeFerias($model->id),
                              'barOptions' => ['class' => 'progress-bar-danger'],
+                             'options' => ['class' => 'active progress-striped']
+                         ]);
+                     }elseif($model->diasRestantesParaGozoDeFerias($model->id)>20 and $model->diasRestantesParaGozoDeFerias($model->id)<=30){
+                         return Progress::widget([
+                             'label' => $model->diasRestantesParaGozoDeFerias($model->id),
+                             'percent' => $model->diasRestantesParaGozoDeFerias($model->id),
+                             'barOptions' => ['class' => 'progress-bar-warning'],
                              'options' => ['class' => 'active progress-striped']
                          ]);
                      }else{
@@ -157,11 +164,18 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'label' => 'Dias restantes para usufruto' ,
                 'content' => function($model) {
-                    if ($model->diasRestantesParaGozoDeFerias($model->id)<=30){
+                    if ($model->diasRestantesParaGozoDeFerias($model->id)<=20){
                         return Progress::widget([
                             'label' => $model->diasRestantesParaGozoDeFerias($model->id),
                             'percent' => $model->diasRestantesParaGozoDeFerias($model->id),
                             'barOptions' => ['class' => 'progress-bar-danger'],
+                            'options' => ['class' => 'active progress-striped']
+                        ]);
+                    }elseif($model->diasRestantesParaGozoDeFerias($model->id)>20 and $model->diasRestantesParaGozoDeFerias($model->id)<=30){
+                        return Progress::widget([
+                            'label' => $model->diasRestantesParaGozoDeFerias($model->id),
+                            'percent' => $model->diasRestantesParaGozoDeFerias($model->id),
+                            'barOptions' => ['class' => 'progress-bar-warning'],
                             'options' => ['class' => 'active progress-striped']
                         ]);
                     }else{
