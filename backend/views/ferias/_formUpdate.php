@@ -8,7 +8,7 @@ use kartik\widgets\SwitchInput;
 /* @var $this yii\web\View */
 /* @var $model app\models\Ferias */
 /* @var $form yii\widgets\ActiveForm */
-$arrayTipoferias = array ("1" => "Oficial", "2" => "Usufruto"); 
+$arrayTipoferias = array ("1" => "Usufruto", "2" => "Oficial");
 
 ?>
 
@@ -16,8 +16,8 @@ $arrayTipoferias = array ("1" => "Oficial", "2" => "Usufruto");
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <div class = "row">
-    <?= $form->field($model, 'tipo' , ['options' => ['class' => 'col-md-3']])->dropDownlist($arrayTipoferias, ['prompt' => 'Selecione um tipo de Férias'])->label("<font color='#FF0000'>*</font> <b>Tipo:</b>") ?>
+    <div class = "row" id="tipo">
+    <?= $form->field($model, 'tipo' , ['options' => ['class' => 'col-md-3']])->dropDownlist($arrayTipoferias, ['prompt' => 'Selecione um tipo de Férias'])->label("<font color='#FF0000'>*</font> <b>Tipo:</b>")?>
     </div>
 
     <div class = "row">

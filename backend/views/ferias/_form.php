@@ -20,7 +20,7 @@ $arrayTipoferias = array ("1" => "Usufruto", "2" => "Oficial");
     <?php $form = ActiveForm::begin(); ?>
 
     <div class = "row">
-        <?= $form->field($model, 'tipo' , ['options' => ['class' => 'col-md-3']])->dropDownlist($arrayTipoferias, ['prompt' => 'Selecione um tipo de Férias'],['disabled' => false])->label("<font color='#FF0000'>*</font> <b>Tipo:</b>")?>
+        <?= $form->field($model, 'tipo' , ['options' => ['class' => 'col-md-3', 'id' => 'tipoFerias']])->dropDownlist($arrayTipoferias, ['prompt' => 'Selecione um tipo de Férias'])->label("<font color='#FF0000'>*</font> <b>Tipo:</b>");?>
     </div>
     <div class = "row">
 	        <?= $form->field($model, 'dataSaida', ['options' => ['class' => 'col-md-3']])->widget(DatePicker::classname(), [
@@ -54,7 +54,7 @@ $arrayTipoferias = array ("1" => "Usufruto", "2" => "Oficial");
                 'onText' => 'Sim',
                 'offText' => 'Não',
             ],
-        ])
+        ]);
         ?>
     </div>
 
@@ -65,7 +65,6 @@ $arrayTipoferias = array ("1" => "Usufruto", "2" => "Oficial");
                 'onText' => 'Sim',
                 'offText' => 'Não'
             ],
-            'disabled' => $model->tipo
         ])
         ?>
     </div>
