@@ -133,6 +133,15 @@ use app\models\MembrosBanca;
                     ],
                 ],
                 [
+                    'label' => 'Gerenciar Ocorrências',
+                    'icon' => 'fa fa-umbrella',
+                    'url' => '#',
+                    'visible' => Yii::$app->user->identity->checarAcesso('secretaria'),
+                    'items' => [
+                        ['label' => 'Listar Ocorrências', 'icon' => 'fa fa-sun-o', 'url' => ['ocorrencias/index'],],
+                    ],
+                ],
+                [
                     'label' => 'Reserva de Sala',
                     'icon' => 'fa fa-calendar',
                     'url' => '#',

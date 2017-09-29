@@ -51,7 +51,7 @@ if (Yii::$app->controller->action->id === 'login') {
         if(!Yii::$app->user->isGuest)
 
         echo $this->render(
-            'left.php',
+            'left-sample.php',
             ['directoryAsset' => $directoryAsset]
         )
         ?>
