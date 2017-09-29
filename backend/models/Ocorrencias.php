@@ -27,11 +27,9 @@ class Ocorrencias extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'codigo', 'ocorrencia'], 'required'],
             [['id'], 'integer'],
             [['ocorrencia'], 'string'],
             [['codigo'], 'string', 'max' => 4],
-            [['id'], 'unique'],
         ];
     }
 

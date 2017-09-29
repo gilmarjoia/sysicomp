@@ -8,20 +8,34 @@ use yii\widgets\ActiveForm;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="ocorrencias-form">
+<div class="row">
+    <div class="col-lg-8">
 
-    <?php $form = ActiveForm::begin(); ?>
+        <div class="panel panel-default">
 
-    <?= $form->field($model, 'id')->textInput() ?>
+            <div class="panel-heading">
+                <h3 class="panel-title"><b>Dados da Nova Ocorrência</b></h3>
+            </div>
 
-    <?= $form->field($model, 'codigo')->textInput(['maxlength' => true]) ?>
+            <div class="panel-body">
 
-    <?= $form->field($model, 'ocorrencia')->textarea(['rows' => 6]) ?>
+			    <?php $form = ActiveForm::begin(); ?>
+	
+			    <div class="row">
+			    <?= $form->field($model, 'codigo', ['options' => ['class' => 'col-md-5']])->textInput(['maxlength' => true])->label("<font color='#FF0000'>*</font> <b>Codigo</b>") ?>
+			    </div>
+			    <div class="row">
+			    <?= $form->field($model, 'ocorrencia', ['options' => ['class' => 'col-md-5']])->textarea(['rows' => 6])->label("<font color='#FF0000'>*</font> <b>Ocorrência</b>") ?>
+				</div>
+			    
+			    <div class="form-group">
+			    	<?= Html::submitButton($model->isNewRecord ? 'Salvar' : 'Alterar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+			    </div>
 
-    <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+			    <?php ActiveForm::end(); ?>
+
+			</div>
+        </div>
     </div>
-
-    <?php ActiveForm::end(); ?>
 
 </div>

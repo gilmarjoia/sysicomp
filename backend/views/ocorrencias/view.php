@@ -6,32 +6,40 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model app\models\Ocorrencias */
 
-$this->title = $model->id;
+$this->title = 'Ocorrência: '.$model->codigo;
 $this->params['breadcrumbs'][] = ['label' => 'Ocorrencias', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="ocorrencias-view">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-
     <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
+        <?= Html::a('<span class="glyphicon glyphicon-arrow-left"></span>&nbsp;&nbsp;Voltar','#',['class' => 'btn btn-warning','onclick'=>"history.go(-1);"]); ?>
+        <?= Html::a('<span class="fa fa-list"></span>&nbsp;&nbsp;Listar Ocorrencias', ['ocorrencias/index'], ['class' => 'btn btn-success']) ?>    
+        <?= Html::a('<span class="glyphicon glyphicon-edit"></span> Editar', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('<span class="glyphicon glyphicon-remove"></span> Remover', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
+                'confirm' => 'Remover Ocorrência \''. $model->codigo.'\'?',
                 'method' => 'post',
             ],
         ]) ?>
     </p>
 
-    <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'id',
-            'codigo',
-            'ocorrencia:ntext',
-        ],
-    ]) ?>
+    <div class="row col-lg-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title"><b>Dados da Ocorrência</b></h3>
+            </div>
+            <div class="panel-body">
+
+                <?= DetailView::widget([
+                    'model' => $model,
+                    'attributes' => [
+                        'codigo',
+                        'ocorrencia:ntext',
+                    ],
+                ]) ?>
+            </div>
+        </div>
+    </div>    
 
 </div>
