@@ -30,12 +30,12 @@ class Frequencias extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'idusuario', 'nomeusuario', 'dataInicial', 'dataFinal', 'codigoOcorrencia'], 'required'],
+            //[['id', 'idusuario', 'nomeusuario', 'dataInicial', 'dataFinal', 'codigoOcorrencia'], 'required'],
             [['id', 'idusuario'], 'integer'],
             [['dataInicial', 'dataFinal'], 'safe'],
             [['nomeusuario'], 'string', 'max' => 60],
             [['codigoOcorrencia'], 'string', 'max' => 4],
-            [['id'], 'unique'],
+            //[['id'], 'unique'],
         ];
     }
 

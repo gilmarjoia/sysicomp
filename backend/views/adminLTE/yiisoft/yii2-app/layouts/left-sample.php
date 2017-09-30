@@ -132,6 +132,15 @@ use app\models\MembrosBanca;
                         ['label' => 'Controlar Férias', 'icon' => 'fa fa-list', 'url' => ['ferias/listartodos', "ano" => date("Y") ],],
                     ],
                 ],
+				[
+                    'label' => 'Gerenciar Frequências',
+                    'icon' => 'fa fa-calendar',
+                    'url' => '#',
+                    'visible' => Yii::$app->user->identity->checarAcesso('secretaria'),
+                    'items' => [
+                        ['label' => 'Listar Frequências', 'icon' => 'fa fa-sun-o', 'url' => ['frequencias/index'],],
+                    ],
+                ],
                 [
                     'label' => 'Gerenciar Ocorrências',
                     'icon' => 'fa fa-umbrella',

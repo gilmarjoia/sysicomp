@@ -7,16 +7,16 @@ use yii\grid\GridView;
 /* @var $searchModel app\models\FrequenciasSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Frequencias';
+$this->title = 'Frequências';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="frequencias-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Create Frequencias', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Nova Frequência', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?= GridView::widget([
