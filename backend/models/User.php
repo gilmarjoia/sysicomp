@@ -74,6 +74,7 @@ class User extends \yii\db\ActiveRecord
             'secretaria' => 'Secretaria',
             'professor' => 'Professor',
             'aluno' => 'Aluno',
+            'siape' => 'Siape',
             'perfis' => 'Perfil(s)',
             'cargo' => 'Cargo',
             'dataIngresso' => 'Data de Ingresso',
@@ -122,6 +123,14 @@ class User extends \yii\db\ActiveRecord
        $model_ferias = $model_ferias->feriasAno($idusuario,$ano,$tipo);
 
         return $model_ferias;
+    }
+
+    public function frequenciasAno($idusuario,$ano){
+
+        $model_frequencias = new Frequencias();
+        $model_frequencias = $model_frequencias->frequenciasAno($idusuario,$ano);
+
+        return $model_frequencias;
     }
 
     public function diasRestantesParaGozoDeFerias($idusuario){
