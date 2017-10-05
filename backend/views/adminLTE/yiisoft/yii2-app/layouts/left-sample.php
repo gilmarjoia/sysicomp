@@ -79,6 +79,7 @@ use app\models\MembrosBanca;
                     ],
                 ],
                 ['label' => 'Minhas Férias', 'icon' => 'fa fa-sun-o', 'url' => ['ferias/listar', "ano" => date("Y") ], 'visible' => Yii::$app->user->identity->checarAcesso('professor'),],
+                ['label' => 'Minhas Frequências', 'icon' => 'fa fa-sun-o', 'url' => ['frequencias/listar', "ano" => date("Y")  ], 'visible' => Yii::$app->user->identity->checarAcesso('professor'),],
 				['label' => 'Reserva de Sala', 'icon' => 'fa fa-calendar', 'url' => ['reserva-sala/index'], 'visible' => Yii::$app->user->identity->checarAcesso('professor'),],
                 ['label' => 'Acompanhar Orientandos', 'icon' => 'fa fa-eye', 'url' => ['aluno/orientandos'], 'visible' => Yii::$app->user->identity->checarAcesso('professor'),],
 				['label' => 'Meus Projetos', 'icon' => 'fa fa-signal', 'url' => ['cont-proj-projetos/index'], 'visible' => Yii::$app->user->identity->checarAcesso('professor'),],
@@ -138,7 +139,8 @@ use app\models\MembrosBanca;
                     'url' => '#',
                     'visible' => Yii::$app->user->identity->checarAcesso('secretaria'),
                     'items' => [
-                        ['label' => 'Listar Frequências', 'icon' => 'fa fa-sun-o', 'url' => ['frequencias/index'],],
+                        ['label' => 'Minhas Frequências', 'icon' => 'fa fa-sun-o', 'url' => ['frequencias/listar', "ano" => date("Y") ],],
+                        ['label' => 'Controlar Frequências', 'icon' => 'fa fa-sun-o', 'url' => ['frequencias/listartodos', "ano" => date("Y") ],],
                     ],
                 ],
                 [
