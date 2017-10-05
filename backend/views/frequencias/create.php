@@ -6,15 +6,16 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Frequencias */
 
-$this->title = 'Criar Frequencias';
-$this->params['breadcrumbs'][] = ['label' => 'Frequencias', 'url' => ['index']];
+$this->title = 'Registrar Frequências';
+$this->params['breadcrumbs'][] = ['label' => 'Minhas Frequências', 'url' => ['listar' , "ano" => $_GET["ano"]]];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="frequencias-create">
 
-	
-	<?= Html::a('<span class="glyphicon glyphicon-arrow-left"></span>&nbsp;&nbsp;Voltar','#',['class' => 'btn btn-warning','onclick'=>"history.go(-1);"]); ?>
-    <?= Html::a('<span class="fa fa-list"></span>&nbsp;&nbsp;Listar Ocorrências', ['linha-pesquisa/index'], ['class' => 'btn btn-success']) ?>
+    <p>
+        <?= Html::a('<span class="glyphicon glyphicon-arrow-left"></span> Voltar  ', ['listar', "ano" => $_GET["ano"], ], ['class' => 'btn btn-warning']) ?>
+    </p>
+
     <?= $this->render('_form', [
         'model' => $model,
     ]) ?>
