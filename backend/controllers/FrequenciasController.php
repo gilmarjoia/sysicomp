@@ -12,6 +12,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 
+
 /**
  * FrequenciasController implements the CRUD actions for Frequencias model.
  */

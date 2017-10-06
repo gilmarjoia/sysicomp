@@ -18,6 +18,7 @@ use app\models\Ferias;
 $arrayOcorrencias = Ocorrencias::find()->select("j17_ocorrencias.codigo")->from('j17_ocorrencias')->asArray()->column();
 $idUser = Ferias::find()->select("j17_ferias.idusuario")->from('j17_ferias')->where(['nomeusuario' => Yii::$app->user->identity->nome])->one()->idusuario;
 //print_r($idUser);
+
 //var_dump($idUser);
 
 ?>
