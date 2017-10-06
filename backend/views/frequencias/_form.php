@@ -7,7 +7,7 @@ use yii\widgets\ActiveForm;
 use kartik\widgets\DatePicker;
 use kartik\widgets\SwitchInput;
 use app\models\Ocorrencias;
-
+use app\models\Ferias;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Frequencias */
@@ -15,9 +15,10 @@ use app\models\Ocorrencias;
 
 
 //$arrayOcorrencias = Ocorrencias::find()->select("j17_ocorrencias.codigo")->all();
-$arrayOcorrencias = Ocorrencias::find()->select("j17_ocorrencias.codigo")->from('j17_ocorrencias')->one();
-//print_r($arrayOcorrencias);
-//var_dump($arrayOcorrencias);
+$arrayOcorrencias = Ocorrencias::find()->select("j17_ocorrencias.codigo")->from('j17_ocorrencias')->asArray()->column();
+$idUser = Ferias::find()->select("j17_ferias.idusuario")->from('j17_ferias')->where(['nomeusuario' => Yii::$app->user->identity->nome])->one()->idusuario;
+//print_r($idUser);
+//var_dump($idUser);
 
 ?>
 
@@ -25,9 +26,14 @@ $arrayOcorrencias = Ocorrencias::find()->select("j17_ocorrencias.codigo")->from(
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <div class = "row">
-        <?php if ($model->isNewRecord) echo $form->field($model, 'codigoOcorrencia' , ['options' => ['class' => 'col-md-3']])->dropDownlist($arrayOcorrencias, ['prompt' => 'Selecione um código de Ocorrência'])->label("<font color='#FF0000'>*</font> <b>Código da Ocorrência:</b>");?>
+    <div class="row">
+        <?php if ($model->isNewRecord) echo $form->field($model,'idusuario', ['options' => ['class' => 'col-md-3']])->hiddenInput(['value' => $idUser])->label(false)?>
     </div>
+
+    <div class="row">
+        <?php if ($model->isNewRecord) echo $form->field($model,'nomeusuario', ['options' => ['class' => 'col-md-3']])->hiddenInput(['value' => Yii::$app->user->identity->nome])->label(false)?>
+    </div>
+
 
 
     <div class = "row">
@@ -35,7 +41,7 @@ $arrayOcorrencias = Ocorrencias::find()->select("j17_ocorrencias.codigo")->from(
             'language' => Yii::$app->language,
             'options' => ['placeholder' => 'Selecione a Data Inicial da Falta ...',],
             'pluginOptions' => [
-                'format' => 'dd-mm-yyyy',
+                'format' => 'yyyy-mm-dd',
                 'todayHighlight' => true
             ]
         ])->label("<font color='#FF0000'>*</font> <b>Data Inícial:</b>")
@@ -48,11 +54,15 @@ $arrayOcorrencias = Ocorrencias::find()->select("j17_ocorrencias.codigo")->from(
             'language' => Yii::$app->language,
             'options' => ['placeholder' => 'Selecione a Data final da Falta ...',],
             'pluginOptions' => [
-                'format' => 'dd-mm-yyyy',
+                'format' => 'yyyy-mm-dd',
                 'todayHighlight' => true
             ]
         ])->label("<font color='#FF0000'>*</font> <b>Data Final:</b>")
         ?>
+    </div>
+
+    <div class = "row">
+        <?php if ($model->isNewRecord) echo $form->field($model, 'codigoOcorrencia' , ['options' => ['class' => 'col-md-3']])->dropDownlist($arrayOcorrencias, ['prompt' => 'Selecione um código de Ocorrência'])->label("<font color='#FF0000'>*</font> <b>Código da Ocorrência:</b>");?>
     </div>
 
     <div class="form-group">

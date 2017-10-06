@@ -144,7 +144,6 @@ class FrequenciasController extends Controller
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'todosAnosFrequencias' => $todosAnosFrequencias,
-            "id" => $id,
 
         ]);
     }
@@ -166,7 +165,7 @@ class FrequenciasController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    /*public function actionCreate()
     {
         $model = new Frequencias();
 
@@ -177,7 +176,80 @@ class FrequenciasController extends Controller
                 'model' => $model,
             ]);
         }
+    }*/
+
+    public function actionCreate($ano)
+    {
+
+        $model = new Frequencias();
+        $model->idusuario = Yii::$app->user->identity->id;
+        $model->nomeusuario = Yii::$app->user->identity->nome;
+
+        $ehProfessor = Yii::$app->user->identity->professor;
+        $ehSecretario = Yii::$app->user->identity->secretaria;
+
+
+        if ($model->load(Yii::$app->request->post())) {
+
+
+            $model->dataInicial = date('Y-m-d', strtotime($model->dataInicial));
+            $model->dataFinal =  date('Y-m-d', strtotime($model->dataFinal));
+
+
+            $feriasAno = new Frequencias();
+            $anoSaida = date('Y', strtotime($model->dataInicial));
+            $totalDiasFrequenciasAno = $feriasAno->frequenciasAno($model->idusuario,$anoSaida);
+
+
+            $datetime1 = new \DateTime($model->dataInicial);
+            $datetime2 = new \DateTime($model->dataFinal);
+            $interval = $datetime1->diff($datetime2);
+            $diferencaDias =  $interval->format('%a');
+            $diferencaDias++;
+
+            if( $diferencaDias < 0 || $interval->format('%R') == "-"){
+
+                $this->mensagens('danger', 'Registro Férias',  'Datas inválidas!');
+
+                $model->dataInicial = date('d-m-Y', strtotime($model->dataInicial));
+                $model->dataFinal =  date('d-m-Y', strtotime($model->dataFinal));
+
+                return $this->render('create', [
+                    'model' => $model,
+                ]);
+
+            }
+
+
+            if($model->save()){
+
+
+                $this->mensagens('success', 'Registro Frequências',  'Registro de Frequências realizado com sucesso!');
+
+                return $this->redirect(['listar', 'ano' => $anoSaida]);
+
+            }else {
+
+                $this->mensagens('danger', 'Registro Frequências', 'Não foi possível registrar o pedido de frequencias.');
+
+            }
+
+            $model->dataSaida = date('d-m-Y', strtotime($model->dataSaida));
+            $model->dataRetorno =  date('d-m-Y', strtotime($model->dataRetorno));
+
+            return $this->render('create', [
+                'model' => $model,
+            ]);
+
+
+        } else {
+            return $this->render('create', [
+                'model' => $model,
+            ]);
+        }
     }
+
+
 
     public function actionCreatesecretaria($id)
     {
@@ -281,5 +353,21 @@ class FrequenciasController extends Controller
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+
+    /* Envio de mensagens para views
+       Tipo: success, danger, warning*/
+    protected function mensagens($tipo, $titulo, $mensagem)
+    {
+        Yii::$app->session->setFlash($tipo, [
+            'type' => $tipo,
+            'icon' => 'home',
+            'duration' => 5000,
+            'message' => $mensagem,
+            'title' => $titulo,
+            'positonY' => 'top',
+            'positonX' => 'center',
+            'showProgressbar' => true,
+        ]);
     }
 }

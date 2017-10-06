@@ -5,7 +5,7 @@ use yii\grid\GridView;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $searchModel app\models\FrequenciasSearchSearch */
+/* @var $searchModel app\models\FrequenciasSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = 'Detalhes de Frequências';

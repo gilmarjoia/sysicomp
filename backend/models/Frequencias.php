@@ -19,6 +19,7 @@ class Frequencias extends \yii\db\ActiveRecord
 
     public $totalOcorrencias;
     public $diasPagar;
+    public $anoInicial;
 
     /**
      * @inheritdoc
@@ -38,8 +39,8 @@ class Frequencias extends \yii\db\ActiveRecord
             [['id', 'idusuario'], 'integer'],
             [['dataInicial', 'dataFinal'], 'safe'],
             [['nomeusuario'], 'string', 'max' => 60],
-            [['codigoOcorrencia'], 'string', 'max' => 4],
-            //[['id'], 'unique'],
+            [['codigoOcorrencia'], 'string'],
+            [['id'], 'unique'],
         ];
     }
 
