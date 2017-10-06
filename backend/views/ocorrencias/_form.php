@@ -14,7 +14,7 @@ use yii\widgets\ActiveForm;
         <div class="panel panel-default">
 
             <div class="panel-heading">
-                <h3 class="panel-title"><b>Dados da Nova Ocorrência</b></h3>
+                <h3 class="panel-title"><b>Dados da Ocorrência</b></h3>
             </div>
 
             <div class="panel-body">

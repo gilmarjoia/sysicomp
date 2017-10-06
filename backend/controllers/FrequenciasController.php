@@ -53,11 +53,11 @@ class FrequenciasController extends Controller
     public function actionIndex()
     {
 
-        $idUser = Yii::$app->user->identity->id;
+        //$idUser = Yii::$app->user->identity->id;
 
 
         $searchModel = new FrequenciasSearch();
-        $dataProvider = $searchModel->searchMinhasFrequencias(Yii::$app->request->queryParams , $idUser);
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);// , $idUser);
 
 
 
@@ -225,13 +225,13 @@ class FrequenciasController extends Controller
             if($model->save()){
 
 
-                $this->mensagens('success', 'Registro Frequências',  'Registro de Frequências realizado com sucesso!');
+                $this->mensagens('success', 'Registro Frequências',  'Registro de Frequência realizado com sucesso!');
 
-                return $this->redirect(['listar', 'ano' => $anoSaida]);
+                return $this->redirect(['index', 'ano' => $anoSaida]);
 
             }else {
 
-                $this->mensagens('danger', 'Registro Frequências', 'Não foi possível registrar o pedido de frequencias.');
+                $this->mensagens('danger', 'Registro Frequências', 'Não foi possível registrar a frequencia.');
 
             }
 
@@ -288,11 +288,11 @@ class FrequenciasController extends Controller
             }
 
             if($model->save()){
-                $this->mensagens('success', 'Registro de Frequências',  'Registro de Frequências realizado com sucesso!');
+                $this->mensagens('success', 'Registro de Frequência',  'Registro de Frequência realizado com sucesso!');
                 return $this->redirect(['detalhar', 'id' => $model->idusuario, 'ano' => date("Y") ,"prof" => $model_User->professor]);
             }
             else {
-                $this->mensagens('danger', 'Registro de Freqencias', 'Algo deu errado');
+                $this->mensagens('danger', 'Registro de Frequência', 'Algo deu errado');
             }
             $model->dataInicial = date('d-m-Y', strtotime($model->dataInicial));
             $model->dataFinal =  date('d-m-Y', strtotime($model->dataFinal));
@@ -337,7 +337,7 @@ class FrequenciasController extends Controller
     {
         $this->findModel($id)->delete();
 
-        return $this->redirect(['index']);
+        return $this->redirect(['index', 'ano' => date("Y")]);
     }
 
     /**

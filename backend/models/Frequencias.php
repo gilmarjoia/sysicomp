@@ -39,8 +39,7 @@ class Frequencias extends \yii\db\ActiveRecord
             [['id', 'idusuario'], 'integer'],
             [['dataInicial', 'dataFinal'], 'safe'],
             [['nomeusuario'], 'string', 'max' => 60],
-            [['codigoOcorrencia'], 'string'],
-            [['id'], 'unique'],
+            [['codigoOcorrencia'], 'string']
         ];
     }
 

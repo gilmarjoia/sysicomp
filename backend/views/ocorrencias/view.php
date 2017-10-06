@@ -13,7 +13,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="ocorrencias-view">
     <p>
         <?= Html::a('<span class="glyphicon glyphicon-arrow-left"></span>&nbsp;&nbsp;Voltar','#',['class' => 'btn btn-warning','onclick'=>"history.go(-1);"]); ?>
-        <?= Html::a('<span class="fa fa-list"></span>&nbsp;&nbsp;Listar Ocorrencias', ['ocorrencias/index'], ['class' => 'btn btn-success']) ?>    
+        <?= Html::a('<span class="fa fa-list"></span>&nbsp;&nbsp;Listar Ocorrencias', ['ocorrencias/index','ano' => date("Y")], ['class' => 'btn btn-success']) ?>    
         <?= Html::a('<span class="glyphicon glyphicon-edit"></span> Editar', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?= Html::a('<span class="glyphicon glyphicon-remove"></span> Remover', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',

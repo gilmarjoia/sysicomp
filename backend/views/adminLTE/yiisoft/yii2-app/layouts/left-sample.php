@@ -139,7 +139,7 @@ use app\models\MembrosBanca;
                     'url' => '#',
                     'visible' => Yii::$app->user->identity->checarAcesso('secretaria'),
                     'items' => [
-                        ['label' => 'Minhas Frequências', 'icon' => 'fa fa-sun-o', 'url' => ['frequencias/listar', "ano" => date("Y") ],],
+                        ['label' => 'Minhas Frequências', 'icon' => 'fa fa-sun-o', 'url' => ['frequencias/index', "ano" => date("Y") ],],
                         ['label' => 'Controlar Frequências', 'icon' => 'fa fa-sun-o', 'url' => ['frequencias/listartodos', "ano" => date("Y") ],],
                     ],
                 ],

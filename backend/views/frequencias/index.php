@@ -21,7 +21,7 @@ $this->params['breadcrumbs'][] = $this->title;
     function anoSelecionado(){
         var x = document.getElementById("comboBoxAno").value;
 
-        window.location="index.php?r=ferias/listar&ano="+x;
+        window.location="index.php?r=frequencias/index&ano="+x;
 
     }
 
@@ -53,15 +53,7 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'codigoOcorrencia',
 
             ['class' => 'yii\grid\ActionColumn',
-                'template'=>'{view}',
-                'buttons'=>[
-                    'view' => function ($url, $model) {
-                        return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['detalhar',
-                            'id' => $model->id , 'ano' => $_GET["ano"], "prof" => 1], [
-                            'title' => Yii::t('yii', 'Visualizar Detalhes'),
-                        ]);
-                    }
-                ]
+                //
             ],
         ],
     ]); ?>

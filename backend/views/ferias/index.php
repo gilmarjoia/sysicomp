@@ -162,7 +162,6 @@ $this->params['breadcrumbs'][] = $this->title;
                         'delete' => function ($url, $model) {
                             if (Yii::$app->user->identity->secretaria){
                                 return Html::a('<span class="glyphicon glyphicon-remove"></span>', ['delete', 'id' => $model->id, 'idUsuario' => $model->idusuario , 'ano'=>$_GET['ano']   ,], [
-
                                     'data' => [
                                         'confirm' => "Você realmente deseja excluir o registro dessas férias?",
                                         'method' => 'post',
@@ -172,8 +171,8 @@ $this->params['breadcrumbs'][] = $this->title;
                                 ]);
                             }
 
-                  }
-              ]
+                        }
+                ]
             ],
         ],
     ]); ?>
