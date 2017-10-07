@@ -8,83 +8,69 @@ use yii\widgets\ActiveForm;
 use kartik\widgets\DatePicker;
 use kartik\widgets\SwitchInput;
 use app\models\Ocorrencias;
-//use app\models\Ferias;
+use app\models\Ferias;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Frequencias */
 /* @var $form yii\widgets\ActiveForm */
 
 
-//$arrayOcorrencias = Ocorrencias::find()->select("j17_ocorrencias.codigo")->all();
+//$arrayOcorrencias = Ocorrencias::find()->select("j17_ocorrencias.codigo")->column();
 $arrayOcorrencias = Ocorrencias::find()->all();
 $listData = ArrayHelper::map($arrayOcorrencias,'id','codigo','ocorrencia');
-//$idUser = Ferias::find()->select("j17_ferias.idusuario")->from('j17_ferias')->where(['nomeusuario' => Yii::$app->user->identity->nome])->one()->idusuario;
+$idUser = Ferias::find()->select("j17_ferias.idusuario")->from('j17_ferias')->where(['nomeusuario' => Yii::$app->user->identity->nome])->one()->idusuario;
 //print_r($idUser);
 
 //var_dump($idUser);
 
 ?>
 
-<div class="row">
-    <div class="col-lg-8">
+<div class="frequencias-form">
 
-        <div class="panel panel-default">
+    <?php $form = ActiveForm::begin(); ?>
 
-            <div class="panel-heading">
-                <h3 class="panel-title"><b>Dados da Frequência</b></h3>
-            </div>
-
-            <div class="panel-body">
-
-                <?php $form = ActiveForm::begin(); ?>
-
-                <div class="row">
-                    <?php if ($model->isNewRecord) echo $form->field($model,'idusuario', ['options' => ['class' => 'col-md-3']])->hiddenInput(['value' => $model->idusuario])->label(false)?>
-                </div>
-
-                <div class="row">
-                    <?php if ($model->isNewRecord) echo $form->field($model,'nomeusuario', ['options' => ['class' => 'col-md-3']])->hiddenInput(['value' => Yii::$app->user->identity->nome])->label(false)?>
-                </div>
-
-                <div class = "row">
-                    <?= $form->field($model, 'dataInicial', ['options' => ['class' => 'col-md-4']])->widget(DatePicker::classname(), [
-                        'language' => Yii::$app->language,
-                        'options' => ['placeholder' => 'Selecione a Data Inicial da Falta ...',],
-                        'pluginOptions' => [
-                            'format' => 'yyyy-mm-dd',
-                            'todayHighlight' => true
-                        ]
-                    ])->label("<font color='#FF0000'>*</font> <b>Data Inícial:</b>")
-                    ?>
-                </div>
-
-                <div class = "row">
-
-                    <?= $form->field($model, 'dataFinal', ['options' => ['class' => 'col-md-4']])->widget(DatePicker::classname(), [
-                        'language' => Yii::$app->language,
-                        'options' => ['placeholder' => 'Selecione a Data final da Falta ...',],
-                        'pluginOptions' => [
-                            'format' => 'yyyy-mm-dd',
-                            'todayHighlight' => true
-                        ]
-                    ])->label("<font color='#FF0000'>*</font> <b>Data Final:</b>")
-                    ?>
-                </div>
-
-                <div class = "row">
-                    <?php echo $form->field($model, 'codigoOcorrencia' , ['options' => ['class' => 'col-md-6']])->dropDownlist($listData, ['prompt' => 'Selecione um código de Ocorrência'])->label("<font color='#FF0000'>*</font> <b>Código da Ocorrência:</b>");?>
-                </div>
-
-                <div class="form-group">
-                    <?= Html::submitButton($model->isNewRecord ? 'Registrar Frequências' : 'Alterar Registro de Frequências', ['id' => $model->idusuario,'class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary'])?>
-                </div>
-
-                <?php ActiveForm::end(); ?>
-
-            </div>
-        </div>
+    <div class="row">
+        <?php if ($model->isNewRecord) echo $form->field($model,'idusuario', ['options' => ['class' => 'col-md-3']])->hiddenInput(['value' => $idUser])->label(false)?>
     </div>
 
+    <div class="row">
+        <?php if ($model->isNewRecord) echo $form->field($model,'nomeusuario', ['options' => ['class' => 'col-md-3']])->hiddenInput(['value' => Yii::$app->user->identity->nome])->label(false)?>
+    </div>
+
+    <div class = "row">
+        <?= $form->field($model, 'dataInicial', ['options' => ['class' => 'col-md-3']])->widget(DatePicker::classname(), [
+            'language' => Yii::$app->language,
+            'options' => ['placeholder' => 'Selecione a Data Inicial da Falta ...',],
+            'pluginOptions' => [
+                'format' => 'dd-mm-yyyy',
+                'todayHighlight' => true
+            ]
+        ])->label("<font color='#FF0000'>*</font> <b>Data Inícial:</b>")
+        ?>
+    </div>
+
+    <div class = "row">
+
+        <?= $form->field($model, 'dataFinal', ['options' => ['class' => 'col-md-3']])->widget(DatePicker::classname(), [
+            'language' => Yii::$app->language,
+            'options' => ['placeholder' => 'Selecione a Data final da Falta ...',],
+            'pluginOptions' => [
+                'format' => 'dd-mm-yyyy',
+                'todayHighlight' => true
+            ]
+        ])->label("<font color='#FF0000'>*</font> <b>Data Final:</b>")
+        ?>
+    </div>
+
+    <div class = "row">
+        <?php echo $form->field($model, 'codigoOcorrencia' , ['options' => ['class' => 'col-md-3']])->dropDownlist($listData, ['prompt' => 'Selecione um código de Ocorrência'])->label("<font color='#FF0000'>*</font> <b>Código da Ocorrência:</b>");?>
+    </div>
+
+    <div class="form-group">
+        <?= Html::submitButton($model->isNewRecord ? 'Registrar Frequências' : 'Alterar Registro de Frequências', ['id' => $model->idusuario,'class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary'])?>
+    </div>
+
+    <?php ActiveForm::end(); ?>
 </div>
 
 

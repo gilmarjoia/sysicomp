@@ -108,7 +108,7 @@ class FrequenciasController extends Controller
 
 
         $searchModel = new FrequenciasSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams , $ano);
+        $dataProvider = $searchModel->searchFrequencias(Yii::$app->request->queryParams , $ano);
 
         $searchModel2 = new FrequenciasSearch();
         $dataProvider2 = $searchModel2->searchFuncionarios(Yii::$app->request->queryParams , $ano);
@@ -211,7 +211,7 @@ class FrequenciasController extends Controller
 
             if( $diferencaDias < 0 || $interval->format('%R') == "-"){
 
-                $this->mensagens('danger', 'Registro Férias',  'Datas inválidas!');
+                $this->mensagens('danger', 'Registro Frequências',  'Datas inválidas!');
 
                 $model->dataInicial = date('d-m-Y', strtotime($model->dataInicial));
                 $model->dataFinal =  date('d-m-Y', strtotime($model->dataFinal));
@@ -228,7 +228,7 @@ class FrequenciasController extends Controller
 
                 $this->mensagens('success', 'Registro Frequências',  'Registro de Frequência realizado com sucesso!');
 
-                return $this->redirect(['index', 'ano' => $anoSaida]);
+                return $this->redirect(['listar', 'ano' => $anoSaida]);
 
             }else {
 
@@ -236,8 +236,8 @@ class FrequenciasController extends Controller
 
             }
 
-            $model->dataSaida = date('d-m-Y', strtotime($model->dataSaida));
-            $model->dataRetorno =  date('d-m-Y', strtotime($model->dataRetorno));
+            $model->dataInicial = date('d-m-Y', strtotime($model->dataInicial));
+            $model->dataFinal =  date('d-m-Y', strtotime($model->dataFinal));
 
             return $this->render('create', [
                 'model' => $model,
