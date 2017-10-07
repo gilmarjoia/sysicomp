@@ -75,7 +75,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 //'nomeusuario',
                 [
-                    'attribute' => 'nomeusuario',
+                    'attribute' => 'nome',
                     'contentOptions'=>['style'=>'max-width: 0px;'],
                 ]
                 ,

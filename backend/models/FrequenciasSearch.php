@@ -39,11 +39,11 @@ class FrequenciasSearch extends Frequencias
      *
      * @return ActiveDataProvider
      */
-    public function search($params){
+    public function search($params,$ano){
 
 
-        //$query = User::find()->select("j17_user.nome, j17_user.id")->where(["j17_user.professor" => 1])->orderBy('nome');
-        $query = Frequencias::find();
+        $query = User::find()->select("j17_user.nome, j17_user.id")->where(["j17_user.professor" => 1])->orderBy('nome');
+        //$query = Frequencias::find();
 
         // add conditions that should always apply here
 
@@ -81,7 +81,7 @@ class FrequenciasSearch extends Frequencias
         return $dataProvider;
     }
 
-    public function searchFuncionarios($params){
+    public function searchFuncionarios($params,$ano){
 
 
         $query = User::find()->select("j17_user.nome, j17_user.id")->where(["j17_user.secretaria" => 1])->andWhere(["j17_user.professor" => 0])->orderBy('nome');
