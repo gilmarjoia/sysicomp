@@ -86,14 +86,19 @@ $arrayTipoferias = ["1" => "Usufruto", "2" => "Oficial"];
 
 </div>
 
-<script src="https://code.jquery.com/jquery-3.2.1.min.js" type="application/javascript">
-    var input_tipo = document.getElementById("input_tipo");
-    var adiantamento_decimo = document.getElementById("adiantamento_decimo");
-    var adiantamento_ferias = document.getElementById("adiantamento_ferias");
+<?php
 
-    if(input_tipo.value === "Usufruto"){
-        adiantamento_decimo.disabled = true;
-        adiantamento_ferias.disabled = true;
-    }
-</script>
+$this->registerJs("
+    $('#ferias-tipo').change(function () {
+        if ($('#ferias-tipo').val() == 1) {
+            $('#adiantamento_decimo').bootstrapSwitch('disabled',true);
+            $('#adiantamento_ferias').bootstrapSwitch('disabled',true);
+        } else {
+            $('#adiantamento_decimo').bootstrapSwitch('disabled',false);
+            $('#adiantamento_ferias').bootstrapSwitch('disabled',false);
+        }
+    });
+");
+
+?>
 

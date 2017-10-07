@@ -3,7 +3,6 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use xj\bootbox\BootboxAsset;
-use app\models\Frequencias;
 BootboxAsset::register($this);
 BootboxAsset::registerWithOverride($this);
 
@@ -27,9 +26,15 @@ $this->params['breadcrumbs'][] = $this->title;
 
 </script>
 
+
+
 <p>
     <?= Html::a('<span class="glyphicon glyphicon-arrow-left"></span> Voltar  ', ['site/index'], ['class' => 'btn btn-warning']) ?>
-    <?= Html::a('Registrar Frequências', ['create', "ano" => $_GET["ano"]], ['class' => 'btn btn-success']) ?>
+    <?php
+        if(Yii::$app->user->identity->secretaria){
+            echo Html::a('Registrar Frequências', ['create', "ano" => $_GET["ano"]], ['class' => 'btn btn-success']);
+        }
+    ?>
 </p>
 
 
