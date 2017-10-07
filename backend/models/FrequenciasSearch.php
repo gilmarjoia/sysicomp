@@ -122,7 +122,7 @@ class FrequenciasSearch extends Frequencias
 
         return $dataProvider;
     }
-    /*
+    
     public function searchMinhasFrequencias($params, $idUser ,$ano)
     {
 
@@ -162,6 +162,6 @@ class FrequenciasSearch extends Frequencias
         return $dataProvider;
     }
 
-    */
+    
 
 }

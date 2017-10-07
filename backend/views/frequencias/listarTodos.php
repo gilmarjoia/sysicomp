@@ -157,10 +157,10 @@ $this->params['breadcrumbs'][] = $this->title;
                     'template'=>'{view}',
                     'buttons'=>[
                         'view' => function ($url, $model) {
-                            return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['detalhar',
-                                'id' => $model->id , 'ano' => $_GET["ano"], "prof" => 0], [
-                                'title' => Yii::t('yii', 'Visualizar Detalhes'),
-                            ]);
+                            return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['detalhar', 
+								'id' => $model->id , 'ano' => $_GET["ano"], "prof" => 0], [
+								'title' => Yii::t('yii', 'Visualizar Detalhes'),
+                    ]);  
                         }
                     ]
                 ],

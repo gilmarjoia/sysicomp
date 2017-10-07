@@ -24,13 +24,14 @@ if( isset($_GET["ano"]) && isset($_GET["prof"]) ){
 
 
 
-<?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+<?php  //echo $this->render('_search', ['model' => $searchModel]); ?>
+
 
 <p>
 
-    <?= Html::a('<span class="glyphicon glyphicon-arrow-left"></span> Voltar  ', ['listartodos', "ano" => $anoVoltar ], ['class' => 'btn btn-warning']) ?>
-    <?= Html::a('Registrar Novas Frequências', ['createsecretaria' , "id" => $id, "ano" => $anoVoltar , "prof" => $profVoltar ], ['class' => 'btn btn-success']) ?>
-</p>
+        <?= Html::a('<span class="glyphicon glyphicon-arrow-left"></span> Voltar  ', ['listartodos', "ano" => $anoVoltar ], ['class' => 'btn btn-warning']) ?>  
+        
+    </p>
 
 <?= DetailView::widget([
     'model' => $model_do_usuario,
@@ -45,7 +46,7 @@ if( isset($_GET["ano"]) && isset($_GET["prof"]) ){
         [
             'attribute' => 'categoria',
             'label' => 'Categoria',
-            'value' => $profVoltar == 1 ? "Professor" : "Secretaria"
+            'value' => $profVoltar == 0 ? "Professor" : "Secretaria"
         ],
 
         [
@@ -113,5 +114,7 @@ if( isset($_GET["ano"]) && isset($_GET["prof"]) ){
                 ],*/
             ],
         ]); ?>
+		
+		
     </h5>
 </div>
