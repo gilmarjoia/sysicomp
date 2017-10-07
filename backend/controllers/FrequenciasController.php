@@ -53,7 +53,7 @@ class FrequenciasController extends Controller
     public function actionIndex()
     {
 
-        //$idUser = Yii::$app->user->identity->id;
+        $idUser = Yii::$app->user->identity->id;
 
 
         $searchModel = new FrequenciasSearch();
@@ -76,6 +76,8 @@ class FrequenciasController extends Controller
 
         $model = new Frequencias();
         $todosAnosFrequencias = $model->anosFrequencias($idUser);
+		
+		
 
 
 
@@ -145,7 +147,6 @@ class FrequenciasController extends Controller
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'todosAnosFrequencias' => $todosAnosFrequencias,
-
         ]);
     }
 
