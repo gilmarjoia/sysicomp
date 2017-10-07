@@ -27,10 +27,9 @@ if( isset($_GET["ano"]) && isset($_GET["prof"]) ){
 <?php  //echo $this->render('_search', ['model' => $searchModel]); ?>
 
 
-<p>
-
-        <?= Html::a('<span class="glyphicon glyphicon-arrow-left"></span> Voltar  ', ['listartodos', "ano" => $anoVoltar ], ['class' => 'btn btn-warning']) ?>  
-        
+    <p>
+        <?= Html::a('<span class="glyphicon glyphicon-arrow-left"></span> Voltar  ', ['listartodos', "ano" => $anoVoltar ], ['class' => 'btn btn-warning']) ?>
+        <?= Html::a('Registrar Novas Frequências', ['createsecretaria' , "id" => $id, "ano" => $anoVoltar , "prof" => $profVoltar ], ['class' => 'btn btn-success']) ?>
     </p>
 
 <?= DetailView::widget([
@@ -71,7 +70,6 @@ if( isset($_GET["ano"]) && isset($_GET["prof"]) ){
             'columns' => [
                 ['class' => 'yii\grid\SerialColumn'],
 
-                //'idusuario',
 
                 [
                     'attribute' => 'nomeusuario',

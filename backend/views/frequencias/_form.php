@@ -18,7 +18,7 @@ use app\models\Ferias;
 //$arrayOcorrencias = Ocorrencias::find()->select("j17_ocorrencias.codigo")->column();
 $arrayOcorrencias = Ocorrencias::find()->all();
 $listData = ArrayHelper::map($arrayOcorrencias,'id','codigo','ocorrencia');
-$idUser = Ferias::find()->select("j17_ferias.idusuario")->from('j17_ferias')->where(['nomeusuario' => Yii::$app->user->identity->nome])->one()->idusuario;
+$nomeusuario = Ferias::find()->select("j17_ferias.nomeusuario")->from('j17_ferias')->where(['idusuario' => $_GET["id"]])->one()->nomeusuario;
 //print_r($idUser);
 
 //var_dump($idUser);
@@ -30,11 +30,11 @@ $idUser = Ferias::find()->select("j17_ferias.idusuario")->from('j17_ferias')->wh
     <?php $form = ActiveForm::begin(); ?>
 
     <div class="row">
-        <?php if ($model->isNewRecord) echo $form->field($model,'idusuario', ['options' => ['class' => 'col-md-3']])->hiddenInput(['value' => $idUser])->label(false)?>
+        <?php if ($model->isNewRecord) echo $form->field($model,'idusuario', ['options' => ['class' => 'col-md-3']])->hiddenInput(['value' => $_GET["id"]])->label(false)?>
     </div>
 
     <div class="row">
-        <?php if ($model->isNewRecord) echo $form->field($model,'nomeusuario', ['options' => ['class' => 'col-md-3']])->hiddenInput(['value' => Yii::$app->user->identity->nome])->label(false)?>
+        <?php if ($model->isNewRecord) echo $form->field($model,'nomeusuario', ['options' => ['class' => 'col-md-3']])->hiddenInput(['value' => $nomeusuario])->label(false)?>
     </div>
 
     <div class = "row">

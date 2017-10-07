@@ -134,7 +134,7 @@ class FrequenciasController extends Controller
 
 
         $todosAnosFrequencias = $model->anosFrequencias($idUser);
-
+        //$totalOcorrencias = $model->frequenciasAno($idUser,$ano);
 
 
         $searchModel = new FrequenciasSearch();
@@ -147,6 +147,7 @@ class FrequenciasController extends Controller
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'todosAnosFrequencias' => $todosAnosFrequencias,
+            'id' => $id,
         ]);
     }
 

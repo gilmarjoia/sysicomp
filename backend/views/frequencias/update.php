@@ -1,19 +1,22 @@
 <?php
 
 use yii\helpers\Html;
+use app\models\User;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Frequencias */
 
-$this->title = 'Editar Frequencias: '.$model->nomeusuario;
-$this->params['breadcrumbs'][] = ['label' => 'Frequencias', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = 'Update';
+//$nomeusuario = Ferias::find()->select("j17_ferias.nomeusuario")->from('j17_ferias')->where(['idusuario' => $_GET["id"]])->one()->nomeusuario;
+$ehProf = User::find()->where(["id" => $_GET["id"]])->one()->professor;
+
+$this->title = 'Editar Frequencias';
+$this->params['breadcrumbs'][] = ['label' => 'Frequências', 'url' => ['listartodos',  "ano" => $_GET["ano"]]];
+$this->params['breadcrumbs'][] = ['label' => 'Detalhes Frequências', 'url' => ['detalhar', "id" => $model->idusuario, "ano" => $_GET["ano"], "prof" => $ehProf]];
+$this->params['breadcrumbs'][] = ['label' => 'Editar Férias '.$model->nomeusuario];
 ?>
 <div class="frequencias-update">
-	<p>
-        <?= Html::a('<span class="glyphicon glyphicon-arrow-left"></span>&nbsp;&nbsp;Voltar','#',['class' => 'btn btn-warning','onclick'=>"history.go(-1);"]); ?>
-        <?= Html::a('<span class="fa fa-list"></span>&nbsp;&nbsp;Listar Frequências', ['frequencias/index','ano' => date("Y")], ['class' => 'btn btn-success']) ?>
+    <p>
+        <?= Html::a('<span class="glyphicon glyphicon-arrow-left"></span> Voltar ', ['detalhar', "id" => $model->idusuario, "ano" => $_GET["ano"], "prof" => $ehProf], ['class' => 'btn btn-warning']) ?>
     </p>
     <?= $this->render('_form', [
         'model' => $model,
