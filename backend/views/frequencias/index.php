@@ -58,7 +58,28 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'codigoOcorrencia',
 
             ['class' => 'yii\grid\ActionColumn',
-                //
+                'template'=>'{update} {delete}',
+                'buttons'=>[
+                    'update' => function ($url, $model) {
+                        if (Yii::$app->user->identity->secretaria){
+                            return Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['update', 'id' => $model->id , "ano" => $_GET["ano"]], ['title' => Yii::t('yii', 'Editar Frequências'),
+                            ]);
+                        }
+                    },
+                    'delete' => function ($url, $model) {
+                        if (Yii::$app->user->identity->secretaria){
+                            return Html::a('<span class="glyphicon glyphicon-remove"></span>', ['delete', 'id' => $model->id, 'idUsuario' => $model->idusuario , 'ano'=>$_GET['ano']   ,], [
+                                'data' => [
+                                    'confirm' => "Você realmente deseja excluir o registro de frequência?",
+                                    'method' => 'post',
+                                ],
+
+                                'title' => Yii::t('yii', 'Remover Frequência'),
+                            ]);
+                        }
+
+                    }
+                ]
             ],
         ],
     ]); ?>

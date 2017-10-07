@@ -89,29 +89,29 @@ if( isset($_GET["ano"]) && isset($_GET["prof"]) ){
                         return date('d-m-Y', strtotime($model->dataFinal));
                     },
                 ],
-                /*
+
                 /////////////////////////////////////////////Somente para secretaria//////////////////////////////////////////////
                 ['class' => 'yii\grid\ActionColumn',
                     'template'=>'{update} {delete}',
                     'buttons'=>[
                         'update' => function ($url, $model) {
                             return Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['update', 'id' => $model->id , "ano" => $_GET["ano"]], [
-                                'title' => Yii::t('yii', 'Editar Férias'),
+                                'title' => Yii::t('yii', 'Editar Frequência'),
                             ]);
                         },
                         'delete' => function ($url, $model) {
-                            return Html::a('<span class="glyphicon glyphicon-remove"></span>', ['deletesecretaria', 'id' => $model->id, 'idUsuario' => $model->idusuario , 'ano'=>$_GET['ano'], 'prof' => $_GET["prof"],], [
+                            return Html::a('<span class="glyphicon glyphicon-remove"></span>', ['delete', 'id' => $model->id, 'idUsuario' => $model->idusuario , 'ano'=>$_GET['ano'], 'prof' => $_GET["prof"],], [
 
                                 'data' => [
-                                    'confirm' => "Você realmente deseja excluir o registro dessas férias?",
+                                    'confirm' => "Você realmente deseja excluir o registro dessa Frequência?",
                                     'method' => 'post',
                                 ],
 
-                                'title' => Yii::t('yii', 'Remover Férias'),
+                                'title' => Yii::t('yii', 'Remover Frequência'),
                             ]);
                         }
                     ]
-                ],*/
+                ],
             ],
         ]); ?>
 		
