@@ -95,7 +95,7 @@ if( isset($_GET["ano"]) && isset($_GET["prof"]) ){
 
                 /////////////////////////////////////////////Somente para secretaria//////////////////////////////////////////////
                 ['class' => 'yii\grid\ActionColumn',
-                    'template'=>'{update} {delete}',
+                    'template'=>'{update} {delete} {copy}',
                     'buttons'=>[
                         'update' => function ($url, $model) {
                             return Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['update', 'id' => $model->id , "ano" => $_GET["ano"]], [
@@ -112,6 +112,19 @@ if( isset($_GET["ano"]) && isset($_GET["prof"]) ){
                                 ],
 
                                 'title' => Yii::t('yii', 'Remover Frequência'),
+                            ]);
+                        },
+                        'copy' => function ($url, $model) {
+                            return Html::a('<span class="glyphicon glyphicon-copy"></span>', ['replicarsecretaria', 'id' => $model->id, 'idUsuario' => $model->idusuario , 'ano'=>$_GET['ano'], 'prof' => $_GET["prof"],], [
+
+
+                                'data' => [
+                                    'confirm' => "Você realmente deseja replicar o registro dessa Frequência? ",
+
+                                    'method' => 'post',
+                                ],
+
+                                'title' => Yii::t('yii', 'Replicar Frequência'),
                             ]);
                         }
                     ]

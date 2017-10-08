@@ -3,6 +3,9 @@
 namespace backend\controllers;
 
 use Yii;
+use DateTime;
+use DatePeriod;
+use DateInterval;
 use app\models\Frequencias;
 use yii\filters\AccessControl;
 use common\models\User;
@@ -41,6 +44,7 @@ class FrequenciasController extends Controller
                 'actions' => [
                     'delete' => ['POST'],
                     'deletesecretaria' => ['POST'],
+                    'replicarsecretaria' => ['POST'],
                 ],
             ],
         ];
@@ -397,6 +401,40 @@ class FrequenciasController extends Controller
                 'model' => $model,
             ]);
         }
+    }
+
+    public function actionReplicarsecretaria($id, $ano, $idUsuario, $prof)
+    {
+
+        $model = $this->findModel($id);
+        $novaFrequencia = new Frequencias();
+
+        $novaFrequencia->idusuario = $model->idusuario;
+        $novaFrequencia->nomeusuario = $model->nomeusuario;
+        $novaFrequencia->codigoOcorrencia = $model->codigoOcorrencia;
+
+        $dataInicial = $model->dataInicial; 
+        $dataFinal = $model->dataFinal;
+        
+        if ($dataInicial == $dataFinal){
+            $dataInicial = new DateTime($dataInicial);
+            $dataInicial->add(new DateInterval('P1D'));
+            $novaFrequencia->dataInicial = date_format($dataInicial, 'Y-m-d');
+            $novaFrequencia->dataFinal = $novaFrequencia->dataInicial;
+        }else{
+            $dataInicial = new DateTime($dataInicial);
+            $dataInicial->add(new DateInterval('P1M'));
+            $novaFrequencia->dataInicial = date_format($dataInicial, 'Y-m-d');
+            $dataFinal = new DateTime($dataFinal);
+            $dataFinal->add(new DateInterval('P1M'));
+            $novaFrequencia->dataFinal = date_format($dataFinal, 'Y-m-d');;
+        }
+
+        if ($novaFrequencia->save()) {
+            $this->mensagens('success', 'Registro Frequências', 'Registro de Frequência replicado com sucesso!');
+        } 
+
+        return $this->redirect(['detalhar', 'id' => $idUsuario, 'ano' => $ano, 'prof' => $prof]);
     }
 
     /**
