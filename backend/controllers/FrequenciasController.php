@@ -76,7 +76,7 @@ class FrequenciasController extends Controller
 
         $model = new Frequencias();
         $todosAnosFrequencias = $model->anosFrequencias($idUser);
-		
+
 		
 
 
@@ -318,11 +318,81 @@ class FrequenciasController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        $model = $this->findModel($id);
+        $model_User = User::find()->where(["id" => $id])->one();
+
+        $ehProfessor = Yii::$app->user->identity->professor;
+        $ehCoordenador = Yii::$app->user->identity->coordenador;
+        $ehSecretario = Yii::$app->user->identity->secretaria;
+
+        $datetime1Anterior = new \DateTime($model->dataInicial);
+        $datetime2Anterior = new \DateTime($model->dataFinal);
+        $intervalAnterior = $datetime1Anterior->diff($datetime2Anterior);
+        $AnteriordiferencaDias = $intervalAnterior->format('%a');
+        $AnteriordiferencaDias++;
+
+        //$anteriorTipo = $model->tipo;
+
+        if ($model->load(Yii::$app->request->post())) {
+
+            $model->dataInicial = date('Y-m-d', strtotime($model->dataFinal));
+            $model->dataFinal = date('Y-m-d', strtotime($model->dataInicial));
+
+
+            $frequenciasAno = new Frequencias();
+            $anoSaida = date('Y', strtotime($model->dataInicial));
+            $totalDiasFrequenciasAno = $frequenciasAno->frequenciasAno($model->idusuario, $anoSaida);
+
+
+            $datetime1 = new \DateTime($model->dataInicial);
+            $datetime2 = new \DateTime($model->dataFinal);
+            $interval = $datetime1->diff($datetime2);
+            $diferencaDias = $interval->format('%a');
+            $diferencaDias++;
+
+
+
+            if ($diferencaDias < 0 || $interval->format('%R') == "-") {
+
+                $this->mensagens('danger', 'Registro Férias', 'Datas inválidas!');
+
+                $model->dataInicial = date('d-m-Y', strtotime($model->dataInicial));
+                $model->dataFinal = date('d-m-Y', strtotime($model->dataFinal));
+
+                return $this->render('update', [
+                    'model' => $model,
+                ]);
+
+            }
+
+
+            if (($ehProfessor == 1) && $model->save()) {
+
+                $this->mensagens('success', 'Registro Frequências', 'Registro de Frequências realizado com sucesso!');
+
+                return $this->redirect(['detalhar', "id" => $model->idusuario, "ano" => $_GET["ano"], "prof" => $model_User->professor]);
+
+            } else if ($ehSecretario == 1 && $model->save()) {
+
+                $this->mensagens('success', 'Registro Frequências', 'Registro de Freqências realizado com sucesso!');
+
+                return $this->redirect(['detalhar', "id" => $model->idusuario, "ano" => $_GET["ano"], "prof" => $model_User->secretaria]);
+
+            }
+
+            $model->dataInicial = date('d-m-Y', strtotime($model->dataInicial));
+            $model->dataFinal = date('d-m-Y', strtotime($model->dataFinal));
+
+            return $this->render('update', [
+                'model' => $model,
+            ]);
+
         } else {
+
+            $model->dataInicial = date('d-m-Y', strtotime($model->dataInicial));
+            $model->dataFinal = date('d-m-Y', strtotime($model->dataFinal));
+
             return $this->render('update', [
                 'model' => $model,
             ]);
@@ -335,11 +405,23 @@ class FrequenciasController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionDelete($id)
+    public function actionDelete($id,$ano)
     {
         $this->findModel($id)->delete();
 
-        return $this->redirect(['index', 'ano' => date("Y")]);
+        $this->mensagens('success', 'Registro Frequências', 'Registro de Frequências excluído com sucesso!');
+
+        return $this->redirect(['listar', 'ano' => $ano]);
+    }
+
+    public function actionDeletesecretaria($id, $ano, $idUsuario, $prof)
+    {
+
+        $this->findModel($id)->delete();
+
+        $this->mensagens('success', 'Registro Frequências', 'Registro de Frequências excluído com sucesso!');
+
+        return $this->redirect(['detalhar', 'id' => $idUsuario, 'ano' => $ano, 'prof' => $prof]);
     }
 
     /**

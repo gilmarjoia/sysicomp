@@ -98,7 +98,8 @@ if( isset($_GET["ano"]) && isset($_GET["prof"]) ){
                             ]);
                         },
                         'delete' => function ($url, $model) {
-                            return Html::a('<span class="glyphicon glyphicon-remove"></span>', ['delete', 'id' => $model->id, 'idUsuario' => $model->idusuario , 'ano'=>$_GET['ano'], 'prof' => $_GET["prof"],], [
+                            return Html::a('<span class="glyphicon glyphicon-remove"></span>', ['deletesecretaria', 'id' => $model->id, 'idUsuario' => $model->idusuario , 'ano'=>$_GET['ano'], 'prof' => $_GET["prof"],], [
+
 
                                 'data' => [
                                     'confirm' => "Você realmente deseja excluir o registro dessa Frequência?",
