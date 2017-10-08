@@ -83,7 +83,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 [
                     'label' => 'Quantidade de Dias a Pagar ' ,
                     'value' => function ($model){
-                        return $model->frequenciasAno($model->id, $_GET["ano"]);
+                        return $model->contarDiasPagar($model->id);
                     },
                 ],
                 [
@@ -145,13 +145,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 [
                     'label' => 'Quantidade de Dias a Pagar ' ,
                     'value' => function ($model){
-                        return $model->frequenciasAno($model->id, $_GET["ano"]);
+                        return $model->contarDiasPagar($model->id);
                     },
                 ],
                 [
                     'label' => 'Total de Ocorrências' ,
                     'value' => function ($model){
-                        return $model->frequenciasAno($model->id, $_GET["ano"]);
+                        return $model->contarOcorrencias($model->id);
                     },
                 ],
                 ['class' => 'yii\grid\ActionColumn',

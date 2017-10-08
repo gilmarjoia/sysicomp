@@ -18,7 +18,7 @@ use app\models\Ferias;
 //$arrayOcorrencias = Ocorrencias::find()->select("j17_ocorrencias.codigo")->column();
 $arrayOcorrencias = Ocorrencias::find()->all();
 $listData = ArrayHelper::map($arrayOcorrencias,'id','codigo','ocorrencia');
-$nomeusuario = Ferias::find()->select("j17_ferias.nomeusuario")->from('j17_ferias')->where(['idusuario' => $model->idusuario])->one()->nomeusuario;
+$nomeusuario = Ferias::find()->select("j17_ferias.nomeusuario")->from('j17_ferias')->where(['idusuario' => $_GET["id"]])->one()->nomeusuario;
 //print_r($idUser);
 
 //var_dump($idUser);
@@ -30,7 +30,7 @@ $nomeusuario = Ferias::find()->select("j17_ferias.nomeusuario")->from('j17_feria
     <?php $form = ActiveForm::begin(); ?>
 
     <div class="row">
-        <?php if ($model->isNewRecord) echo $form->field($model,'idusuario', ['options' => ['class' => 'col-md-3']])->hiddenInput(['value' => $model->idusuario])->label(false)?>
+        <?php if ($model->isNewRecord) echo $form->field($model,'idusuario', ['options' => ['class' => 'col-md-3']])->hiddenInput(['value' => $_GET["id"]])->label(false)?>
     </div>
 
     <div class="row">

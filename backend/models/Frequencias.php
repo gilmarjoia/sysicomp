@@ -167,4 +167,18 @@ class Frequencias extends \yii\db\ActiveRecord
 
         return count($ocorrencias);
     }
+
+    public function contarDiasPagar($idusuario){
+        $ocorrencias = Frequencias::find()->where(["idusuario" => $idusuario ])->all();
+        $dias = 30;
+
+        $this->totalOcorrencias = count($ocorrencias);
+        $resultado = $dias - $this->totalOcorrencias;
+
+        if ($resultado < 0) {
+            return 0;
+        }else{
+            return $resultado;
+        }
+    }
 }

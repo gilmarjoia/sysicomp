@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\DetailView;
+use app\models\User;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\FrequenciasSearch */
@@ -45,19 +46,23 @@ if( isset($_GET["ano"]) && isset($_GET["prof"]) ){
         [
             'attribute' => 'categoria',
             'label' => 'Categoria',
-            'value' => $profVoltar == 0 ? "Professor" : "Secretaria"
+            'value' => $profVoltar != 0 ? "Professor" : "Secretaria"
         ],
 
         [
             'attribute' => 'diasPagar',
             'label' => 'Quantidade de Dias a Pagar:',
-            'value'=> 1,
+            'value'=> function ($model){
+                return $model->contarDiasPagar($model->id);
+            },
 
         ],
         [
             'attribute' => 'totalOcorrencia',
             'label' => 'Número de Ocorrências',
-            'value'=> 2,
+            'value'=> function ($model){
+                return $model->contarOcorrencias($model->id);
+            },
         ],
     ],
 ]) ?>

@@ -198,4 +198,18 @@ class User extends ActiveRecord implements IdentityInterface
         }
     }
 
+    public function contarOcorrencias($idusuario){
+        $model_frequencias = new Frequencias();
+        $model_frequencias = $model_frequencias->contarOcorrencias($idusuario);
+
+        return $model_frequencias;
+    }
+
+    public function contarDiasPagar($idusuario){
+        $model_frequencias = new Frequencias();
+        $model_frequencias = $model_frequencias->contarDiasPagar($idusuario);
+
+        return $model_frequencias;
+    }
+
 }
