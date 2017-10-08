@@ -161,4 +161,10 @@ class Frequencias extends \yii\db\ActiveRecord
         return $ehProfessor;
 
     }
+
+    public function contarOcorrencias($idusuario){
+        $ocorrencias = Frequencias::find()->where(["idusuario" => $idusuario ])->all();
+
+        return count($ocorrencias);
+    }
 }

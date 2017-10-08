@@ -133,6 +133,13 @@ class User extends \yii\db\ActiveRecord
         return $model_frequencias;
     }
 
+    public function contarOcorrencias($idusuario){
+        $model_frequencias = new Frequencias();
+        $model_frequencias = $model_frequencias->contarOcorrencias($idusuario);
+
+        return $model_frequencias;
+    }
+
     public function diasRestantesParaGozoDeFerias($idusuario){
 
        $model_ferias = new Ferias();

@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 use xj\bootbox\BootboxAsset;
 use app\models\Frequencias;
+use app\models\user;
 BootboxAsset::register($this);
 BootboxAsset::registerWithOverride($this);
 
@@ -49,7 +50,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <h3 style = "text-align: center; border: solid 1px; padding: 5px 5px 5px 5px; background-color: lightblue ; font-weight: bold ; margin: 20px 0px 20px 0px"> Frequências de Professores </h3>
 
-<div class="ferias-index">
+<div class="frequencias-index">
     <h5 style="background-color: lightblue">
         <?= GridView::widget([
             'dataProvider' => $dataProvider,
@@ -68,8 +69,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 [
                     'label' => 'Matrícula SIAPE' ,
-                    'value' => function (){
-                        return Yii::$app->user->identity->siape;
+                    'value' => function ($model){
+                       return User::find()->select("j17_user.siape, j17_user.id")->where(["j17_user.id" => $model->id])->one()->siape;
                     },
                 ],
 
@@ -88,7 +89,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 [
                     'label' => 'Total de Ocorrências' ,
                     'value' => function ($model){
-                        return $model->frequenciasAno($model->id, $_GET["ano"]);
+                        return $model->contarOcorrencias($model->id);
                     },
                 ],
                 ['class' => 'yii\grid\ActionColumn',
@@ -118,8 +119,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 [
                     'label' => 'Matrícula SIAPE' ,
-                    'value' => function (){
-                        return Yii::$app->user->identity->siape;
+                    'value' => function ($model){
+                        return User::find()->select("j17_user.siape, j17_user.id")->where(["j17_user.id" => $model->id])->one()->siape;
                     },
                 ],
 
