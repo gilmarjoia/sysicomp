@@ -159,7 +159,27 @@ class Frequencias extends \yii\db\ActiveRecord
         $ehProfessor = User::find()->where(["id" => $id])->one()->professor;
 
         return $ehProfessor;
+    }
 
+    //verifica se a data que se pretende cadastrar está dentro de [ou adentrando] um intervalo que já está cadastrado
+    public function verificarSeDataEhVálida($idusuario,$ano,$dataInicial,$dataFinal){
+
+        $frequencias = Frequencias::find()->select("j17_frequencias.*")->where(["idusuario" => $idusuario,"YEAR(dataInicial)" => $ano])->all();
+
+        $totalfrequencias = count($frequencias);
+        $ehvalida = 1;
+
+		for ($i = 0; $i < $totalfrequencias; $i++){
+			if ($dataInicial == $frequencias[$i]->dataInicial || $dataInicial == $frequencias[$i]->dataFinal ||
+				($dataInicial>$frequencias[$i]->dataInicial && $dataInicial <$frequencias[$i]->dataFinal)){
+				$ehvalida = 0;
+			}else if ($dataFinal == $frequencias[$i]->dataInicial || $dataFinal == $frequencias[$i]->dataFinal ||
+				($dataFinal>$frequencias[$i]->dataInicial && $dataFinal <$frequencias[$i]->dataFinal)) {
+				$ehvalida = 0;
+			}
+		}        
+
+        return $ehvalida;
     }
 
     public function contarOcorrencias($idusuario){

@@ -430,9 +430,13 @@ class FrequenciasController extends Controller
             $novaFrequencia->dataFinal = date_format($dataFinal, 'Y-m-d');;
         }
 
-        if ($novaFrequencia->save()) {
-            $this->mensagens('success', 'Registro Frequências', 'Registro de Frequência replicado com sucesso!');
-        } 
+        if($novaFrequencia->verificarSeDataEhVálida($novaFrequencia->idusuario,$ano,$novaFrequencia->dataInicial,$novaFrequencia->dataFinal)==0){
+            $this->mensagens('success', 'Registro Frequências', 'Falha no Registro de Frequência, já existe uma ocorrência dentro da data especificada!');
+        }else{
+            if ($novaFrequencia->save()) {
+                $this->mensagens('success', 'Registro Frequências', 'Registro de Frequência replicado com sucesso!');
+            }
+        }     
 
         return $this->redirect(['detalhar', 'id' => $idUsuario, 'ano' => $ano, 'prof' => $prof]);
     }
