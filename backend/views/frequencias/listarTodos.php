@@ -83,7 +83,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 [
                     'label' => 'Quantidade de Dias a Pagar ' ,
                     'value' => function ($model){
-                        return $model->contarDiasPagar($model->id);
+                        return $model->contarDiasPagar($model->id, $_GET["ano"]);
                     },
                 ],
                 [
@@ -145,7 +145,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 [
                     'label' => 'Quantidade de Dias a Pagar ' ,
                     'value' => function ($model){
-                        return $model->contarDiasPagar($model->id);
+                        return $model->contarDiasPagar($model->id, $_GET["ano"]);
                     },
                 ],
                 [

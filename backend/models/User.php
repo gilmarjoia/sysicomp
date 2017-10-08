@@ -140,9 +140,9 @@ class User extends \yii\db\ActiveRecord
         return $model_frequencias;
     }
 
-    public function contarDiasPagar($idusuario){
+    public function contarDiasPagar($idusuario,$ano){
         $model_frequencias = new Frequencias();
-        $model_frequencias = $model_frequencias->contarDiasPagar($idusuario);
+        $model_frequencias = $model_frequencias->contarDiasPagar($idusuario,$ano);
 
         return $model_frequencias;
     }

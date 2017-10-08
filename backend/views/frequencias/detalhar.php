@@ -53,7 +53,7 @@ if( isset($_GET["ano"]) && isset($_GET["prof"]) ){
             'attribute' => 'diasPagar',
             'label' => 'Quantidade de Dias a Pagar:',
             'value'=> function ($model){
-                return $model->contarDiasPagar($model->id);
+                return $model->contarDiasPagar($model->id,$_GET["ano"]);
             },
 
         ],
