@@ -336,8 +336,8 @@ class FrequenciasController extends Controller
 
         if ($model->load(Yii::$app->request->post())) {
 
-            $model->dataInicial = date('Y-m-d', strtotime($model->dataFinal));
-            $model->dataFinal = date('Y-m-d', strtotime($model->dataInicial));
+            $model->dataInicial = date('Y-m-d', strtotime($model->dataInicial));
+            $model->dataFinal = date('Y-m-d', strtotime($model->dataFinal));
 
 
             $frequenciasAno = new Frequencias();
@@ -355,7 +355,7 @@ class FrequenciasController extends Controller
 
             if ($diferencaDias < 0 || $interval->format('%R') == "-") {
 
-                $this->mensagens('danger', 'Registro Férias', 'Datas inválidas!');
+                $this->mensagens('danger', 'Registro Frequências', 'Datas inválidas!');
 
                 $model->dataInicial = date('d-m-Y', strtotime($model->dataInicial));
                 $model->dataFinal = date('d-m-Y', strtotime($model->dataFinal));
