@@ -11,8 +11,8 @@ use yii\helpers\ArrayHelper;
 /* @var $model app\models\Frequencias */
 /* @var $form yii\widgets\ActiveForm */
 
-$arrayOcorrencias = Ocorrencias::find()->all();
-$listData = ArrayHelper::map($arrayOcorrencias,'id','codigo','ocorrencia');
+$arrayOcorrencias = Ocorrencias::find()->select("codigo,ocorrencia")->all();
+$listData = ArrayHelper::map($arrayOcorrencias,'codigo','codigo','ocorrencia');
 ?>
 
     <div class="ferias-form">

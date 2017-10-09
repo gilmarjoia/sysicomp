@@ -16,8 +16,8 @@ use app\models\Ferias;
 
 
 //$arrayOcorrencias = Ocorrencias::find()->select("j17_ocorrencias.codigo")->column();
-$arrayOcorrencias = Ocorrencias::find()->all();
-$listData = ArrayHelper::map($arrayOcorrencias,'id','codigo','ocorrencia');
+$arrayOcorrencias = Ocorrencias::find()->select("codigo,ocorrencia")->all();
+$listData = ArrayHelper::map($arrayOcorrencias,'codigo','codigo','ocorrencia');
 $nomeusuario = Ferias::find()->select("j17_ferias.nomeusuario")->from('j17_ferias')->where(['idusuario' => $model->idusuario])->one()->nomeusuario;
 //print_r($idUser);
 
