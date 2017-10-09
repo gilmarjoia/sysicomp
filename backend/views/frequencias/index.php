@@ -98,7 +98,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 //'id',
                 //'idusuario',
-                'nomeusuario',
+                //'nomeusuario',
                 'dataInicial',
                 'dataFinal',
                 'codigoOcorrencia',

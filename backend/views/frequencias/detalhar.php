@@ -75,14 +75,7 @@ if( isset($_GET["ano"]) && isset($_GET["prof"]) ){
             //'filterModel' => $searchModel,
             'columns' => [
                 ['class' => 'yii\grid\SerialColumn'],
-
-
-                [
-                    'attribute' => 'nomeusuario',
-                    'label' => "Nome",
-
-                ]
-                ,
+                
                 ['attribute' => 'dataInicial',
                     'value' => function ($model){
                         return date('d-m-Y', strtotime($model->dataInicial));
