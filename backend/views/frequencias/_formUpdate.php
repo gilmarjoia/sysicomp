@@ -12,7 +12,14 @@ use yii\helpers\ArrayHelper;
 /* @var $form yii\widgets\ActiveForm */
 
 $arrayOcorrencias = Ocorrencias::find()->select("codigo,ocorrencia")->all();
-$listData = ArrayHelper::map($arrayOcorrencias,'codigo','codigo','ocorrencia');
+$numOcorrencias = count($arrayOcorrencias);
+
+for ($i = 0; $i < $numOcorrencias; $i++) {
+    $arrayOcorrencias[$i]->ocorrencia = $arrayOcorrencias[$i]->codigo.' - '.$arrayOcorrencias[$i]->ocorrencia; 
+}
+
+$listData = ArrayHelper::map($arrayOcorrencias,'codigo','ocorrencia','codigo');
+
 ?>
 
     <div class="ferias-form">
@@ -45,7 +52,7 @@ $listData = ArrayHelper::map($arrayOcorrencias,'codigo','codigo','ocorrencia');
         </div>
 
         <div class = "row">
-            <?php echo $form->field($model, 'codigoOcorrencia' , ['options' => ['class' => 'col-md-3']])->dropDownlist($listData, ['prompt' => 'Selecione um código de Ocorrência'])->label("<font color='#FF0000'>*</font> <b>Código da Ocorrência:</b>");?>
+            <?php echo $form->field($model, 'codigoOcorrencia' , ['options' => ['class' => 'col-md-6']])->dropDownlist($listData, ['prompt' => 'Selecione um código de Ocorrência'])->label("<font color='#FF0000'>*</font> <b>Código da Ocorrência:</b>");?>
         </div>
 
         <div class="form-group">
