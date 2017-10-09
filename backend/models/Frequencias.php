@@ -162,7 +162,7 @@ class Frequencias extends \yii\db\ActiveRecord
     }
 
     //verifica se a data que se pretende cadastrar está dentro de [ou adentrando] um intervalo que já está cadastrado
-    public function verificarSeDataEhVálida($idusuario,$ano,$dataInicial,$dataFinal){
+    public function verificarSeDataEhValida($idusuario,$ano,$dataInicial,$dataFinal){
 
         $frequencias = Frequencias::find()->select("j17_frequencias.*")->where(["idusuario" => $idusuario,"YEAR(dataInicial)" => $ano])->all();
 

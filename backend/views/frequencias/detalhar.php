@@ -97,7 +97,7 @@ if( isset($_GET["ano"]) && isset($_GET["prof"]) ){
                 ['attribute' => 'codigoOcorrencia'],
 
                 [
-                    'label' => 'Descrição',
+                    'label' => 'Descrição da Ocorrência',
                     'content' => function($model){
                         //print_r($model->codigoOcorrencia);
                         return Ocorrencias::find()->select('j17_ocorrencias.ocorrencia')->from('j17_ocorrencias')->where(['codigo' => $model->pegarCodigoOcorrencia($model->codigoOcorrencia)])->one()->ocorrencia;
