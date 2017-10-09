@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\DetailView;
 use app\models\User;
+use app\models\Ocorrencias;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\FrequenciasSearch */
@@ -90,6 +91,16 @@ if( isset($_GET["ano"]) && isset($_GET["prof"]) ){
                 ['attribute' => 'dataFinal',
                     'value' => function ($model){
                         return date('d-m-Y', strtotime($model->dataFinal));
+                    },
+                ],
+
+                ['attribute' => 'codigoOcorrencia'],
+
+                [
+                    'label' => 'Descrição',
+                    'content' => function($model){
+                        //print_r($model->codigoOcorrencia);
+                        return Ocorrencias::find()->select('j17_ocorrencias.ocorrencia')->from('j17_ocorrencias')->where(['codigo' => $model->pegarCodigoOcorrencia($model->codigoOcorrencia)])->one()->ocorrencia;
                     },
                 ],
 

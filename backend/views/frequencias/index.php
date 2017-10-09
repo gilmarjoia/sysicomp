@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\DetailView;
 use xj\bootbox\BootboxAsset;
+use app\models\Ocorrencias;
 
 BootboxAsset::register($this);
 BootboxAsset::registerWithOverride($this);
@@ -11,6 +12,8 @@ BootboxAsset::registerWithOverride($this);
 $this->title = 'Minhas Frequências';
 $this->params['breadcrumbs'][] = $this->title;
 
+//$ocorrencia = Ocorrencias::find()->select('j17_ocorrencias.ocorrencia')->from('j17_ocorrencias')->column();
+//print_r($ocorrencia);
 
 ?>
 
@@ -35,6 +38,40 @@ $this->params['breadcrumbs'][] = $this->title;
         }
     ?>
 </p>
+
+<?= DetailView::widget([
+    'model' => $model_do_usuario,
+    'attributes' => [
+
+
+        [
+            'attribute' => 'nome',
+            'label' => 'Nome',
+        ],
+
+        //[
+         //   'attribute' => 'categoria',
+           // 'label' => 'Categoria',
+            //'value' => $profVoltar != 0 ? "Professor" : "Secretaria"
+        //],
+
+        [
+            'attribute' => 'diasPagar',
+            'label' => 'Quantidade de Dias a Pagar:',
+            'value'=> function ($model){
+                return $model->contarDiasPagar($model->id,$_GET["ano"]);
+            },
+
+        ],
+        [
+            'attribute' => 'totalOcorrencia',
+            'label' => 'Número de Ocorrências',
+            'value'=> function ($model){
+                return $model->contarOcorrencias($model->id);
+            },
+        ],
+    ],
+]) ?>
 
 
 <div class="frequencias-index">
@@ -64,7 +101,17 @@ $this->params['breadcrumbs'][] = $this->title;
                 'nomeusuario',
                 'dataInicial',
                 'dataFinal',
-                // 'codigoOcorrencia',
+                'codigoOcorrencia',
+
+                [
+                    'label' => 'Descrição',
+                    'content' => function($model){
+                        //print_r($model->codigoOcorrencia);
+                        return Ocorrencias::find()->select('j17_ocorrencias.ocorrencia')->from('j17_ocorrencias')->where(['codigo' => $model->pegarCodigoOcorrencia($model->codigoOcorrencia)])->one()->ocorrencia;
+                    },
+                ],
+
+
 
                 ['class' => 'yii\grid\ActionColumn',
                     'template'=>'{update} {delete}',

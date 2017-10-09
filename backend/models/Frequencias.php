@@ -219,4 +219,10 @@ class Frequencias extends \yii\db\ActiveRecord
         return $dias-(array_sum($arrayDias)+$contRepetidos);
 
     }
+
+   public function pegarCodigoOcorrencia($id){
+        $ocorrencia = Ocorrencias::find()->select('j17_ocorrencias.codigo')->from('j17_ocorrencias')->where(['id' => $id])->one();
+
+        return $ocorrencia->codigo;
+   }
 }
