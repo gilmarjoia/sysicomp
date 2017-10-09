@@ -72,6 +72,3 @@ $nomeusuario = Ferias::find()->select("j17_ferias.nomeusuario")->from('j17_feria
 
         <?php ActiveForm::end(); ?>
     </div>
-
-
-<?php
