@@ -118,7 +118,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'buttons'=>[
                         'update' => function ($url, $model) {
                             if (Yii::$app->user->identity->secretaria){
-                                return Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['update', 'id' => $model->id , "ano" => $_GET["ano"]], ['title' => Yii::t('yii', 'Editar Frequências'),
+                                return Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['update', 'id' => $model->id, "ano" => $_GET["ano"]], ['title' => Yii::t('yii', 'Editar Frequências'),
                                 ]);
                             }
                         },

@@ -92,12 +92,12 @@ if( isset($_GET["ano"]) && isset($_GET["prof"]) ){
             ,
              ['attribute' => 'dataSaida',
              'value' => function ($model){
-                        return date('d-m-Y', strtotime($model->dataSaida));
+                        return date('d/m/Y', strtotime($model->dataSaida));
              },
              ],
              ['attribute' => 'dataRetorno',
              'value' => function ($model){
-                        return date('d-m-Y', strtotime($model->dataRetorno));
+                        return date('d/m/Y', strtotime($model->dataRetorno));
              },
              ],
 			 

@@ -39,7 +39,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'datasaida',
         //      'filter' => \yii\jui\DatePicker::widget(['language' => 'pt', 'dateFormat' => 'dd-MM-yyyy']),
                 'value' => function ($model) {
-                     return date("d-m-Y", strtotime($model->datasaida));
+                     return date("d/m/Y", strtotime($model->datasaida));
                 },
             ],
             [   'label' => 'Data de Retorno',

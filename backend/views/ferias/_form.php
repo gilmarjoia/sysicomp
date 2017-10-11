@@ -29,7 +29,7 @@ $arrayTipoferias = ["1" => "Usufruto", "2" => "Oficial"];
 	                'language' => Yii::$app->language,
 	                'options' => ['placeholder' => 'Selecione a Data de Saída ...',],
 				    'pluginOptions' => [
-				        'format' => 'dd-mm-yyyy',
+				        'format' => 'dd/mm/yyyy',
 				        'todayHighlight' => true
 				    ]
 		        ])->label("<font color='#FF0000'>*</font> <b>Data Início:</b>")
@@ -42,7 +42,7 @@ $arrayTipoferias = ["1" => "Usufruto", "2" => "Oficial"];
 	                'language' => Yii::$app->language,
 	                'options' => ['placeholder' => 'Selecione a Data de Retorno ...',],
 				    'pluginOptions' => [
-				        'format' => 'dd-mm-yyyy',
+				        'format' => 'dd/mm/yyyy',
 				        'todayHighlight' => true
 				    ]
 		        ])->label("<font color='#FF0000'>*</font> <b>Data Término:</b>")

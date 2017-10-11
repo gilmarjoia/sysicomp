@@ -84,19 +84,19 @@ $this->params['breadcrumbs'][] = $this->title;
             //'id',
              ['attribute' => 'dataPedido',
              'value' => function ($model){
-                        return date('d-m-Y', strtotime($model->dataPedido));
+                        return date('d/m/Y', strtotime($model->dataPedido));
              },
              ],
             //'idusuario',
             //'nomeusuario',
              ['attribute' => 'dataSaida',
              'value' => function ($model){
-                        return date('d-m-Y', strtotime($model->dataSaida));
+                        return date('d/m/Y', strtotime($model->dataSaida));
              },
              ],
              ['attribute' => 'dataRetorno',
              'value' => function ($model){
-                        return date('d-m-Y', strtotime($model->dataRetorno));
+                        return date('d/m/Y', strtotime($model->dataRetorno));
              },
              ],
 

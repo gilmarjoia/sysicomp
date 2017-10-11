@@ -102,9 +102,9 @@ if( isset($_GET["ano"]) && isset($_GET["prof"]) ){
                     'template'=>'{update} {delete} {copy}',
                     'buttons'=>[
                         'update' => function ($url, $model) {
-                            return Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['update', 'id' => $model->id , "ano" => $_GET["ano"]], [
+                            return Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['update', 'id' => $model->id, "ano" => $_GET["ano"]], [
                                 'title' => Yii::t('yii', 'Editar Frequência'),
-                            ]);
+                            ]);    
                         },
                         'delete' => function ($url, $model) {
                             return Html::a('<span class="glyphicon glyphicon-remove"></span>', ['deletesecretaria', 'id' => $model->id, 'idUsuario' => $model->idusuario , 'ano'=>$_GET['ano'], 'prof' => $_GET["prof"],], [

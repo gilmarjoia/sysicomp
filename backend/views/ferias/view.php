@@ -30,7 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'label' => 'Data Pedido',
                 'attribute' => 'dataPedido',
-                'value' => date("d-m-Y", strtotime($model->dataPedido)),
+                'value' => date("d/m/Y", strtotime($model->dataPedido)),
 
             ],
             'nomeusuario',
@@ -43,14 +43,14 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'label' => 'Data Início',
                 'attribute' => 'dataSaida',
-                'value' => date("d-m-Y", strtotime($model->dataSaida)),
+                'value' => date("d/m/Y", strtotime($model->dataSaida)),
 
             ],
 			
             [
                 'label' => 'Data Término',
                 'attribute' => 'dataRetorno',
-                'value' => date("d-m-Y", strtotime($model->dataRetorno)),
+                'value' => date("d/m/Y", strtotime($model->dataRetorno)),
 
             ],
         ],

@@ -44,8 +44,8 @@ class FeriasSearch extends Ferias
     public function search($params,$ano){
         
 
-        $query = User::find()->select("j17_user.nome, j17_user.id")->where(["j17_user.professor" => 1])->orderBy('nome');
-        
+        //$query = User::find()->select("j17_user.nome, j17_user.id")->where(["j17_user.professor" => 1])->orderBy('nome');
+        $query = User::find()->select("j17_user.nome, j17_user.id")->orderBy('nome');        
         
         // add conditions that should always apply here
 
@@ -88,7 +88,7 @@ class FeriasSearch extends Ferias
         
     }
 
-        public function searchFuncionarios($params,$ano){
+    public function searchFuncionarios($params,$ano){
         
 
         $query = User::find()->select("j17_user.nome, j17_user.id")->where(["j17_user.secretaria" => 1])->andWhere(["j17_user.professor" => 0])->orderBy('nome');
