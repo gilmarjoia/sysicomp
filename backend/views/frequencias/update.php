@@ -7,7 +7,9 @@ use app\models\User;
 /* @var $model app\models\Frequencias */
 
 //$nomeusuario = Ferias::find()->select("j17_ferias.nomeusuario")->from('j17_ferias')->where(['idusuario' => $_GET["id"]])->one()->nomeusuario;
-$ehProf = User::find()->where(["id" => $_GET["id"]])->one()->professor;
+$id = $_GET["id"];
+$ehProf = User::find()->where(["id" => $model->idusuario])->one()->professor;
+
 
 $this->title = 'Editar Frequencias';
 $this->params['breadcrumbs'][] = ['label' => 'Frequências', 'url' => ['listartodos',  "ano" => $_GET["ano"]]];

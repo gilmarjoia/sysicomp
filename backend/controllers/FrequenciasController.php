@@ -215,7 +215,7 @@ class FrequenciasController extends Controller
             $diferencaDias++;
 
             if($model->verificarSeDataEhValida($model->idusuario,$anoSaida,$model->dataInicial,$model->dataFinal)==0){
-                $this->mensagens('danger', 'Registro Frequências',  'Falha no Registro de Frequência, já existe uma ocorrência dentro da data especificada!!');
+                $this->mensagens('danger', 'Registro Frequências',  'Falha no Registro de Frequência, já existe uma ocorrência dentro da data especificada!');
 
                 $model->dataInicial = date('d-m-Y', strtotime($model->dataInicial));
                 $model->dataFinal =  date('d-m-Y', strtotime($model->dataFinal));
@@ -236,6 +236,22 @@ class FrequenciasController extends Controller
                     'model' => $model,
                 ]);
 
+            }
+
+            $dataAtual = strtotime(date('d-m-Y'));
+            $dataInicialFrequencia = strtotime($model->dataInicial);
+            $dataFinalFrequencia = strtotime($model->dataFinal);
+
+            if( $dataInicialFrequencia > $dataAtual || $dataFinalFrequencia > $dataAtual){
+
+                $this->mensagens('danger', 'Registro Frequências',  'Falha no Registro de Frequência, você não pode lançar em uma data futura!');
+
+                $model->dataInicial = date('d-m-Y', strtotime($model->dataInicial));
+                $model->dataFinal =  date('d-m-Y', strtotime($model->dataFinal));
+
+                return $this->render('create', [
+                    'model' => $model,
+                ]);
             }
 
             if($model->save()){
@@ -299,7 +315,7 @@ class FrequenciasController extends Controller
                 $model->dataInicial = date('d-m-Y', strtotime($model->dataInicial));
                 $model->dataFinal =  date('d-m-Y', strtotime($model->dataFinal));
 
-                return $this->render('create', [
+                return $this->render('createsecretaria', [
                     'model' => $model,
                 ]);
             }
@@ -308,6 +324,22 @@ class FrequenciasController extends Controller
                 $this->mensagens('danger', 'Registro de Frequências', 'Datas inválidas!');
                 $model->dataInicial = date('d-m-Y', strtotime($model->dataInicial));
                 $model->dataFinal = date('d-m-Y', strtotime($model->dataFinal));
+                return $this->render('createsecretaria', [
+                    'model' => $model,
+                ]);
+            }
+
+            $dataAtual = strtotime(date('d-m-Y'));
+            $dataInicialFrequencia = strtotime($model->dataInicial);
+            $dataFinalFrequencia = strtotime($model->dataFinal);
+
+            if( $dataInicialFrequencia > $dataAtual || $dataFinalFrequencia > $dataAtual){
+
+                $this->mensagens('danger', 'Registro Frequências',  'Falha no Registro de Frequência, você não pode lançar em uma data futura!');
+
+                $model->dataInicial = date('d-m-Y', strtotime($model->dataInicial));
+                $model->dataFinal =  date('d-m-Y', strtotime($model->dataFinal));
+
                 return $this->render('createsecretaria', [
                     'model' => $model,
                 ]);
@@ -344,7 +376,7 @@ class FrequenciasController extends Controller
     {
 
         $model = $this->findModel($id);
-        $model_User = User::find()->where(["id" => $id])->one();
+        $model_User = User::find()->where(["id" => $model->idusuario])->one();
 
         $ehProfessor = Yii::$app->user->identity->professor;
         $ehCoordenador = Yii::$app->user->identity->coordenador;
@@ -388,6 +420,22 @@ class FrequenciasController extends Controller
                     'model' => $model,
                 ]);
 
+            }
+
+            $dataAtual = strtotime(date('d-m-Y'));
+            $dataInicialFrequencia = strtotime($model->dataInicial);
+            $dataFinalFrequencia = strtotime($model->dataFinal);
+
+            if( $dataInicialFrequencia > $dataAtual || $dataFinalFrequencia > $dataAtual){
+
+                $this->mensagens('danger', 'Registro Frequências',  'Falha no Registro de Frequência, você não pode lançar em uma data futura!');
+
+                $model->dataInicial = date('d-m-Y', strtotime($model->dataInicial));
+                $model->dataFinal =  date('d-m-Y', strtotime($model->dataFinal));
+
+                return $this->render('update', [
+                    'model' => $model,
+                ]);
             }
 
 
