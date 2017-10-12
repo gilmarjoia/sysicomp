@@ -124,7 +124,7 @@ if( isset($_GET["ano"]) && isset($_GET["prof"]) ){
             ],
 			[
                  'attribute' => 'adiantamentoFerias',
-                 'label' => "Adiantamento do Próximo Salário",
+                 'label' => "Antecipação de Férias",
                  'value' => function ($model){
 							if($model->adiantamentoFerias == 1){
 								return "Sim";
