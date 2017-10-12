@@ -73,7 +73,7 @@ class Ferias extends \yii\db\ActiveRecord
 			
 			//***************Novos adicionados***************************************
 			'adiantamentoDecimo' => 'Adiantamento de 50% do 13º',
-			'adiantamentoFerias' => 'Adiantamento do Próximo Salário',
+			'adiantamentoFerias' => 'Antecipação de Férias',
 			
 			//************************************************************************
         ];
