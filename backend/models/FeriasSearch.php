@@ -45,7 +45,7 @@ class FeriasSearch extends Ferias
         
 
         //$query = User::find()->select("j17_user.nome, j17_user.id")->where(["j17_user.professor" => 1])->orderBy('nome');
-        $query = User::find()->select("j17_user.nome, j17_user.id")->orderBy('nome');        
+        $query = User::find()->select("j17_user.nome, j17_user.id")->orderBy('nome');
         
         // add conditions that should always apply here
 

@@ -218,7 +218,7 @@ class FeriasController extends Controller
 
 
         $dataAfastamento = Afastamentos::find()->where(["idusuario" => $model->idusuario])->all();
-        $dataRegistro = Ferias::find()->where(['idusuario' => $model->idusuario,'tipo' => 2])->all();
+        $dataRegistro = Ferias::find()->where(['idusuario' => $model->idusuario])->andWhere(['tipo' => 2])->all();
 
         if($ehProfessor == 1){
             $limiteDias = 45;
@@ -275,6 +275,7 @@ class FeriasController extends Controller
                         $contRegistro++;
                     }
                 }
+
                 if ($contRegistro != 0) {
                     $this->mensagens('danger', 'Registro Férias', 'Datas inválidas, registro já realizado nesta data !');
                     $model->dataSaida = date('d-m-Y', strtotime($model->dataSaida));
@@ -361,7 +362,7 @@ class FeriasController extends Controller
 
         
         $dataAfastamento = Afastamentos::find()->where(["idusuario" => $model->idusuario])->all();
-        $dataRegistro = Ferias::find()->where(['idusuario' => $id,'tipo' => 2])->all();
+        $dataRegistro = Ferias::find()->where(['idusuario' => $id])->andWhere(['tipo' => 2])->all();
 
         //print_r($dataRegistro);
 
@@ -446,7 +447,7 @@ class FeriasController extends Controller
             }
 
 
-            if( ($totalDiasFeriasAno + $diferencaDias) <= $limiteDias && $model->save()){
+            if(($totalDiasFeriasAno + $diferencaDias) <= $limiteDias && $model->save()){
                 $model->adiantamentoDecimo;
                 $model->adiantamentoFerias;
                 $this->mensagens('success', 'Registro Férias',  'Registro de Férias realizado com sucesso!');

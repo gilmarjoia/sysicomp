@@ -6,11 +6,16 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use kartik\widgets\DatePicker;
 use kartik\widgets\SwitchInput;
+use app\models\Ferias;
 
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Ferias */
 /* @var $form yii\widgets\ActiveForm */
+
+$dataRegistro = Ferias::find()->where(['idusuario' => $model->idusuario,'tipo' => 2])->all();
+
+//var_dump($dataRegistro);
 
 $arrayTipoferias = ["1" => "Usufruto", "2" => "Oficial"];
 ?>
@@ -23,13 +28,14 @@ $arrayTipoferias = ["1" => "Usufruto", "2" => "Oficial"];
         <?php if ($model->isNewRecord) echo $form->field($model, 'tipo' , ['options' => ['class' => 'col-md-3']])->dropDownlist($arrayTipoferias, ['options' => ['id' => 'input_tipo'],'prompt' => 'Selecione um tipo de Férias'])->label("<font color='#FF0000'>*</font> <b>Tipo:</b>");?>
     </div>
 
+    <!--Não mudar a forma da data de dd-mm-yyyy para dd/mm/yyyy, ocorre bug na hora de pegar ano atual -->
 
     <div class = "row">
 	        <?= $form->field($model, 'dataSaida', ['options' => ['class' => 'col-md-3']])->widget(DatePicker::classname(), [
 	                'language' => Yii::$app->language,
 	                'options' => ['placeholder' => 'Selecione a Data de Saída ...',],
 				    'pluginOptions' => [
-				        'format' => 'dd/mm/yyyy',
+				        'format' => 'dd-mm-yyyy',
 				        'todayHighlight' => true
 				    ]
 		        ])->label("<font color='#FF0000'>*</font> <b>Data Início:</b>")
@@ -42,7 +48,7 @@ $arrayTipoferias = ["1" => "Usufruto", "2" => "Oficial"];
 	                'language' => Yii::$app->language,
 	                'options' => ['placeholder' => 'Selecione a Data de Retorno ...',],
 				    'pluginOptions' => [
-				        'format' => 'dd/mm/yyyy',
+				        'format' => 'dd-mm-yyyy',
 				        'todayHighlight' => true
 				    ]
 		        ])->label("<font color='#FF0000'>*</font> <b>Data Término:</b>")
