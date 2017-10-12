@@ -242,7 +242,7 @@ class FrequenciasController extends Controller
             $dataInicialFrequencia = strtotime($model->dataInicial);
             $dataFinalFrequencia = strtotime($model->dataFinal);
 
-            if( $dataInicialFrequencia > $dataAtual || $dataFinalFrequencia > $dataAtual){
+            if( $dataInicialFrequencia > $dataAtual){
 
                 $this->mensagens('danger', 'Registro Frequências',  'Falha no Registro de Frequência, você não pode lançar em uma data futura!');
 
@@ -333,7 +333,7 @@ class FrequenciasController extends Controller
             $dataInicialFrequencia = strtotime($model->dataInicial);
             $dataFinalFrequencia = strtotime($model->dataFinal);
 
-            if( $dataInicialFrequencia > $dataAtual || $dataFinalFrequencia > $dataAtual){
+            if( $dataInicialFrequencia > $dataAtual){
 
                 $this->mensagens('danger', 'Registro Frequências',  'Falha no Registro de Frequência, você não pode lançar em uma data futura!');
 
@@ -426,7 +426,7 @@ class FrequenciasController extends Controller
             $dataInicialFrequencia = strtotime($model->dataInicial);
             $dataFinalFrequencia = strtotime($model->dataFinal);
 
-            if( $dataInicialFrequencia > $dataAtual || $dataFinalFrequencia > $dataAtual){
+            if( $dataInicialFrequencia > $dataAtual){
 
                 $this->mensagens('danger', 'Registro Frequências',  'Falha no Registro de Frequência, você não pode lançar em uma data futura!');
 
