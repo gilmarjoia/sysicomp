@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use kartik\widgets\DatePicker;
 use kartik\widgets\SwitchInput;
+use app\models\Ferias;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Ferias */
@@ -80,3 +81,27 @@ $arrayTipoferias = array ("1" => "Usufruto", "2" => "Oficial");
     <?php ActiveForm::end(); ?>
 
 </div>
+
+<?php
+
+$this->registerJs("
+    $('#ferias-tipo').change(function () {
+        if ($('#ferias-tipo').val() == 1) {
+            $('#adiantamento_decimo').bootstrapSwitch('disabled',true);
+            $('#adiantamento_ferias').bootstrapSwitch('disabled',true);
+        } else {
+            $('#adiantamento_decimo').bootstrapSwitch('disabled',false);
+            $('#adiantamento_ferias').bootstrapSwitch('disabled',false);
+        }
+    });
+");
+?>
+
+<?php
+if (Ferias::find()->where(['idusuario' => $model->idusuario])->one() != null){
+    $this->registerJs("
+            $('#adiantamento_decimo').bootstrapSwitch('disabled',true);
+            $('#adiantamento_ferias').bootstrapSwitch('disabled',true);
+        ");
+}
+?>
