@@ -108,3 +108,12 @@ $this->registerJs("
 
 ?>
 
+<?php
+    if (Ferias::find()->where(['idusuario' => $model->idusuario])->one() != null){
+        $this->registerJs("
+            $('#adiantamento_decimo').bootstrapSwitch('disabled',true);
+            $('#adiantamento_ferias').bootstrapSwitch('disabled',true);
+        ");
+    }
+?>
+
