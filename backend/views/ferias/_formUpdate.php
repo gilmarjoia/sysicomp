@@ -100,8 +100,15 @@ $this->registerJs("
 <?php
 if (Ferias::find()->where(['idusuario' => $model->idusuario])->one() != null){
     $this->registerJs("
-            $('#adiantamento_decimo').bootstrapSwitch('disabled',true);
-            $('#adiantamento_ferias').bootstrapSwitch('disabled',true);
-        ");
+        $('#ferias-tipo').change(function () {
+             if ($('#ferias-tipo').val() == 2) {
+                $('#adiantamento_decimo').bootstrapSwitch('disabled',true);
+                $('#adiantamento_ferias').bootstrapSwitch('disabled',true);
+             } else {
+                $('#adiantamento_decimo').bootstrapSwitch('disabled',false);
+                $('#adiantamento_ferias').bootstrapSwitch('disabled',false);
+             }
+        });    
+    ");
 }
 ?>
