@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\DetailView;
+use yii\grid\CheckBoxColumn;
 use xj\bootbox\BootboxAsset;
 
 BootboxAsset::register($this);
@@ -79,26 +80,29 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         //'filterModel' => $searchModel,
         'columns' => [
+            [
+             'class' => 'yii\grid\CheckboxColumn',
+            ],
             ['class' => 'yii\grid\SerialColumn'],
 
             //'id',
-             ['attribute' => 'dataPedido',
-             'value' => function ($model){
-                        return date('d/m/Y', strtotime($model->dataPedido));
-             },
-             ],
-            //'idusuario',
-            //'nomeusuario',
-             ['attribute' => 'dataSaida',
-             'value' => function ($model){
-                        return date('d/m/Y', strtotime($model->dataSaida));
-             },
-             ],
-             ['attribute' => 'dataRetorno',
-             'value' => function ($model){
-                        return date('d/m/Y', strtotime($model->dataRetorno));
-             },
-             ],
+            ['attribute' => 'dataPedido',
+			'value' => function ($model){
+			        return date('d/m/Y', strtotime($model->dataPedido));
+			},
+			],
+			//'idusuario',
+			//'nomeusuario',
+			['attribute' => 'dataSaida',
+			'value' => function ($model){
+			        return date('d/m/Y', strtotime($model->dataSaida));
+			},
+			],
+			['attribute' => 'dataRetorno',
+			'value' => function ($model){
+			        return date('d/m/Y', strtotime($model->dataRetorno));
+			},
+			],
 
             /********************ADIANTAMENTO DECIMO E FERIAS********************/
             [
