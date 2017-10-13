@@ -220,6 +220,7 @@ class FeriasController extends Controller
         $dataAfastamento = Afastamentos::find()->where(["idusuario" => $model->idusuario])->all();
         $dataRegistro = Ferias::find()->where(['idusuario' => $model->idusuario])->andWhere(['tipo' => 2])->all();
 
+
         if($ehProfessor == 1){
             $limiteDias = 45;
         }
@@ -259,7 +260,8 @@ class FeriasController extends Controller
                 }
 
             $contRegistro = 0;
-            if ($dataRegistro != null) {
+
+            if ($dataRegistro != null and $model->tipo == 2) {
 
                 foreach ($dataRegistro as $value) {
                     if ($value->dataSaida <= $model->dataSaida and $value->dataRetorno >= $model->dataSaida) {
@@ -290,16 +292,16 @@ class FeriasController extends Controller
             if ($dataAfastamento != null) {
 
                 foreach ($dataAfastamento as $value) {
-                    if ($value->datasaida <= $model->dataSaida and $value->dataretorno >= $model->dataSaida) {
+                    if ($value->datasaida <= $model->dataSaida and $value->dataretorno >= $model->dataSaida and $model->tipo != 1) {
                         $cont++;
                     }
-                    if ($value->datasaida >= $model->dataSaida and $value->datasaida <= $model->dataRetorno and $value->dataretorno >= $model->dataRetorno) {
+                    if ($value->datasaida >= $model->dataSaida and $value->datasaida <= $model->dataRetorno and $value->dataretorno >= $model->dataRetorno and $model->tipo != 1){
                         $cont++;
                     }
-                    if ($value->datasaida <= $model->dataSaida and $value->datasaida <= $model->dataRetorno and $value->dataretorno >= $model->dataRetorno) {
+                    if ($value->datasaida <= $model->dataSaida and $value->datasaida <= $model->dataRetorno and $value->dataretorno >= $model->dataRetorno and $model->tipo != 1) {
                         $cont++;
                     }
-                    if ($value->datasaida >= $model->dataSaida and $value->dataretorno <= $model->dataRetorno) {
+                    if ($value->datasaida >= $model->dataSaida and $value->dataretorno <= $model->dataRetorno and $model->tipo != 1) {
                         $cont++;
                     }
                 }
@@ -391,7 +393,7 @@ class FeriasController extends Controller
 
 
             $contRegistro = 0;
-            if ($dataRegistro != null) {
+            if ($dataRegistro != null and $model->tipo == 2) {
 
                 foreach ($dataRegistro as $value) {
                     if ($value->dataSaida <= $model->dataSaida and $value->dataRetorno >= $model->dataSaida) {
