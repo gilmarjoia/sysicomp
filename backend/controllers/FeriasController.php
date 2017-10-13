@@ -537,7 +537,7 @@ class FeriasController extends Controller
             }
 
             $contRegistro = 0;
-            if ($dataRegistro != null) {
+            if ($dataRegistro != null and $model->tipo == 2) {
 
                 foreach ($dataRegistro as $value) {
                     if ($value->dataSaida <= $model->dataSaida and $value->dataRetorno >= $model->dataSaida) {
