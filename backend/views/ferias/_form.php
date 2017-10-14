@@ -115,10 +115,7 @@ if (Ferias::find()->where(['idusuario' => $model->idusuario])->one() != null){
              if ($('#ferias-tipo').val() == 2) {
                 $('#adiantamento_decimo').bootstrapSwitch('disabled',true);
                 $('#adiantamento_ferias').bootstrapSwitch('disabled',true);
-             } else {
-                $('#adiantamento_decimo').bootstrapSwitch('disabled',false);
-                $('#adiantamento_ferias').bootstrapSwitch('disabled',false);
-             }
+             } 
         });    
     ");
 }
