@@ -78,8 +78,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 [
                     'attribute' => 'nome',
                     'contentOptions'=>['style'=>'max-width: 0px;'],
-                ]
-                ,
+                ],
+	    	[
+                    'label' => 'Cargo',
+                    'value' => function ($model){
+                        return User::find()->select("j17_user.cargo, j17_user.id")->where(["j17_user.id" => $model->id])->one()->cargo;
+                    },
+                ],
                 [
                     'label' => 'Quantidade de Dias a Pagar ' ,
                     'value' => function ($model){
@@ -141,6 +146,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 [
                     'attribute' => 'nome',
                     'contentOptions'=>['style'=>'max-width: 0px;'],
+                ],
+	    	[
+                    'label' => 'Cargo',
+                    'value' => function ($model){
+                        return User::find()->select("j17_user.cargo, j17_user.id")->where(["j17_user.id" => $model->id])->one()->cargo;
+                    },
                 ],
                 [
                     'label' => 'Quantidade de Dias a Pagar ' ,
