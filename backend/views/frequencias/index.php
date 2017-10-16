@@ -5,6 +5,7 @@ use yii\grid\GridView;
 use yii\widgets\DetailView;
 use xj\bootbox\BootboxAsset;
 use app\models\Ocorrencias;
+use app\models\User;
 
 BootboxAsset::register($this);
 BootboxAsset::registerWithOverride($this);
@@ -47,6 +48,18 @@ $this->params['breadcrumbs'][] = $this->title;
         [
             'attribute' => 'nome',
             'label' => 'Nome',
+        ],
+        [
+            'label' => 'Matrícula SIAPE' ,
+            'value' => function ($model){
+                return User::find()->select("j17_user.siape, j17_user.id")->where(["j17_user.id" => $model->id])->one()->siape;
+            },
+        ],
+        [
+            'label' => 'Cargo',
+            'value' => function ($model){
+                return User::find()->select("j17_user.cargo, j17_user.id")->where(["j17_user.id" => $model->id])->one()->cargo;
+            },
         ],
 
         //[
