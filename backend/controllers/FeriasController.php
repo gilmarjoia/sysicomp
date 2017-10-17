@@ -45,6 +45,7 @@ class FeriasController extends Controller
                 'actions' => [
                     'delete' => ['POST'],
                     'deletesecretaria' => ['POST'],
+                    'remove',
                 ],
             ],
         ];
@@ -657,6 +658,14 @@ class FeriasController extends Controller
             return $this->redirect(['listar', 'ano' => $ano]);
         }
 
+        public function actionRemove()
+        {
+            $checkedIDs=$_GET['checked'];
+            foreach($checkedIDs as $id)
+                $this->findModel($id)->delete();
+            $this->mensagens('success', 'Registro Férias', 'Registros de Férias excluídos com sucesso!');
+        }
+        
         //função usada na view da Secretaria, o qual lista todos os membros
         public function actionDeletesecretaria($id, $ano, $idUsuario, $prof)
         {
