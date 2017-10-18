@@ -4,6 +4,7 @@ namespace backend\controllers;
 
 use Codeception\Lib\Generator\Helper;
 use Yii;
+use mPDF;
 use app\models\Ferias;
 use yii\filters\AccessControl;
 //use app\models\Professor;
@@ -595,39 +596,39 @@ class FeriasController extends Controller
             }
 
 
-                if (($ehProfessor == 1) && ($totalDiasFeriasAno + $diferencaDiasUpdate) <= 45 && $model->save()) {
+            if (($ehProfessor == 1) && ($totalDiasFeriasAno + $diferencaDiasUpdate) <= 45 && $model->save()) {
 
-                    $model->adiantamentoDecimo;
-                    $model->adiantamentoFerias;
+                $model->adiantamentoDecimo;
+                $model->adiantamentoFerias;
 
-                    $this->mensagens('success', 'Registro Férias', 'Registro de Férias realizado com sucesso!');
+                $this->mensagens('success', 'Registro Férias', 'Registro de Férias realizado com sucesso!');
 
-                    return $this->redirect(['detalhar', "id" => $model->idusuario, "ano" => $_GET["ano"], "prof" => $model->tipo]);
+                return $this->redirect(['detalhar', "id" => $model->idusuario, "ano" => $_GET["ano"], "prof" => $model->tipo]);
 
-                } else if ($ehSecretario == 1 && ($totalDiasFeriasAno + $diferencaDiasUpdate) <= 30 && $model->save()) {
+            } else if ($ehSecretario == 1 && ($totalDiasFeriasAno + $diferencaDiasUpdate) <= 30 && $model->save()) {
 
-                    $model->adiantamentoDecimo;
-                    $model->adiantamentoFerias;
+                $model->adiantamentoDecimo;
+                $model->adiantamentoFerias;
 
-                    $this->mensagens('success', 'Registro Férias', 'Registro de Férias realizado com sucesso!');
+                $this->mensagens('success', 'Registro Férias', 'Registro de Férias realizado com sucesso!');
 
-                    return $this->redirect(['detalhar', "id" => $model->idusuario, "ano" => $_GET["ano"], "prof" => $model->tipo]);
+                return $this->redirect(['detalhar', "id" => $model->idusuario, "ano" => $_GET["ano"], "prof" => $model->tipo]);
 
-                } else if ((($ehProfessor == 1) && ($totalDiasFeriasAno + $diferencaDiasUpdate) > 45)) {
+            } else if ((($ehProfessor == 1) && ($totalDiasFeriasAno + $diferencaDiasUpdate) > 45)) {
 
-                    $this->mensagens('danger', 'Registro Férias', 'Não foi possível registrar o pedido de férias. Você ultrapassou o limite de 45 dias');
-                } else if (($ehSecretario == 1 && ($totalDiasFeriasAno + $diferencaDiasUpdate) > 30)) {
+                $this->mensagens('danger', 'Registro Férias', 'Não foi possível registrar o pedido de férias. Você ultrapassou o limite de 45 dias');
+            } else if (($ehSecretario == 1 && ($totalDiasFeriasAno + $diferencaDiasUpdate) > 30)) {
 
-                    $this->mensagens('danger', 'Registro Férias', 'Não foi possível registrar o pedido de férias. Você ultrapassou o limite de 30 dias');
+                $this->mensagens('danger', 'Registro Férias', 'Não foi possível registrar o pedido de férias. Você ultrapassou o limite de 30 dias');
 
-                }
+            }
 
-                $model->dataSaida = date('d-m-Y', strtotime($model->dataSaida));
-                $model->dataRetorno = date('d-m-Y', strtotime($model->dataRetorno));
+            $model->dataSaida = date('d-m-Y', strtotime($model->dataSaida));
+            $model->dataRetorno = date('d-m-Y', strtotime($model->dataRetorno));
 
-                return $this->render('update', [
-                    'model' => $model,
-                ]);
+            return $this->render('update', [
+                'model' => $model,
+            ]);
 
             } else {
 
@@ -677,6 +678,25 @@ class FeriasController extends Controller
             return $this->redirect(['detalhar', 'id' => $idUsuario, 'ano' => $ano, 'prof' => $prof]);
         }
 
+        public function actionPrintvacationreport()
+        {
+            $pdf = new mPDF('utf-8','A4-L','','','15','15','42','30');
+            $pdf->SetHTMLHeader
+            ('
+                HEADER
+            ');
+            $pdf->SetHTMLFooter
+            ('
+                FOOTER
+            ');
+            $pdf->WriteHTML
+            ('
+                BODY
+            ');
+            
+            $pdf->Output('');
+            $pdfcode = $pdf->output();
+        }
         /**
          * Finds the Ferias model based on its primary key value.
          * If the model is not found, a 404 HTTP exception will be thrown.
