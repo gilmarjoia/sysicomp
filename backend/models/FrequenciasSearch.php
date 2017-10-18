@@ -69,8 +69,9 @@ class FrequenciasSearch extends Frequencias
         return $dataProvider;
     }
 
-    public function searchFrequencias($params){
-        $query = User::find()->select("j17_user.nome, j17_user.id")->where(["j17_user.professor" => 1])->orderBy('nome');
+    public function searchFrequencias($params,$ano){
+        //$query = User::find()->select("j17_user.nome, j17_user.id")->where(["j17_user.professor" => 1])->orderBy('nome');
+        $query = User::find()->select("j17_user.nome, j17_user.id")->orderBy('nome');
         //$query = Frequencias::find();
 
         // add conditions that should always apply here
