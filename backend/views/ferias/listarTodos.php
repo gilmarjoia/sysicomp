@@ -5,6 +5,8 @@ use yii\grid\GridView;
 use xj\bootbox\BootboxAsset;
 use app\models\Ferias;
 use yii\bootstrap\Progress;
+use app\models\user;
+
 BootboxAsset::register($this);
 BootboxAsset::registerWithOverride($this);
 
@@ -69,10 +71,21 @@ $this->params['breadcrumbs'][] = $this->title;
 
             //'nomeusuario',
             [
-            'attribute' => 'nome',
-            'contentOptions'=>['style'=>'max-width: 0px;'],
-            ]
-            ,
+                'label' => 'Matrícula SIAPE' ,
+                'value' => function ($model){
+                   return User::find()->select("j17_user.siape")->where(["j17_user.id" => $model->id])->one()->siape;
+                },
+            ],
+            [
+                'attribute' => 'nome',
+                //'contentOptions'=>['style'=>'max-width: 0px;'],
+            ],
+            [
+                'label' => 'Cargo',
+                'value' => function ($model){
+                    return User::find()->select("j17_user.cargo")->where(["j17_user.id" => $model->id])->one()->cargo;
+                },
+            ],
             [
                 'label' => 'Férias Oficiais' ,
                  'value' => function ($model){
@@ -127,84 +140,4 @@ $this->params['breadcrumbs'][] = $this->title;
     ]); ?>
 </h5>
 
-<!--  DAQUI PARA BAIXO O CODIGO ESTA TODO COMENTADO, PORQUE ESTA PARTE NAO EH MAIS NECESSARIA
-
-<h3 style = "text-align: center; border: solid 1px; padding: 5px 5px 5px 5px; background-color: lightblue ; font-weight: bold; margin: 20px 0px 20px 0px"> Solicitações de Férias de Funcionários </h3>
-<h5 style="background-color: lightblue">
- <?= GridView::widget([
-        'dataProvider' => $dataProvider2,
-
-        //'filterModel' => $searchModel,
-
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-             /*['attribute' => 'dataPedido',
-             'value' => function ($model){
-                        return date('d-m-Y', strtotime($model->dataPedido));
-             },
-             ],
-             */
-
-            //'nomeusuario',
-            [
-            'attribute' => 'nome',
-            'contentOptions'=>['style'=>'max-width: 0px;'],
-            ]
-            ,
-           [
-                'label' => 'Férias Oficiais' ,
-                 'value' => function ($model){
-                            return $model->feriasAno($model->id, $_GET["ano"] , 2 );
-                 },
-            ],
-            [
-                'label' => 'Usufruto de Férias' ,
-                 'value' => function ($model){
-                            return $model->feriasAno($model->id, $_GET["ano"] , 1 );
-                 },
-            ],
-            [
-                'label' => 'Dias restantes para usufruto' ,
-                'content' => function($model) {
-                    if ($model->diasRestantesParaGozoDeFerias($model->id)<=20){
-                        return Progress::widget([
-                            'label' => $model->diasRestantesParaGozoDeFerias($model->id),
-                            'percent' => $model->diasRestantesParaGozoDeFerias($model->id),
-                            'barOptions' => ['class' => 'progress-bar-danger'],
-                            'options' => ['class' => 'active progress-striped']
-                        ]);
-                    }elseif($model->diasRestantesParaGozoDeFerias($model->id)>20 and $model->diasRestantesParaGozoDeFerias($model->id)<=30){
-                        return Progress::widget([
-                            'label' => $model->diasRestantesParaGozoDeFerias($model->id),
-                            'percent' => $model->diasRestantesParaGozoDeFerias($model->id),
-                            'barOptions' => ['class' => 'progress-bar-warning'],
-                            'options' => ['class' => 'active progress-striped']
-                        ]);
-                    }else{
-                        return Progress::widget([
-                            'label' => $model->diasRestantesParaGozoDeFerias($model->id),
-                            'percent' => $model->diasRestantesParaGozoDeFerias($model->id),
-                            'barOptions' => ['class' => 'progress-bar-info'],
-                            'options' => ['class' => 'active progress-striped']
-                        ]);
-                    }
-                }
-            ],
-            ['class' => 'yii\grid\ActionColumn',
-              'template'=>'{view}',
-                'buttons'=>[
-                  'view' => function ($url, $model) {
-                    return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['detalhar', 
-                        'id' => $model->id , 'ano' => $_GET["ano"], "prof" => 0], [
-                        'title' => Yii::t('yii', 'Visualizar Detalhes'),
-                    ]);   
-                  }
-              ]                            
-                ],
-        ],
-    ]); ?>
-</h5>
-
--->
 </div>
