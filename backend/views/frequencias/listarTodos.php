@@ -48,7 +48,7 @@ $this->params['breadcrumbs'][] = $this->title;
     </select>
 </p>
 
-<h3 style = "text-align: center; border: solid 1px; padding: 5px 5px 5px 5px; background-color: lightblue ; font-weight: bold ; margin: 20px 0px 20px 0px"> Frequências de Professores </h3>
+<h3 style = "text-align: center; border: solid 1px; padding: 5px 5px 5px 5px; background-color: lightblue ; font-weight: bold ; margin: 20px 0px 20px 0px"> Frequências dos Servidores </h3>
 
 <div class="frequencias-index">
     <h5 style="background-color: lightblue">
@@ -111,6 +111,8 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ]); ?>
     </h5>
+
+    <!--  DAQUI PARA BAIXO O CODIGO ESTA TODO COMENTADO, PORQUE ESTA PARTE NAO EH MAIS NECESSARIA
 
     <h3 style = "text-align: center; border: solid 1px; padding: 5px 5px 5px 5px; background-color: lightblue ; font-weight: bold; margin: 20px 0px 20px 0px">Frequências de Funcionários </h3>
     <h5 style="background-color: lightblue">
@@ -179,4 +181,5 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ]); ?>
     </h5>
+    -->
 </div>
