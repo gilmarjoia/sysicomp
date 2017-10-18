@@ -3,7 +3,10 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\DetailView;
+use yii\grid\CheckBoxColumn;
 use xj\bootbox\BootboxAsset;
+use yii\helpers\Url;
+use yii\web\View;
 use app\models\Ocorrencias;
 use app\models\User;
 
@@ -86,6 +89,56 @@ $this->params['breadcrumbs'][] = $this->title;
     ],
 ]) ?>
 
+<?php
+    $this->registerJS('$("#butt").click(function(){
+                            var checked=$("#item-grid").yiiGridView("getSelectedRows"); 
+                            var count=checked.length;
+                            
+                            if(count>0){
+                                bootbox.confirm("Tem certeza que deseja deletar as férias selecionados?", function(confirmed) {
+                                    if(confirmed) {
+                                        $.ajax({
+                                            data:{checked:checked},
+                                            url:"'.Url::To(array('frequencias/remove')).'",
+                                            success:function(data){$("#item-grid").yiiGridView("applyFilter");},              
+                                        });
+                                    }
+                                });                         
+                            }
+                        });
+
+                        $(".chkGrid").change(function(){
+                            var checked=$("#item-grid").yiiGridView("getSelectedRows");
+                            var count=checked.length;
+                            if (count>0){
+                                $("#RemoverVarios").show();
+                            }else {
+                                $("#RemoverVarios").hide();
+                            }
+                        });
+
+                        $(".select-on-check-all").change(function(){
+                            var checked=$("#item-grid").yiiGridView("getSelectedRows");
+                            var count=checked.length;
+                            if (count>0){
+                                $("#RemoverVarios").show();
+                            }else {
+                                $("#RemoverVarios").hide();
+                            }
+                        });
+
+                        document.getElementById("RemoverVarios").style.display = "none";
+
+                        ',View::POS_READY,'my-button-handler');
+?>
+
+
+<div id='RemoverVarios'> 
+
+<button class='btn btn-danger' id='butt'>Remover Frequências</button>
+
+</div>
+
 
 <div class="frequencias-index">
 
@@ -104,9 +157,17 @@ $this->params['breadcrumbs'][] = $this->title;
     </p>
     <h5 style="background-color: lightblue">
         <?= GridView::widget([
+   	        'id' => 'item-grid',
             'dataProvider' => $dataProvider,
             //'filterModel' => $searchModel,
             'columns' => [
+                [
+	             'class' => 'yii\grid\CheckboxColumn',
+	             'checkboxOptions' => function($model, $key, $index, $column){
+	                                        return ['class' => 'chkGrid'];
+	                                  	}, 
+	            ],
+
                 ['class' => 'yii\grid\SerialColumn'],
 
                 //'id',

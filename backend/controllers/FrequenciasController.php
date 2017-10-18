@@ -45,6 +45,7 @@ class FrequenciasController extends Controller
                     'delete' => ['POST'],
                     'deletesecretaria' => ['POST'],
                     'replicarsecretaria' => ['POST'],
+                    'remove',
                 ],
             ],
         ];
@@ -524,6 +525,14 @@ class FrequenciasController extends Controller
         $this->mensagens('success', 'Registro Frequências', 'Registro de Frequências excluído com sucesso!');
 
         return $this->redirect(['listar', 'ano' => $ano]);
+    }
+
+    public function actionRemove()
+    {
+        $checkedIDs=$_GET['checked'];
+        foreach($checkedIDs as $id)
+            $this->findModel($id)->delete();
+        $this->mensagens('success', 'Registro Frequências', 'Registros de Frequências excluídos com sucesso!');
     }
 
     public function actionDeletesecretaria($id, $ano, $idUsuario, $prof)
