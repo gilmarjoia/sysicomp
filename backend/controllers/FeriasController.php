@@ -680,10 +680,19 @@ class FeriasController extends Controller
 
         public function actionPrintvacationreport()
         {
-            $pdf = new mPDF('utf-8','A4-L','','','15','15','42','30');
+            $pdf = new mPDF('utf-8','A4-L','','','15','15','40','30');
+            
             $pdf->SetHTMLHeader
             ('
-                HEADER
+                <table width="100%" style="vertical-align: bottom; font-family: serif; font-size: 8pt; color: #000000; font-weight: bold;">
+                    <tr width="100%">
+                        <td width="25%" align="right" style="font-family: serif;font-weight: bold; font-size: 175%;"> <img src = "img/logo-brasil.jpg" height="60px" width="60px"> </td>
+                        <td width="50%" align="center" style="vertical-align: middle; font-family: Times New Roman; font-weight: bold; font-size: 175%;">  UNIVERSIDADE FEDERAL DO AMAZONAS <br> PRÓ - REITORIA DE GESTÃO DE PESSOAS </td>
+                        <td width="25%" align="left" style="font-family: serif;font-weight: bold; font-size: 175%;"> <img src = "img/ufam.jpg" height="60px" width="50px"> </td>
+                    </tr>
+                </table>
+                <div align="center" style="vertical-align: middle; font-family: Times New Roman; font-size: 80%;">Amazonas - Brasil | depes@ufam.edu.br | crmdapes@ufam.edu.br | +55 (92) 3305-1478/1479</div>
+                <hr>
             ');
             $pdf->SetHTMLFooter
             ('
@@ -691,7 +700,62 @@ class FeriasController extends Controller
             ');
             $pdf->WriteHTML
             ('
-                BODY
+            <table border="1" width="100%" style="border-collapse: collapse;font-family: Arial;">
+                <tr >
+                    <td align="center" colspan="8" style="font-weight: bold;background-color: #6699ff;font-size: 120%;"> ESCALA ANUAL DE FÉRIAS <br> ANO CIVIL 2017 </td>
+                </tr>
+                <tr aling="left">
+                    <td colspan="2">Unidade:</td>
+                    <td colspan="3">Departamento:</td>
+                    <td colspan="3">Folha:</td>
+                </tr>
+                <tr>
+                    <td align="center" colspan="8" style="color:red;font-weight: bold">SERVIDOR, LEIA AS ORIENTAÇÕES DE FÉRIAS E AS INSTRUÇÕES DO VERSO ANTES DE ASSINAR SEU PEDIDO.</td>
+                </tr>
+                <tr  align="center" style="background-color: #6699ff; font-size: 150%">
+                    <!-- Planilha -->
+                    <th width="10%" rowspan="2">Matrícula<br>SIAPE</th>
+                    <th width="25%" rowspan="2">Nome do Servidor</th>
+                    <th width="10%" rowspan="2">Cargo/<br>Função</th>
+                    <th width="10%" rowspan="2">Antecipação<br>50% 13º</th>
+                    <th width="10%"  rowspan="2">Antecipação<br>Férias</th>
+                    <th width="10%" colspan="2">Período de<br>Férias</th>
+                    <th width="25%" rowspan="2">Assinatura</th>
+                </tr>
+                <tr style="background-color: #6699ff;font-weight: bold;">
+                    <td style="font-weight: bold;">Início</td>
+                    <td style="font-weight: bold;">Fim</td>
+                </tr>
+            ');
+
+            for($i = 0;$i <= 30;$i++)
+            {
+                $pdf->WriteHtml
+                ('
+                <tr>
+                    <td height="39px" rowspan="3"><!-- Matrícula SIAPE--></td>
+                    <td rowspan="3"><!-- Nome do Servidor--></td>
+                    <td rowspan="3"><!-- Cargo/Função--></td>
+                    <td rowspan="3"><!-- Antecipação 50% 13º--></td>
+                    <td rowspan="3"><!-- Antecipação Férias--></td>
+                    <td height="13px"><!-- Início--></td>
+                    <td><!-- Fim--></td>
+                    <td rowspan="3"><!-- Assinatura--></td>
+                </tr>
+                <tr>
+                    <td height="13px"></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td height="13px"></td>
+                    <td></td>
+                </tr>
+                ');
+            }
+
+            $pdf->WriteHtml
+            ('
+                </table>
             ');
             
             $pdf->Output('');
