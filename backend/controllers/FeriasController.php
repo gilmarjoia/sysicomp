@@ -681,6 +681,7 @@ class FeriasController extends Controller
         public function actionPrintvacationreport()
         {
             $pdf = new mPDF('utf-8','A4-L','','','15','15','40','30');
+            $dataFerias = Ferias::find()->where('dataSaida LIKE :substr', array(':substr' => '2017%'))->groupBy(['idusuario'])->all();
             
             $pdf->SetHTMLHeader
             ('
@@ -696,7 +697,20 @@ class FeriasController extends Controller
             ');
             $pdf->SetHTMLFooter
             ('
-                FOOTER
+            <table border="1" width="100%" style="border-collapse: collapse;font-family: Arial;">
+                <tr>
+                    <td height="30px" align="center">  '.date('d-m-Y').'  </td>
+                    <td align="center"></td>
+                    <td align="center"></td>
+                    <td align="center"></td>
+                </tr>
+                <tr style="background-color: #6699ff">
+                    <td align="center" style="font-size:75%; font-weight: bold;">Data de Elaboração</td>
+                    <td align="center" style="font-size:75%; font-weight: bold;">Responsável pela elaboração do Boletim</td>
+                    <td align="center" style="font-size:75%; font-weight: bold;">Assinatura/Carimbo<br>Chefia Imediata do Departamento</td>
+                    <td align="center" style="font-size:75%; font-weight: bold;">Assinatura/Carimbo<br>Direção da Unidade de Lotação</td>
+                </tr>
+            </table>
             ');
             $pdf->WriteHTML
             ('
@@ -728,26 +742,27 @@ class FeriasController extends Controller
                 </tr>
             ');
 
-            for($i = 0;$i <= 30;$i++)
+            foreach($dataFerias as $dFerias)
             {
+                $dataUsuario = User::find()->where(["id" => $dFerias->idusuario])->one();
                 $pdf->WriteHtml
                 ('
                 <tr>
-                    <td height="39px" rowspan="3"><!-- Matrícula SIAPE--></td>
-                    <td rowspan="3"><!-- Nome do Servidor--></td>
-                    <td rowspan="3"><!-- Cargo/Função--></td>
-                    <td rowspan="3"><!-- Antecipação 50% 13º--></td>
-                    <td rowspan="3"><!-- Antecipação Férias--></td>
-                    <td height="13px"><!-- Início--></td>
+                    <td align="center" height="60px" rowspan="3">'.$dataUsuario->siape.'<!-- Matrícula SIAPE--></td>
+                    <td rowspan="3">'.$dFerias->nomeusuario.'<!-- Nome do Servidor--></td>
+                    <td align="center" rowspan="3">'.$dataUsuario->cargo.'<!-- Cargo/Função--></td>
+                    <td align="center" rowspan="3">'.($dFerias->adiantamentoDecimo == 1 ? "SIM" : "NÃO").'<!-- Antecipação 50% 13º--></td>
+                    <td align="center" rowspan="3">'.($dFerias->adiantamentoFerias == 1 ? "SIM" : "NÃO").'<!-- Antecipação Férias--></td>
+                    <td height="20px"><!-- Início--></td>
                     <td><!-- Fim--></td>
                     <td rowspan="3"><!-- Assinatura--></td>
                 </tr>
                 <tr>
-                    <td height="13px"></td>
+                    <td height="20px"></td>
                     <td></td>
                 </tr>
                 <tr>
-                    <td height="13px"></td>
+                    <td height="20px"></td>
                     <td></td>
                 </tr>
                 ');
