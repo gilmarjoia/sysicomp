@@ -43,7 +43,7 @@ $this->params['breadcrumbs'][] = $this->title;
             $valores = $todosAnosFrequencias[$i];
 
             ?>
-            <option <?php if($valores == $_GET["ano"]){echo "SELECTED";} ?> > <?php echo $valores ?> </option>
+            <option <?php if($valores == $_GET["ano"]){echo "SELECTED";} ?> > <?php echo $valores?> </option>
         <?php } ?>
     </select>
 </p>
