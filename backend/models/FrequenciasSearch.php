@@ -69,7 +69,7 @@ class FrequenciasSearch extends Frequencias
         return $dataProvider;
     }
 
-    public function searchFrequencias($params,$ano){
+    public function searchFrequencias($params,$ano,$mes){
         //$query = User::find()->select("j17_user.nome, j17_user.id")->where(["j17_user.professor" => 1])->orderBy('nome');
         $query = User::find()->select("j17_user.nome, j17_user.id")->orderBy('nome');
         //$query = Frequencias::find();
@@ -103,7 +103,7 @@ class FrequenciasSearch extends Frequencias
         return $dataProvider;
     }
 
-    public function searchFuncionarios($params,$ano){
+    public function searchFuncionarios($params,$ano,$mes){
         $query = User::find()->select("j17_user.nome, j17_user.id")->where(["j17_user.secretaria" => 1])->andWhere(["j17_user.professor" => 0])->orderBy('nome');
         // add conditions that should always apply here
         $dataProvider = new ActiveDataProvider([
@@ -134,10 +134,10 @@ class FrequenciasSearch extends Frequencias
         return $dataProvider;
     }
     
-    public function searchMinhasFrequencias($params, $idUser ,$ano)
+    public function searchMinhasFrequencias($params, $idUser ,$ano,$mes)
     {
         $query = Frequencias::find()->select("j17_frequencias.*, DATEDIFF((dataFinal),(dataInicial)) as diferencaData")->where("idusuario = '".$idUser."' 
-            AND YEAR(dataInicial) = ".$ano);
+            AND YEAR(dataInicial) = ".$ano." AND MONTH(dataInicial) = ".$mes);
         // add conditions that should always apply here
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

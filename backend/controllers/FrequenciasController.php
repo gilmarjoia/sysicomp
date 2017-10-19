@@ -72,7 +72,7 @@ class FrequenciasController extends Controller
         ]);
     }
 
-    public function actionListar($ano)
+    public function actionListar($ano,$mes)
     {
 
 
@@ -81,13 +81,14 @@ class FrequenciasController extends Controller
 
         $model = new Frequencias();
         $todosAnosFrequencias = $model->anosFrequencias($idUser);
+        $todosMesFrequencias = $model->mesFrequencias($idUser);
 
 		
 
 
 
         $searchModel = new FrequenciasSearch();
-        $dataProvider = $searchModel->searchMinhasFrequencias(Yii::$app->request->queryParams , $idUser ,$ano);
+        $dataProvider = $searchModel->searchMinhasFrequencias(Yii::$app->request->queryParams , $idUser ,$ano,$mes);
 
         $model_do_usuario = User::find()->where(["id" => $idUser])->one();
 
@@ -96,11 +97,12 @@ class FrequenciasController extends Controller
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'todosAnosFrequencias' => $todosAnosFrequencias,
+            'todosMesFrequencias' => $todosMesFrequencias,
 
         ]);
     }
 
-    public function actionListartodos($ano)
+    public function actionListartodos($ano,$mes)
     {
 
 
@@ -109,24 +111,26 @@ class FrequenciasController extends Controller
 
         $model = new Frequencias();
         $todosAnosFrequencias = $model->anosFrequencias(null);
+        $todosMesFrequencias = $model->mesFrequencias(null);
 
 
 
         $searchModel = new FrequenciasSearch();
-        $dataProvider = $searchModel->searchFrequencias(Yii::$app->request->queryParams , $ano);
+        $dataProvider = $searchModel->searchFrequencias(Yii::$app->request->queryParams , $ano,$mes);
 
         $searchModel2 = new FrequenciasSearch();
-        $dataProvider2 = $searchModel2->searchFuncionarios(Yii::$app->request->queryParams , $ano);
+        $dataProvider2 = $searchModel2->searchFuncionarios(Yii::$app->request->queryParams , $ano, $mes);
 
         return $this->render('listarTodos', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'dataProvider2' => $dataProvider2,
             'todosAnosFrequencias' => $todosAnosFrequencias,
+            'todosMesFrequencias' => $todosMesFrequencias,
         ]);
     }
 
-    public function actionDetalhar($ano,$id,$prof)
+    public function actionDetalhar($ano,$mes,$id,$prof)
     {
 
 
@@ -139,11 +143,12 @@ class FrequenciasController extends Controller
 
 
         $todosAnosFrequencias = $model->anosFrequencias($idUser);
+        $todosMesFrequencias = $model->mesFrequencias($idUser);
         //$totalOcorrencias = $model->frequenciasAno($idUser,$ano);
 
 
         $searchModel = new FrequenciasSearch();
-        $dataProvider = $searchModel->searchMinhasFrequencias(Yii::$app->request->queryParams , $idUser ,$ano);
+        $dataProvider = $searchModel->searchMinhasFrequencias(Yii::$app->request->queryParams , $idUser ,$ano,$mes);
 
         $model_do_usuario = User::find()->where(["id" => $idUser])->one();
 
@@ -152,6 +157,7 @@ class FrequenciasController extends Controller
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'todosAnosFrequencias' => $todosAnosFrequencias,
+            'todosMesFrequencias' => $todosMesFrequencias,
             'id' => $id,
         ]);
     }
@@ -204,9 +210,11 @@ class FrequenciasController extends Controller
             $model->dataFinal =  date('Y-m-d', strtotime($model->dataFinal));
 
 
-            $feriasAno = new Frequencias();
+            $frequenciasAno = new Frequencias();
             $anoSaida = date('Y', strtotime($model->dataInicial));
-            $totalDiasFrequenciasAno = $feriasAno->frequenciasAno($model->idusuario,$anoSaida);
+            $mesSaida = date('m', strtotime($model->dataInicial));
+            $totalDiasFrequenciasAno = $frequenciasAno->frequenciasAno($model->idusuario,$anoSaida);
+            $totalDiasFrequenciasMes = $frequenciasAno->frequenciasMes($model->idusuario,$mesSaida);
 
 
             $datetime1 = new \DateTime($model->dataInicial);
@@ -215,7 +223,7 @@ class FrequenciasController extends Controller
             $diferencaDias =  $interval->format('%a');
             $diferencaDias++;
 
-            if($model->verificarSeDataEhValida($model->idusuario,$anoSaida,$model->dataInicial,$model->dataFinal)==0){
+            if($model->verificarSeDataEhValida($model->idusuario,$anoSaida,$mesSaida,$model->dataInicial,$model->dataFinal)==0){
                 $this->mensagens('danger', 'Registro Frequências',  'Falha no Registro de Frequência, já existe uma ocorrência dentro da data especificada!');
 
                 $model->dataInicial = date('d-m-Y', strtotime($model->dataInicial));
@@ -260,7 +268,7 @@ class FrequenciasController extends Controller
 
                 $this->mensagens('success', 'Registro Frequências',  'Registro de Frequência realizado com sucesso!');
 
-                return $this->redirect(['listar', 'ano' => $anoSaida]);
+                return $this->redirect(['listar', 'ano' => $anoSaida,'mes' => $mesSaida]);
 
             }else {
 
@@ -302,7 +310,9 @@ class FrequenciasController extends Controller
 
             $frequenciasAno = new Frequencias();
             $anoInicio = date('Y', strtotime($model->dataInicial));
+            $mesInicio = date('m', strtotime($model->dataInicial));
             $totalDiasFrequenciasAno = $frequenciasAno->frequenciasAno($model->idusuario, $anoInicio);
+            $totalDiasFrequenciasMes = $frequenciasAno->frequenciasMes($model->idusuario, $mesInicio);
 
             $datetime1 = new \DateTime($model->dataInicial);
             $datetime2 = new \DateTime($model->dataFinal);
@@ -310,7 +320,7 @@ class FrequenciasController extends Controller
             $diferencaDias = $interval->format('%a');
             $diferencaDias++;
 
-            if($model->verificarSeDataEhValida($model->idusuario,$anoInicio,$model->dataInicial,$model->dataFinal)==0){
+            if($model->verificarSeDataEhValida($model->idusuario,$anoInicio,$mesInicio,$model->dataInicial,$model->dataFinal)==0){
                 $this->mensagens('danger', 'Registro Frequências',  'Falha no Registro de Frequência, já existe uma ocorrência dentro da data especificada!!');
 
                 $model->dataInicial = date('d-m-Y', strtotime($model->dataInicial));
@@ -348,7 +358,7 @@ class FrequenciasController extends Controller
 
             if($model->save()){
                 $this->mensagens('success', 'Registro de Frequência',  'Registro de Frequência realizado com sucesso!');
-                return $this->redirect(['detalhar', 'id' => $model->idusuario, 'ano' => date("Y") ,"prof" => $model_User->professor]);
+                return $this->redirect(['detalhar', 'id' => $model->idusuario, 'ano' => date("Y"),'mes' => date('m') ,"prof" => $model_User->professor]);
             }
             else {
                 $this->mensagens('danger', 'Registro de Frequência', 'Algo deu errado');
@@ -373,7 +383,7 @@ class FrequenciasController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionUpdate($id)
+    public function actionUpdate($id,$ano,$mes)
     {
 
         $model = $this->findModel($id);
@@ -399,7 +409,9 @@ class FrequenciasController extends Controller
 
             $frequenciasAno = new Frequencias();
             $anoSaida = date('Y', strtotime($model->dataInicial));
+            $mesSaida = date('m', strtotime($model->dataInicial));
             $totalDiasFrequenciasAno = $frequenciasAno->frequenciasAno($model->idusuario, $anoSaida);
+            $totalDiasFrequenciasMes = $frequenciasAno->frequenciasMes($model->idusuario,$mesSaida);
 
 
             $datetime1 = new \DateTime($model->dataInicial);
@@ -444,13 +456,13 @@ class FrequenciasController extends Controller
 
                 $this->mensagens('success', 'Registro Frequências', 'Registro de Frequências realizado com sucesso!');
 
-                return $this->redirect(['detalhar', "id" => $model->idusuario, "ano" => $_GET["ano"], "prof" => $model_User->professor]);
+                return $this->redirect(['detalhar', "id" => $model->idusuario, "ano" => $_GET["ano"],"mes" =>$_GET["mes"], "prof" => $model_User->professor]);
 
             } else if ($ehSecretario == 1 && $model->save()) {
 
                 $this->mensagens('success', 'Registro Frequências', 'Registro de Freqências realizado com sucesso!');
 
-                return $this->redirect(['detalhar', "id" => $model->idusuario, "ano" => $_GET["ano"], "prof" => $model_User->secretaria]);
+                return $this->redirect(['detalhar', "id" => $model->idusuario, "ano" => $_GET["ano"], "mes" =>$_GET["mes"], "prof" => $model_User->secretaria]);
 
             }
 
@@ -472,7 +484,7 @@ class FrequenciasController extends Controller
         }
     }
 
-    public function actionReplicarsecretaria($id, $ano, $idUsuario, $prof)
+    public function actionReplicarsecretaria($id, $ano,$mes,$idUsuario, $prof)
     {
 
         $model = $this->findModel($id);
@@ -500,8 +512,9 @@ class FrequenciasController extends Controller
         }
 
         $anoSaida = date('Y', strtotime($novaFrequencia->dataInicial));
+        $mesSaida = date('m',strtotime($novaFrequencia->dataInicial));
 
-        if($novaFrequencia->verificarSeDataEhValida($novaFrequencia->idusuario,$anoSaida,$novaFrequencia->dataInicial,$novaFrequencia->dataFinal)==0){
+        if($novaFrequencia->verificarSeDataEhValida($novaFrequencia->idusuario,$anoSaida,$mesSaida,$novaFrequencia->dataInicial,$novaFrequencia->dataFinal)==0){
             $this->mensagens('danger', 'Registro Frequências', 'Falha no Registro de Frequência, já existe uma ocorrência dentro da data especificada!');
         }else{
             if ($novaFrequencia->save()) {
@@ -509,7 +522,7 @@ class FrequenciasController extends Controller
             }
         }     
 
-        return $this->redirect(['detalhar', 'id' => $idUsuario, 'ano' => $ano, 'prof' => $prof]);
+        return $this->redirect(['detalhar', 'id' => $idUsuario, 'ano' => $ano, 'mes' => $mes, 'prof' => $prof]);
     }
 
     /**
@@ -518,13 +531,13 @@ class FrequenciasController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionDelete($id,$ano)
+    public function actionDelete($id,$ano,$mes)
     {
         $this->findModel($id)->delete();
 
         $this->mensagens('success', 'Registro Frequências', 'Registro de Frequências excluído com sucesso!');
 
-        return $this->redirect(['listar', 'ano' => $ano]);
+        return $this->redirect(['listar', 'ano' => $ano, 'mes' => $mes]);
     }
 
     public function actionRemove()
@@ -535,14 +548,14 @@ class FrequenciasController extends Controller
         $this->mensagens('success', 'Registro Frequências', 'Registros de Frequências excluídos com sucesso!');
     }
 
-    public function actionDeletesecretaria($id, $ano, $idUsuario, $prof)
+    public function actionDeletesecretaria($id, $ano, $mes, $idUsuario, $prof)
     {
 
         $this->findModel($id)->delete();
 
         $this->mensagens('success', 'Registro Frequências', 'Registro de Frequências excluído com sucesso!');
 
-        return $this->redirect(['detalhar', 'id' => $idUsuario, 'ano' => $ano, 'prof' => $prof]);
+        return $this->redirect(['detalhar', 'id' => $idUsuario, 'ano' => $ano,'mes' => $mes, 'prof' => $prof]);
     }
 
     /**

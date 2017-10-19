@@ -20,6 +20,7 @@ class Frequencias extends \yii\db\ActiveRecord
     public $totalOcorrencias;
     public $diasPagar;
     public $anoInicial;
+    public $mesInicial;
 
     /**
      * @inheritdoc
@@ -130,6 +131,30 @@ class Frequencias extends \yii\db\ActiveRecord
 
     }
 
+    public function frequenciasMes($idusuario,$mes){
+
+        $frequencias = Frequencias::find()->where(["idusuario" => $idusuario])->all();
+        $cont = 0;
+        $arrayDias = array();
+
+        for($i = 0; $i < count($frequencias) ; $i++ ){
+
+            $mesSaida = date('m', strtotime($frequencias[$i]->dataInicial));
+
+            if($mesSaida == $mes){
+                $datetime1 = new \DateTime($frequencias[$i]->dataInicial);
+                $datetime2 = new \DateTime($frequencias[$i]->dataFinal);
+                $interval = $datetime1->diff($datetime2);
+                $arrayDias[$cont] =  abs($interval->format('%a'));
+                $cont++;
+            }
+
+        }
+
+        return array_sum($arrayDias) + $cont;
+
+    }
+
     public function frequenciasAnoTodos($ano,$idusuario){
 
         $frequencias = Frequencias::find()->where(["idusuario" => $idusuario ])->all();
@@ -154,6 +179,30 @@ class Frequencias extends \yii\db\ActiveRecord
 
     }
 
+    public function frequenciasMesTodos($mes,$idusuario){
+
+        $frequencias = Frequencias::find()->where(["idusuario" => $idusuario ])->all();
+        $cont = 0;
+        $arrayDias = array();
+
+        for($i = 0; $i < count($frequencias) ; $i++ ){
+
+            $mesInicial = date('m', strtotime($frequencias[$i]->dataInicial));
+
+            if($mesInicial == $mes){
+                $datetime1 = new \DateTime($frequencias[$i]->dataInicial);
+                $datetime2 = new \DateTime($frequencias[$i]->dataFinal);
+                $interval = $datetime1->diff($datetime2);
+                $arrayDias[$cont] =  abs($interval->format('%a'));
+                $cont++;
+            }
+
+        }
+
+        return array_sum($arrayDias);
+
+    }
+
     public function verificarSeEhProfessor($id){
 
         $ehProfessor = User::find()->where(["id" => $id])->one()->professor;
@@ -162,9 +211,9 @@ class Frequencias extends \yii\db\ActiveRecord
     }
 
     //verifica se a data que se pretende cadastrar está dentro de [ou adentrando] um intervalo que já está cadastrado
-    public function verificarSeDataEhValida($idusuario,$ano,$dataInicial,$dataFinal){
+    public function verificarSeDataEhValida($idusuario,$ano,$mes,$dataInicial,$dataFinal){
 
-        $frequencias = Frequencias::find()->select("j17_frequencias.*")->where(["idusuario" => $idusuario,"YEAR(dataInicial)" => $ano])->all();
+        $frequencias = Frequencias::find()->select("j17_frequencias.*")->where(["idusuario" => $idusuario,"YEAR(dataInicial)" => $ano, "MONTH(dataInicial)" => $mes])->all();
 
         $totalfrequencias = count($frequencias);
         $ehvalida = 1;
@@ -182,15 +231,17 @@ class Frequencias extends \yii\db\ActiveRecord
         return $ehvalida;
     }
 
-    public function contarOcorrencias($idusuario){
-        $ocorrencias = Frequencias::find()->where(["idusuario" => $idusuario ])->all();
+    public function contarOcorrencias($idusuario,$ano,$mes){
+        $ocorrencias = Frequencias::find()->where("idusuario = '".$idusuario."' 
+            AND YEAR(dataInicial) = ".$ano." AND MONTH(dataInicial) = ".$mes)->all();
         $this->diasPagar = count($ocorrencias);
 
         return $this->diasPagar;
     }
 
-    public function contarDiasPagar($idusuario,$ano){
-        $ocorrencias = Frequencias::find()->where(["idusuario" => $idusuario ])->all();
+    public function contarDiasPagar($idusuario,$ano,$mes){
+        $ocorrencias = Frequencias::find()->where("idusuario = '".$idusuario."' 
+            AND YEAR(dataInicial) = ".$ano." AND MONTH(dataInicial) = ".$mes)->all();
         $dias = 30;
         $cont = 0;
         $contRepetidos = 0;
@@ -200,9 +251,9 @@ class Frequencias extends \yii\db\ActiveRecord
         $this->totalOcorrencias = count($ocorrencias);
 
         for ($i = 0; $i < $this->totalOcorrencias; $i++) {
-            $anoSaida = date('Y', strtotime($ocorrencias[$i]->dataInicial));
+            $mesSaida = date('m', strtotime($ocorrencias[$i]->dataInicial));
 
-            if ($anoSaida == $ano) {
+            if ($mesSaida == $mes) {
                 $datetime1 = new \DateTime($ocorrencias[$i]->dataInicial);
                 $datetime2 = new \DateTime($ocorrencias[$i]->dataFinal);
 

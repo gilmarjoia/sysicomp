@@ -25,8 +25,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
     function anoSelecionado(){
         var x = document.getElementById("comboBoxAno").value;
+        var y = document.getElementById("comboBoxMes").value;
 
-        window.location="index.php?r=frequencias/listar&ano="+x;
+        window.location="index.php?r=frequencias/listar&ano="+x+"&mes="+y;
 
     }
 
@@ -75,7 +76,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'attribute' => 'diasPagar',
             'label' => 'Quantidade de Dias a Pagar:',
             'value'=> function ($model){
-                return $model->contarDiasPagar($model->id,$_GET["ano"]);
+                return $model->contarDiasPagar($model->id,$_GET["ano"],$_GET["mes"]);
             },
 
         ],
@@ -83,7 +84,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'attribute' => 'totalOcorrencia',
             'label' => 'Número de Ocorrências',
             'value'=> function ($model){
-                return $model->contarOcorrencias($model->id);
+                return $model->contarOcorrencias($model->id,$_GET["ano"],$_GET["mes"]);
             },
         ],
     ],
@@ -145,6 +146,15 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
     <p>
+        Selecione um mes: <select id="comboBoxMes" onchange="anoSelecionado();" class="form-control" style="margin-bottom: 20px; width:10%;">
+            <?php for($i=0; $i<count($todosMesFrequencias); $i++){
+
+                $valores = $todosMesFrequencias[$i];
+
+                ?>
+                <option <?php if($valores == $_GET["mes"]){echo "SELECTED";} ?> > <?php echo $valores ?> </option>
+            <?php } ?>
+        </select>
         Selecione um ano: <select id= "comboBoxAno" onchange="anoSelecionado();" class="form-control" style="margin-bottom: 20px; width:10%;">
             <?php for($i=0; $i<count($todosAnosFrequencias); $i++){
 
@@ -192,13 +202,13 @@ $this->params['breadcrumbs'][] = $this->title;
                     'buttons'=>[
                         'update' => function ($url, $model) {
                             if (Yii::$app->user->identity->secretaria){
-                                return Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['update', 'id' => $model->id, "ano" => $_GET["ano"]], ['title' => Yii::t('yii', 'Editar Frequências'),
+                                return Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['update', 'id' => $model->id, "ano" => $_GET["ano"], "mes" => $_GET["mes"]], ['title' => Yii::t('yii', 'Editar Frequências'),
                                 ]);
                             }
                         },
                         'delete' => function ($url, $model) {
                             if (Yii::$app->user->identity->secretaria){
-                                return Html::a('<span class="glyphicon glyphicon-remove"></span>', ['delete', 'id' => $model->id, 'idUsuario' => $model->idusuario , 'ano'=>$_GET['ano']   ,], [
+                                return Html::a('<span class="glyphicon glyphicon-remove"></span>', ['delete', 'id' => $model->id, 'idUsuario' => $model->idusuario , 'ano'=>$_GET['ano'],'mes' => $_GET["mes"] ,], [
                                     'data' => [
                                         'confirm' => "Você realmente deseja excluir o registro de frequência?",
                                         'method' => 'post',

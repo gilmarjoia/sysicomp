@@ -18,14 +18,16 @@ BootboxAsset::registerWithOverride($this);
 
 $this->title = 'Detalhes de Frequências';
 
-$this->params['breadcrumbs'][] = ['label' => 'Frequências', 'url' => ['listartodos',  "ano" => $_GET["ano"] ]];
+$this->params['breadcrumbs'][] = ['label' => 'Frequências', 'url' => ['listartodos',  "ano" => $_GET["ano"],"mes"=>$_GET["mes"] ]];
 $this->params['breadcrumbs'][] = $this->title;
 
 
 
-if( isset($_GET["ano"]) && isset($_GET["prof"]) ){
+if( isset($_GET["ano"]) && isset($_GET["mes"]) && isset($_GET["prof"]) ){
     $anoVoltar = $_GET["ano"];
+    $mesVoltar = $_GET["mes"];
     $profVoltar = $_GET["prof"];
+
 }
 
 ?>
@@ -36,8 +38,8 @@ if( isset($_GET["ano"]) && isset($_GET["prof"]) ){
 
 
     <p>
-        <?= Html::a('<span class="glyphicon glyphicon-arrow-left"></span> Voltar  ', ['listartodos', "ano" => $anoVoltar ], ['class' => 'btn btn-warning']) ?>
-        <?= Html::a('Registrar Novas Frequências', ['createsecretaria' , "id" => $id, "ano" => $anoVoltar , "prof" => $profVoltar ], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('<span class="glyphicon glyphicon-arrow-left"></span> Voltar  ', ['listartodos', "ano" => $anoVoltar, "mes" => $mesVoltar ], ['class' => 'btn btn-warning']) ?>
+        <?= Html::a('Registrar Novas Frequências', ['createsecretaria' , "id" => $id, "ano" => $anoVoltar ,"mes" => $mesVoltar, "prof" => $profVoltar ], ['class' => 'btn btn-success']) ?>
     </p>
 
 <?= DetailView::widget([
@@ -73,7 +75,7 @@ if( isset($_GET["ano"]) && isset($_GET["prof"]) ){
             'attribute' => 'diasPagar',
             'label' => 'Quantidade de Dias a Pagar:',
             'value'=> function ($model){
-                return $model->contarDiasPagar($model->id,$_GET["ano"]);
+                return $model->contarDiasPagar($model->id,$_GET["ano"],$_GET["mes"]);
             },
 
         ],
@@ -81,7 +83,7 @@ if( isset($_GET["ano"]) && isset($_GET["prof"]) ){
             'attribute' => 'totalOcorrencia',
             'label' => 'Número de Ocorrências',
             'value'=> function ($model){
-                return $model->contarOcorrencias($model->id);
+                return $model->contarOcorrencias($model->id,$_GET["ano"],$_GET["mes"]);
             },
         ],
     ],
@@ -178,12 +180,12 @@ if( isset($_GET["ano"]) && isset($_GET["prof"]) ){
                     'template'=>'{update} {delete} {copy}',
                     'buttons'=>[
                         'update' => function ($url, $model) {
-                            return Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['update', 'id' => $model->id, "ano" => $_GET["ano"]], [
+                            return Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['update', 'id' => $model->id, "ano" => $_GET["ano"],"mes" => $_GET['mes']], [
                                 'title' => Yii::t('yii', 'Editar Frequência'),
                             ]);    
                         },
                         'delete' => function ($url, $model) {
-                            return Html::a('<span class="glyphicon glyphicon-remove"></span>', ['deletesecretaria', 'id' => $model->id, 'idUsuario' => $model->idusuario , 'ano'=>$_GET['ano'], 'prof' => $_GET["prof"],], [
+                            return Html::a('<span class="glyphicon glyphicon-remove"></span>', ['deletesecretaria', 'id' => $model->id, 'idUsuario' => $model->idusuario , 'ano'=>$_GET["ano"], 'mes' => $_GET["mes"], 'prof' => $_GET["prof"],], [
 
 
                                 'data' => [
@@ -195,7 +197,7 @@ if( isset($_GET["ano"]) && isset($_GET["prof"]) ){
                             ]);
                         },
                         'copy' => function ($url, $model) {
-                            return Html::a('<span class="glyphicon glyphicon-copy"></span>', ['replicarsecretaria', 'id' => $model->id, 'idUsuario' => $model->idusuario , 'ano'=>$_GET['ano'], 'prof' => $_GET["prof"],], [
+                            return Html::a('<span class="glyphicon glyphicon-copy"></span>', ['replicarsecretaria', 'id' => $model->id, 'idUsuario' => $model->idusuario , 'ano'=>$_GET['ano'],'mes' => $_GET["mes"], 'prof' => $_GET["prof"],], [
 
 
                                 'data' => [

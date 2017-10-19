@@ -12,13 +12,13 @@ $ehProf = User::find()->where(["id" => $model->idusuario])->one()->professor;
 
 
 $this->title = 'Editar Frequencias';
-$this->params['breadcrumbs'][] = ['label' => 'Frequências', 'url' => ['listartodos',  "ano" => $_GET["ano"]]];
-$this->params['breadcrumbs'][] = ['label' => 'Detalhes Frequências', 'url' => ['detalhar', "id" => $model->idusuario, "ano" => $_GET["ano"], "prof" => $ehProf]];
+$this->params['breadcrumbs'][] = ['label' => 'Frequências', 'url' => ['listartodos',  "ano" => $_GET["ano"],"mes" => $_GET["mes"]]];
+$this->params['breadcrumbs'][] = ['label' => 'Detalhes Frequências', 'url' => ['detalhar', "id" => $model->idusuario, "ano" => $_GET["ano"],"mes" => $_GET["mes"], "prof" => $ehProf]];
 $this->params['breadcrumbs'][] = ['label' => 'Editar Férias '.$model->nomeusuario];
 ?>
 <div class="frequencias-update">
     <p>
-        <?= Html::a('<span class="glyphicon glyphicon-arrow-left"></span> Voltar ', ['detalhar', "id" => $model->idusuario, "ano" => $_GET["ano"], "prof" => $ehProf], ['class' => 'btn btn-warning']) ?>
+        <?= Html::a('<span class="glyphicon glyphicon-arrow-left"></span> Voltar ', ['detalhar', "id" => $model->idusuario, "ano" => $_GET["ano"],"mes" => $_GET["mes"], "prof" => $ehProf], ['class' => 'btn btn-warning']) ?>
     </p>
     <?= $this->render('_formUpdate', [
         'model' => $model,
