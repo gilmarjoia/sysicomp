@@ -27,8 +27,9 @@ class Ocorrencias extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['codigo','ocorrencia'],'required'],
+            [['codigo','ocorrencia','naooficial'],'required'],
             [['id'], 'integer'],
+            [['naooficial'], 'boolean'],
             [['ocorrencia'], 'string'],
             [['codigo'], 'string', 'max' => 4],
             [['codigo','ocorrencia'],'unique']
@@ -44,6 +45,15 @@ class Ocorrencias extends \yii\db\ActiveRecord
             'id' => 'ID',
             'codigo' => 'Codigo',
             'ocorrencia' => 'Ocorrencia',
+            'naooficial' => 'Não Oficial'
         ];
+    }
+
+    public function getCodigo(){
+        if ($this->naooficial){
+            return 'X'.$this->codigo;
+        }else{
+            return $this->codigo;
+        }
     }
 }
