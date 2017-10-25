@@ -116,15 +116,17 @@ class FrequenciasController extends Controller
 
 
         $searchModel = new FrequenciasSearch();
-        $dataProvider = $searchModel->searchFrequencias(Yii::$app->request->queryParams , $ano,$mes);
+        //$dataProvider = $searchModel->searchFrequencias(Yii::$app->request->queryParams , $ano,$mes);
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams , $ano,$mes);
 
-        $searchModel2 = new FrequenciasSearch();
-        $dataProvider2 = $searchModel2->searchFuncionarios(Yii::$app->request->queryParams , $ano, $mes);
+        //$searchModel2 = new FrequenciasSearch();
+        //$dataProvider2 = $searchModel2->searchFuncionarios(Yii::$app->request->queryParams , $ano, $mes);
 
         return $this->render('listarTodos', [
             'searchModel' => $searchModel,
+            //'searchModel2' => $searchModel2,
             'dataProvider' => $dataProvider,
-            'dataProvider2' => $dataProvider2,
+            //'dataProvider2' => $dataProvider2,
             'todosAnosFrequencias' => $todosAnosFrequencias,
             'todosMesFrequencias' => $todosMesFrequencias,
         ]);

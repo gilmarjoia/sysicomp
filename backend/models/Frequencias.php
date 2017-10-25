@@ -21,6 +21,7 @@ class Frequencias extends \yii\db\ActiveRecord
     public $diasPagar;
     public $anoInicial;
     public $mesInicial;
+    public $nome;
 
     /**
      * @inheritdoc
@@ -269,13 +270,24 @@ class Frequencias extends \yii\db\ActiveRecord
             }
         }
 
-        return $dias-(array_sum($arrayDias)+$contRepetidos);
+        $resultado = $dias-(array_sum($arrayDias)+$contRepetidos);
 
+        if ($resultado < 0){
+            return 0;
+        }else{
+            return $resultado;
+        }
     }
 
    public function pegarCodigoOcorrencia($id){
         $ocorrencia = Ocorrencias::find()->select('j17_ocorrencias.codigo')->from('j17_ocorrencias')->where(['id' => $id])->one();
 
         return $ocorrencia->codigo;
+   }
+
+   public function colunaNome(){
+       $nome = User::find()->select("j17_user.nome, j17_user.id")->orderBy('nome');
+
+       return $nome;
    }
 }
