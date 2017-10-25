@@ -754,17 +754,17 @@ class FeriasController extends Controller
                     <td align="center" rowspan="3">'.$dataUsuario->cargo.'<!-- Cargo/Função--></td>
                     <td align="center" rowspan="3">'.($dFerias->adiantamentoDecimo == 1 ? "SIM" : "NÃO").'<!-- Antecipação 50% 13º--></td>
                     <td align="center" rowspan="3">'.($dFerias->adiantamentoFerias == 1 ? "SIM" : "NÃO").'<!-- Antecipação Férias--></td>
-                    <td height="20px">'.date("d-m-Y", strtotime($dataDatas[0]->dataSaida)).'<!-- Início--></td>
-                    <td>'.date("d-m-Y", strtotime($dataDatas[0]->dataRetorno)).'<!-- Fim--></td>
+                    <td height="20px">'.($dataDatas[0]->dataSaida == "" || null ? "" : date("d-m-Y", strtotime($dataDatas[0]->dataSaida))).'<!-- Início--></td>
+                    <td>'.($dataDatas[0]->dataSaida == "" || null ? "" : date("d-m-Y", strtotime($dataDatas[0]->dataRetorno))).'<!-- Fim--></td>
                     <td rowspan="3"><!-- Assinatura--></td>
                 </tr>
                 <tr>
-                    <td height="20px">'.date("d-m-Y", strtotime($dataDatas[1]->dataSaida)).'</td>
-                    <td>'.date("d-m-Y", strtotime($dataDatas[1]->dataRetorno)).'</td>
+                    <td height="20px">'.($dataDatas[1]->dataSaida == "" ? "" : date("d-m-Y", strtotime($dataDatas[1]->dataSaida))).'</td>
+                    <td>'.($dataDatas[1]->dataSaida == "" || null ? "" : date("d-m-Y", strtotime($dataDatas[1]->dataRetorno))).'</td>
                 </tr>
                 <tr>
-                    <td height="20px">'.date("d-m-Y", strtotime($dataDatas[2]->dataSaida)).'</td>
-                    <td>'.date("d-m-Y", strtotime($dataDatas[2]->dataRetorno)).'</td>
+                    <td height="20px">'.($dataDatas[2]->dataSaida == "" ? "" : date("d-m-Y", strtotime($dataDatas[2]->dataSaida))).'</td>
+                    <td>'.($dataDatas[2]->dataSaida == "" || null ? "" : date("d-m-Y", strtotime($dataDatas[2]->dataRetorno))).'</td>
                 </tr>
                 ');
             }
