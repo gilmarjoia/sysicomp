@@ -678,10 +678,10 @@ class FeriasController extends Controller
             return $this->redirect(['detalhar', 'id' => $idUsuario, 'ano' => $ano, 'prof' => $prof]);
         }
 
-        public function actionPrintvacationreport()
+        public function actionPrintvacationreport($ano)
         {
             $pdf = new mPDF('utf-8','A4-L','','','15','15','40','30');
-            $dataFerias = Ferias::find()->where('dataSaida LIKE :substr', array(':substr' => '2017%'))->groupBy(['idusuario'])->all();
+            $dataFerias = Ferias::find()->where('dataSaida LIKE :substr', array(':substr' => $ano.'%'))->groupBy(['idusuario'])->all();
             
             $pdf->SetHTMLHeader
             ('
@@ -728,12 +728,12 @@ class FeriasController extends Controller
                 </tr>
                 <tr  align="center" style="background-color: #6699ff; font-size: 150%">
                     <!-- Planilha -->
-                    <th width="10%" rowspan="2">Matrícula<br>SIAPE</th>
-                    <th width="25%" rowspan="2">Nome do Servidor</th>
+                    <th width="8%" rowspan="2">Matrícula<br>SIAPE</th>
+                    <th width="20%" rowspan="2">Nome do Servidor</th>
                     <th width="10%" rowspan="2">Cargo/<br>Função</th>
                     <th width="10%" rowspan="2">Antecipação<br>50% 13º</th>
                     <th width="10%"  rowspan="2">Antecipação<br>Férias</th>
-                    <th width="10%" colspan="2">Período de<br>Férias</th>
+                    <th width="17%" colspan="2">Período de<br>Férias</th>
                     <th width="25%" rowspan="2">Assinatura</th>
                 </tr>
                 <tr style="background-color: #6699ff;font-weight: bold;">
@@ -745,6 +745,7 @@ class FeriasController extends Controller
             foreach($dataFerias as $dFerias)
             {
                 $dataUsuario = User::find()->where(["id" => $dFerias->idusuario])->one();
+                $dataDatas = Ferias::find()->where(["idusuario" => $dataUsuario->id])->andWhere('dataSaida LIKE :substr', array(':substr' => $ano.'%'))->all();
                 $pdf->WriteHtml
                 ('
                 <tr>
@@ -753,17 +754,17 @@ class FeriasController extends Controller
                     <td align="center" rowspan="3">'.$dataUsuario->cargo.'<!-- Cargo/Função--></td>
                     <td align="center" rowspan="3">'.($dFerias->adiantamentoDecimo == 1 ? "SIM" : "NÃO").'<!-- Antecipação 50% 13º--></td>
                     <td align="center" rowspan="3">'.($dFerias->adiantamentoFerias == 1 ? "SIM" : "NÃO").'<!-- Antecipação Férias--></td>
-                    <td height="20px"><!-- Início--></td>
-                    <td><!-- Fim--></td>
+                    <td height="20px">'.date("d-m-Y", strtotime($dataDatas[0]->dataSaida)).'<!-- Início--></td>
+                    <td>'.date("d-m-Y", strtotime($dataDatas[0]->dataRetorno)).'<!-- Fim--></td>
                     <td rowspan="3"><!-- Assinatura--></td>
                 </tr>
                 <tr>
-                    <td height="20px"></td>
-                    <td></td>
+                    <td height="20px">'.date("d-m-Y", strtotime($dataDatas[1]->dataSaida)).'</td>
+                    <td>'.date("d-m-Y", strtotime($dataDatas[1]->dataRetorno)).'</td>
                 </tr>
                 <tr>
-                    <td height="20px"></td>
-                    <td></td>
+                    <td height="20px">'.date("d-m-Y", strtotime($dataDatas[2]->dataSaida)).'</td>
+                    <td>'.date("d-m-Y", strtotime($dataDatas[2]->dataRetorno)).'</td>
                 </tr>
                 ');
             }
