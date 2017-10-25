@@ -36,11 +36,12 @@ class Frequencias extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['idusuario', 'nomeusuario', 'dataInicial', 'dataFinal', 'codigoOcorrencia'], 'required'],
+            [['idusuario', 'nomeusuario', 'dataInicial', 'dataFinal', 'codigoOcorrencia','qtdDiasPagamento'], 'required'],
             [['idusuario'], 'integer'],
             [['dataInicial', 'dataFinal'], 'safe'],
             [['nomeusuario'], 'string', 'max' => 60],
-            [['codigoOcorrencia'], 'string']
+            [['codigoOcorrencia'], 'string'],
+            [['qtdDiasPagamento'], 'integer', 'min'=>0, 'max' => 30]
         ];
     }
 
@@ -56,6 +57,7 @@ class Frequencias extends \yii\db\ActiveRecord
             'dataInicial' => 'Data Inicial',
             'dataFinal' => 'Data Final',
             'codigoOcorrencia' => 'Código da Ocorrencia',
+            'qtdDiasPagamento' => 'Dias para Pagamento'
         ];
     }
 

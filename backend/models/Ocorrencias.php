@@ -56,4 +56,5 @@ class Ocorrencias extends \yii\db\ActiveRecord
             return $this->codigo;
         }
     }
+
 }

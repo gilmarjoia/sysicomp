@@ -121,7 +121,6 @@ $this->params['breadcrumbs'][] = $this->title;
                         ',View::POS_READY,'my-button-handler');
 ?>
 
-
 <div id='RemoverVarios'> 
 
 <button class='btn btn-danger' id='butt'>Remover Férias</button>

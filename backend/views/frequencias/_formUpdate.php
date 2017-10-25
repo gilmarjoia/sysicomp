@@ -1,5 +1,4 @@
 <?php
-
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use kartik\widgets\DatePicker;
@@ -19,7 +18,6 @@ for ($i = 0; $i < $numOcorrencias; $i++) {
 }
 
 $listData = ArrayHelper::map($arrayOcorrencias,'codigo','ocorrencia','codigo');
-
 ?>
 
     <div class="ferias-form">
@@ -53,6 +51,10 @@ $listData = ArrayHelper::map($arrayOcorrencias,'codigo','ocorrencia','codigo');
 
         <div class = "row">
             <?php echo $form->field($model, 'codigoOcorrencia' , ['options' => ['class' => 'col-md-6']])->dropDownlist($listData, ['prompt' => 'Selecione um código de Ocorrência'])->label("<font color='#FF0000'>*</font> <b>Código da Ocorrência:</b>");?>
+        </div>
+
+        <div class = "row">
+            <?php echo $form->field($model, 'qtdDiasPagamento' , ['options' => ['class' => 'col-md-6']])->textInput(['min' => 0, 'max' => 30])->label("<font color='#FF0000'>*</font> <b>Quantidade de dias para pagamento:</b>");?>
         </div>
 
         <div class="form-group">

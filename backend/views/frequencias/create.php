@@ -13,7 +13,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="frequencias-create">
 
     <p>
-        <?= Html::a('<span class="glyphicon glyphicon-arrow-left"></span> Voltar  ', ['listar', "ano" => $_GET["ano"], ], ['class' => 'btn btn-warning']) ?>
+       <?= Html::a('<span class="glyphicon glyphicon-arrow-left"></span>&nbsp;&nbsp;Voltar','#',['class' => 'btn btn-warning','onclick'=>"history.go(-1);"]); ?>
     </p>
 
 
