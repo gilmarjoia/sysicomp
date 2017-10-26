@@ -7,6 +7,7 @@ use DateTime;
 use DatePeriod;
 use DateInterval;
 use app\models\Frequencias;
+use app\models\Afastamentos;
 use yii\filters\AccessControl;
 use common\models\User;
 use app\models\FrequenciasSearch;
@@ -201,6 +202,8 @@ class FrequenciasController extends Controller
         $model->idusuario = Yii::$app->user->identity->id;
         $model->nomeusuario = Yii::$app->user->identity->nome;
 
+        $dataAfastamento = Afastamentos::find()->where(["idusuario" => $model->idusuario])->all();
+
         $ehProfessor = Yii::$app->user->identity->professor;
         $ehSecretario = Yii::$app->user->identity->secretaria;
 
@@ -234,6 +237,33 @@ class FrequenciasController extends Controller
                 return $this->render('create', [
                     'model' => $model,
                 ]);
+            }
+
+            $cont = 0;
+            if ($dataAfastamento != null) {
+
+                foreach ($dataAfastamento as $value) {
+                    if ($value->datasaida <= $model->dataInicial and $value->dataretorno >= $model->dataFinal) {
+                        $cont++;
+                    }
+                    if ($value->datasaida >= $model->dataInicial and $value->datasaida <= $model->dataFinal and $value->dataretorno >= $model->dataFinal){
+                        $cont++;
+                    }
+                    if ($value->datasaida <= $model->dataInicial and $value->datasaida <= $model->dataFinal and $value->dataretorno >= $model->dataFinal) {
+                        $cont++;
+                    }
+                    if ($value->datasaida >= $model->dataInicial and $value->dataretorno <= $model->dataFinal) {
+                        $cont++;
+                    }
+                }
+                if ($cont != 0) {
+                    $this->mensagens('danger', 'Registro Frequências', 'Datas inválidas, afastamento cadastrado no mesmo período !');
+                    $model->dataInicial = date('d-m-Y', strtotime($model->dataInicial));
+                    $model->dataFinal = date('d-m-Y', strtotime($model->dataFinal));
+                    return $this->render('create', [
+                        'model' => $model,
+                    ]);
+                }
             }
         
             if( $diferencaDias < 0 || $interval->format('%R') == "-" ){
@@ -304,6 +334,7 @@ class FrequenciasController extends Controller
         $model->idusuario;
         $model->nomeusuario = $model_User->nome;
 
+        $dataAfastamento = Afastamentos::find()->where(["idusuario" => $model->idusuario])->all();
         //print_r($dataRegistro);
 
         if ($model->load(Yii::$app->request->post())) {
@@ -331,6 +362,33 @@ class FrequenciasController extends Controller
                 return $this->render('createsecretaria', [
                     'model' => $model,
                 ]);
+            }
+
+            $cont = 0;
+            if ($dataAfastamento != null) {
+
+                foreach ($dataAfastamento as $value) {
+                    if ($value->datasaida <= $model->dataInicial and $value->dataretorno >= $model->dataFinal) {
+                        $cont++;
+                    }
+                    if ($value->datasaida >= $model->dataInicial and $value->datasaida <= $model->dataFinal and $value->dataretorno >= $model->dataFinal){
+                        $cont++;
+                    }
+                    if ($value->datasaida <= $model->dataInicial and $value->datasaida <= $model->dataFinal and $value->dataretorno >= $model->dataFinal) {
+                        $cont++;
+                    }
+                    if ($value->datasaida >= $model->dataInicial and $value->dataretorno <= $model->dataFinal) {
+                        $cont++;
+                    }
+                }
+                if ($cont != 0) {
+                    $this->mensagens('danger', 'Registro Frequências', 'Datas inválidas, afastamento cadastrado no mesmo período !');
+                    $model->dataInicial = date('d-m-Y', strtotime($model->dataInicial));
+                    $model->dataFinal = date('d-m-Y', strtotime($model->dataFinal));
+                    return $this->render('create', [
+                        'model' => $model,
+                    ]);
+                }
             }
 
             if ($diferencaDias < 0 || $interval->format('%R') == "-") {
@@ -400,6 +458,7 @@ class FrequenciasController extends Controller
         $intervalAnterior = $datetime1Anterior->diff($datetime2Anterior);
         $AnteriordiferencaDias = $intervalAnterior->format('%a');
         $AnteriordiferencaDias++;
+        $dataAfastamento = Afastamentos::find()->where(["idusuario" => $model->idusuario])->all();
 
         //$anteriorTipo = $model->tipo;
 
@@ -421,6 +480,44 @@ class FrequenciasController extends Controller
             $interval = $datetime1->diff($datetime2);
             $diferencaDias = $interval->format('%a');
             $diferencaDias++;
+
+            if($model->verificarSeDataEhValida($model->idusuario,$anoSaida,$mesSaida,$model->dataInicial,$model->dataFinal)==0){
+                $this->mensagens('danger', 'Registro Frequências',  'Falha no Registro de Frequência, já existe uma ocorrência dentro da data especificada!');
+
+                $model->dataInicial = date('d-m-Y', strtotime($model->dataInicial));
+                $model->dataFinal =  date('d-m-Y', strtotime($model->dataFinal));
+
+                return $this->render('create', [
+                    'model' => $model,
+                ]);
+            }
+
+            $cont = 0;
+            if ($dataAfastamento != null) {
+
+                foreach ($dataAfastamento as $value) {
+                    if ($value->datasaida <= $model->dataInicial and $value->dataretorno >= $model->dataFinal) {
+                        $cont++;
+                    }
+                    if ($value->datasaida >= $model->dataInicial and $value->datasaida <= $model->dataFinal and $value->dataretorno >= $model->dataFinal){
+                        $cont++;
+                    }
+                    if ($value->datasaida <= $model->dataInicial and $value->datasaida <= $model->dataFinal and $value->dataretorno >= $model->dataFinal) {
+                        $cont++;
+                    }
+                    if ($value->datasaida >= $model->dataInicial and $value->dataretorno <= $model->dataFinal) {
+                        $cont++;
+                    }
+                }
+                if ($cont != 0) {
+                    $this->mensagens('danger', 'Registro Frequências', 'Datas inválidas, afastamento cadastrado no mesmo período !');
+                    $model->dataInicial = date('d-m-Y', strtotime($model->dataInicial));
+                    $model->dataFinal = date('d-m-Y', strtotime($model->dataFinal));
+                    return $this->render('create', [
+                        'model' => $model,
+                    ]);
+                }
+            }
 
 
 

@@ -221,6 +221,7 @@ class FeriasController extends Controller
 
         $dataAfastamento = Afastamentos::find()->where(["idusuario" => $model->idusuario])->all();
         $dataRegistro = Ferias::find()->where(['idusuario' => $model->idusuario])->andWhere(['tipo' => 2])->all();
+        $dataRegistro2 = Ferias::find()->where(['idusuario' => $model->idusuario])->andWhere(['tipo' => 1])->all();
 
 
         if($ehProfessor == 1){
@@ -262,6 +263,7 @@ class FeriasController extends Controller
                 }
 
             $contRegistro = 0;
+            $contRegistro2 =0;
 
             if ($dataRegistro != null and $model->tipo == 2) {
 
@@ -281,6 +283,33 @@ class FeriasController extends Controller
                 }
 
                 if ($contRegistro != 0) {
+                    $this->mensagens('danger', 'Registro Férias', 'Datas inválidas, registro já realizado nesta data !');
+                    $model->dataSaida = date('d-m-Y', strtotime($model->dataSaida));
+                    $model->dataRetorno = date('d-m-Y', strtotime($model->dataRetorno));
+                    return $this->render('create', [
+                        'model' => $model,
+                    ]);
+                }
+            }
+
+            if ($dataRegistro2 != null and $model->tipo == 1) {
+
+                foreach ($dataRegistro2 as $value) {
+                    if ($value->dataSaida <= $model->dataSaida and $value->dataRetorno >= $model->dataSaida) {
+                        $contRegistro2++;
+                    }
+                    if ($value->dataSaida >= $model->dataSaida and $value->dataSaida <= $model->dataRetorno and $value->dataRetorno >= $model->dataRetorno) {
+                        $contRegistro2++;
+                    }
+                    if ($value->dataSaida <= $model->dataSaida and $value->dataSaida <= $model->dataRetorno and $value->dataRetorno >= $model->dataRetorno) {
+                        $contRegistro2++;
+                    }
+                    if ($value->dataSaida >= $model->dataSaida and $value->dataRetorno <= $model->dataRetorno) {
+                        $contRegistro2++;
+                    }
+                }
+
+                if ($contRegistro2 != 0) {
                     $this->mensagens('danger', 'Registro Férias', 'Datas inválidas, registro já realizado nesta data !');
                     $model->dataSaida = date('d-m-Y', strtotime($model->dataSaida));
                     $model->dataRetorno = date('d-m-Y', strtotime($model->dataRetorno));
@@ -367,6 +396,7 @@ class FeriasController extends Controller
         
         $dataAfastamento = Afastamentos::find()->where(["idusuario" => $model->idusuario])->all();
         $dataRegistro = Ferias::find()->where(['idusuario' => $id])->andWhere(['tipo' => 2])->all();
+        $dataRegistro2 = Ferias::find()->where(['idusuario' => $id])->andWhere(['tipo' => 1])->all();
 
         //print_r($dataRegistro);
 
@@ -412,6 +442,34 @@ class FeriasController extends Controller
                     }
                 }
                 if ($contRegistro != 0) {
+                    $this->mensagens('danger', 'Registro Férias', 'Datas inválidas, registro já realizado nesta data !');
+                    $model->dataSaida = date('d-m-Y', strtotime($model->dataSaida));
+                    $model->dataRetorno = date('d-m-Y', strtotime($model->dataRetorno));
+                    return $this->render('createsecretaria', [
+                        'model' => $model,
+                        'nome' => $model->nomeusuario,
+                    ]);
+                }
+            }
+
+            $contRegistro2 = 0;
+            if ($dataRegistro2 != null and $model->tipo == 1) {
+
+                foreach ($dataRegistro2 as $value) {
+                    if ($value->dataSaida <= $model->dataSaida and $value->dataRetorno >= $model->dataSaida) {
+                        $contRegistro2++;
+                    }
+                    if ($value->dataSaida >= $model->dataSaida and $value->dataSaida <= $model->dataRetorno and $value->dataRetorno >= $model->dataRetorno) {
+                        $contRegistro2++;
+                    }
+                    if ($value->dataSaida <= $model->dataSaida and $value->dataSaida <= $model->dataRetorno and $value->dataRetorno >= $model->dataRetorno) {
+                        $contRegistro2++;
+                    }
+                    if ($value->dataSaida >= $model->dataSaida and $value->dataRetorno <= $model->dataRetorno) {
+                        $contRegistro++;
+                    }
+                }
+                if ($contRegistro2 != 0) {
                     $this->mensagens('danger', 'Registro Férias', 'Datas inválidas, registro já realizado nesta data !');
                     $model->dataSaida = date('d-m-Y', strtotime($model->dataSaida));
                     $model->dataRetorno = date('d-m-Y', strtotime($model->dataRetorno));
@@ -485,6 +543,7 @@ class FeriasController extends Controller
         $idUsuarioFerias = Ferias::find()->where(["id" => $id])->one()->idusuario;
         $dataAfastamento = Afastamentos::find()->where(["idusuario" => $idUsuarioFerias])->all();
         $dataRegistro = Ferias::find()->where(['idusuario' => $idUsuarioFerias,'tipo' => 2])->all();
+        $dataRegistro2 = Ferias::find()->where(['idusuario' => $idUsuarioFerias,'tipo' => 1])->all();
         //print_r($dataRegistro[0]);
 
         $model = $this->findModel($id);
@@ -538,7 +597,7 @@ class FeriasController extends Controller
 
             }
 
-            $contRegistro = 0;
+            /*$contRegistro = 0;
             if ($dataRegistro != null and $model->tipo == 2) {
 
                 foreach ($dataRegistro as $value) {
@@ -564,6 +623,33 @@ class FeriasController extends Controller
                     ]);
                 }
             }
+
+            $contRegistro2 = 0;
+            if ($dataRegistro2 != null and $model->tipo == 1) {
+
+                foreach ($dataRegistro2 as $value) {
+                    if ($value->dataSaida <= $model->dataSaida and $value->dataRetorno >= $model->dataSaida) {
+                        $contRegistro2++;
+                    }
+                    if ($value->dataSaida >= $model->dataSaida and $value->dataSaida <= $model->dataRetorno and $value->dataRetorno >= $model->dataRetorno) {
+                        $contRegistro2++;
+                    }
+                    if ($value->dataSaida <= $model->dataSaida and $value->dataSaida <= $model->dataRetorno and $value->dataRetorno >= $model->dataRetorno) {
+                        $contRegistro2++;
+                    }
+                    if ($value->dataSaida >= $model->dataSaida and $value->dataRetorno <= $model->dataRetorno) {
+                        $contRegistro2++;
+                    }
+                }
+                if ($contRegistro2 != 0) {
+                    $this->mensagens('danger', 'Registro Férias', 'Datas inválidas, não pode cadastrar férias na mesma data');
+                    $model->dataSaida = date('d-m-Y', strtotime($model->dataSaida));
+                    $model->dataRetorno = date('d-m-Y', strtotime($model->dataRetorno));
+                    return $this->render('update', [
+                        'model' => $model,
+                    ]);
+                }
+            }*/
 
             $cont = 0;
 
