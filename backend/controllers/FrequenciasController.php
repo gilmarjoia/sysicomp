@@ -495,6 +495,7 @@ class FrequenciasController extends Controller
         $novaFrequencia->idusuario = $model->idusuario;
         $novaFrequencia->nomeusuario = $model->nomeusuario;
         $novaFrequencia->codigoOcorrencia = $model->codigoOcorrencia;
+        $novaFrequencia->qtdDiasPagamento = $model->qtdDiasPagamento;
 
         $dataInicial = $model->dataInicial; 
         $dataFinal = $model->dataFinal;
