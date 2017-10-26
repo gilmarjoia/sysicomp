@@ -185,8 +185,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 //'nomeusuario',
                 'dataInicial',
                 'dataFinal',
-                'codigoOcorrencia',
-
+                [
+                 'label' => 'Código da Ocorrência',
+                 'value' => function($model){
+                                return Ocorrencias::find()->where(["codigo" => $model->codigoOcorrencia])->one()->getCodigo();
+                            }    
+                ],
                 [
                     'label' => 'Descrição',
                     'content' => function($model){

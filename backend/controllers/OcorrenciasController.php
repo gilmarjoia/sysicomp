@@ -24,6 +24,7 @@ class OcorrenciasController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['POST'],
+                    'dias',
                 ],
             ],
         ];
@@ -104,6 +105,18 @@ class OcorrenciasController extends Controller
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
+    }
+
+    public function actionDias(){
+        $codigo = $_GET['codigo'];
+        $naooficial = Ocorrencias::find()->where(["codigo" => $codigo])->one()->naooficial;
+        $diasPagamento = '30';
+
+        if($naooficial){
+            $diasPagamento = '0';
+        }
+
+        echo $diasPagamento;
     }
 
     /**

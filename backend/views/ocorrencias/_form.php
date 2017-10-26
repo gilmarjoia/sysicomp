@@ -29,7 +29,7 @@ use yii\widgets\ActiveForm;
 			    <?= $form->field($model, 'codigo', ['options' => ['class' => 'col-md-5']])->textInput(['maxlength' => true])->label("<font color='#FF0000'>*</font> <b>Codigo</b>") ?>
 			    </div>
 
-			    <div class="row">
+				<div class="row">
 			    <?= $form->field($model, 'ocorrencia', ['options' => ['class' => 'col-md-5']])->textarea(['rows' => 6])->label("<font color='#FF0000'>*</font> <b>Ocorrência</b>") ?>
 				</div>
 			    

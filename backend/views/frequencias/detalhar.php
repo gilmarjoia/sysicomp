@@ -165,7 +165,12 @@ if( isset($_GET["ano"]) && isset($_GET["mes"]) && isset($_GET["prof"]) ){
                     },
                 ],
 
-                ['attribute' => 'codigoOcorrencia'],
+                [
+                 'label' => 'Código da Ocorrência',
+                 'value' => function($model){
+                                return Ocorrencias::find()->where(["codigo" => $model->codigoOcorrencia])->one()->getCodigo();
+                            }    
+                ],
 
                 [
                     'label' => 'Descrição da Ocorrência',

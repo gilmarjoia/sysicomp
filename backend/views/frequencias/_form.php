@@ -4,30 +4,43 @@ use yii\helpers\ArrayHelper;
 use yii\widgets\ActiveForm;
 use kartik\widgets\DatePicker;
 use kartik\widgets\SwitchInput;
-use app\models\Ocorrencias;
 use app\models\Ferias;
+use app\models\Ocorrencias;
 use xj\bootbox\BootboxAsset;
 use yii\web\View;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Frequencias */
 /* @var $form yii\widgets\ActiveForm */
 
-
-//$arrayOcorrencias = Ocorrencias::find()->select("j17_ocorrencias.codigo")->column();
 $arrayOcorrencias = Ocorrencias::find()->select("codigo,ocorrencia")->all();
 $numOcorrencias = count($arrayOcorrencias);
 
 for ($i = 0; $i < $numOcorrencias; $i++) {
-    $arrayOcorrencias[$i]->ocorrencia = $arrayOcorrencias[$i]->codigo.' - '.$arrayOcorrencias[$i]->ocorrencia; 
+    $arrayOcorrencias[$i]->ocorrencia =  Ocorrencias::find()->where("codigo" => [$arrayOcorrencias[$i]->codigo])->one()->getCodigo().' - '.$arrayOcorrencias[$i]->ocorrencia; 
 }
 
 $listData = ArrayHelper::map($arrayOcorrencias,'codigo','ocorrencia','codigo');
 
 $nomeusuario = Ferias::find()->select("j17_ferias.nomeusuario")->from('j17_ferias')->where(['idusuario' => $_GET["id"]])->one()->nomeusuario;
-//print_r($idUser);
+?>
 
-//var_dump($idUser);
+<?php
+    $this->registerJS('$("#frequencias-codigoocorrencia").change(function(){
+                            var lista = document.getElementById("frequencias-codigoocorrencia");
+                            var codigo=lista.options[lista.selectedIndex].value;
+                            
+                            $.ajax({
+                                data:{codigo:codigo},
+                                url:"'.Url::To(array('ocorrencias/dias')).'",
+                                success:function(data){
+                                    $("#frequencias-qtddiaspagamento").val(data);
+                                },              
+                            });
+                        });
+
+                        ',View::POS_READY,'my-button-handler');
 ?>
 
 <div class="frequencias-form">
