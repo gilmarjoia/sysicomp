@@ -5,11 +5,12 @@ use yii\grid\GridView;
 use xj\bootbox\BootboxAsset;
 use app\models\Frequencias;
 use app\models\user;
+
 BootboxAsset::register($this);
 BootboxAsset::registerWithOverride($this);
 
 /* @var $this yii\web\View */
-/* @var $searchModel app\models\FrequenciasSearch */
+/* @var $searchModel app\models\UserSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 //$var = new Ferias();
@@ -34,7 +35,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <p>
     <?= Html::a('<span class="glyphicon glyphicon-arrow-left"></span> Voltar  ', ['site/index'], ['class' => 'btn btn-warning']) ?>
-    <?= Html::a('<span class="glyphicon glyphicon-list-alt"></span> Gerar Relatório', ['site/index'], ['class' => 'btn btn-primary'])?>
+    <?= Html::a('<span class="glyphicon glyphicon-list-alt"></span> Gerar Relatório', ['frequencias/index'] , ['target' => '_blank', 'class' => 'btn btn-info'])?>
+</p>
 </p>
 
 
@@ -63,11 +65,12 @@ $this->params['breadcrumbs'][] = $this->title;
 <h3 style = "text-align: center; border: solid 1px; padding: 5px 5px 5px 5px; background-color: lightblue ; font-weight: bold ; margin: 20px 0px 20px 0px"> Frequências dos Servidores </h3>
 
 <div class="frequencias-index">
-    <h5 style="background-color: lightblue">
+
+   <h5 style="background-color: lightblue">
         <?= GridView::widget([
             'dataProvider' => $dataProvider,
 
-            //'filterModel' => $searchModel,
+            'filterModel' => $searchModel,
 
             'columns' => [
                 ['class' => 'yii\grid\SerialColumn'],
@@ -97,6 +100,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         return User::find()->select("j17_user.cargo, j17_user.id")->where(["j17_user.id" => $model->id])->one()->cargo;
                     },
                 ],
+
                 [
                     'label' => 'Quantidade de Dias a Pagar ' ,
                     'value' => function ($model){
