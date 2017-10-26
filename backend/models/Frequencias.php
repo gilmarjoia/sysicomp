@@ -21,6 +21,7 @@ class Frequencias extends \yii\db\ActiveRecord
     public $diasPagar;
     public $anoInicial;
     public $mesInicial;
+    public $nome;
 
     /**
      * @inheritdoc
@@ -36,11 +37,12 @@ class Frequencias extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['idusuario', 'nomeusuario', 'dataInicial', 'dataFinal', 'codigoOcorrencia'], 'required'],
+            [['idusuario', 'nomeusuario', 'dataInicial', 'dataFinal', 'codigoOcorrencia','qtdDiasPagamento'], 'required'],
             [['idusuario'], 'integer'],
             [['dataInicial', 'dataFinal'], 'safe'],
             [['nomeusuario'], 'string', 'max' => 60],
-            [['codigoOcorrencia'], 'string']
+            [['codigoOcorrencia'], 'string'],
+            [['qtdDiasPagamento'], 'integer', 'min'=>0, 'max' => 30]
         ];
     }
 
@@ -56,6 +58,7 @@ class Frequencias extends \yii\db\ActiveRecord
             'dataInicial' => 'Data Inicial',
             'dataFinal' => 'Data Final',
             'codigoOcorrencia' => 'Código da Ocorrencia',
+            'qtdDiasPagamento' => 'Dias para Pagamento'
         ];
     }
 
@@ -267,13 +270,24 @@ class Frequencias extends \yii\db\ActiveRecord
             }
         }
 
-        return $dias-(array_sum($arrayDias)+$contRepetidos);
+        $resultado = $dias-(array_sum($arrayDias)+$contRepetidos);
 
+        if ($resultado < 0){
+            return 0;
+        }else{
+            return $resultado;
+        }
     }
 
    public function pegarCodigoOcorrencia($id){
         $ocorrencia = Ocorrencias::find()->select('j17_ocorrencias.codigo')->from('j17_ocorrencias')->where(['id' => $id])->one();
 
         return $ocorrencia->codigo;
+   }
+
+   public function colunaNome(){
+       $nome = User::find()->select("j17_user.nome, j17_user.id")->orderBy('nome');
+
+       return $nome;
    }
 }

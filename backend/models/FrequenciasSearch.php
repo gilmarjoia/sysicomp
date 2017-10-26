@@ -4,6 +4,7 @@ use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\Frequencias;
+use app\models\User;
 /**
  * FrequenciasSearch represents the model behind the search form of `app\models\Frequencias`.
  */
@@ -16,7 +17,7 @@ class FrequenciasSearch extends Frequencias
     {
         return [
             [['id', 'idusuario'], 'integer'],
-            [['nomeusuario', 'dataInicial', 'dataFinal', 'codigoOcorrencia'], 'safe'],
+            [['nome','nomeusuario', 'dataInicial', 'dataFinal', 'codigoOcorrencia'], 'safe'],
         ];
     }
     /**
@@ -36,9 +37,10 @@ class FrequenciasSearch extends Frequencias
      * @return ActiveDataProvider
      */
 
-    public function search($params){
+    public function search($params,$ano,$mes){
         //$query = User::find()->select("j17_user.nome, j17_user.id")->where(["j17_user.professor" => 1])->orderBy('nome');
-        $query = Frequencias::find();
+        $query = User::find()->select("j17_user.nome, j17_user.id")->orderBy('nome');
+        //$query = Frequencias::find();
 
         // add conditions that should always apply here
         $dataProvider = new ActiveDataProvider([
@@ -56,6 +58,7 @@ class FrequenciasSearch extends Frequencias
         $dataProvider->sort->attributes['nome'] = [
             'asc' => ['nome' => SORT_ASC],
             'desc' => ['nome' => SORT_DESC],
+
         ];
         // grid filtering conditions
         $query->andFilterWhere([
@@ -65,11 +68,13 @@ class FrequenciasSearch extends Frequencias
             'dataFinal' => $this->dataFinal,
         ]);
         $query->andFilterWhere(['like', 'nomeusuario', $this->nomeusuario])
-            ->andFilterWhere(['like', 'codigoOcorrencia', $this->codigoOcorrencia]);
+            ->andFilterWhere(['like', 'codigoOcorrencia', $this->codigoOcorrencia])
+            ->andFilterWhere(['like', 'nome', $this->nome]);
         return $dataProvider;
     }
 
-    public function searchFrequencias($params,$ano,$mes){
+    /*
+     public function searchFrequencias($params,$ano,$mes){
         //$query = User::find()->select("j17_user.nome, j17_user.id")->where(["j17_user.professor" => 1])->orderBy('nome');
         $query = User::find()->select("j17_user.nome, j17_user.id")->orderBy('nome');
         //$query = Frequencias::find();
@@ -102,8 +107,9 @@ class FrequenciasSearch extends Frequencias
             ->andFilterWhere(['like', 'codigoOcorrencia', $this->codigoOcorrencia]);
         return $dataProvider;
     }
+    */
 
-    public function searchFuncionarios($params,$ano,$mes){
+    /*public function searchFuncionarios($params,$ano,$mes){
         $query = User::find()->select("j17_user.nome, j17_user.id")->where(["j17_user.secretaria" => 1])->andWhere(["j17_user.professor" => 0])->orderBy('nome');
         // add conditions that should always apply here
         $dataProvider = new ActiveDataProvider([
@@ -132,7 +138,7 @@ class FrequenciasSearch extends Frequencias
         $query->andFilterWhere(['like', 'nomeusuario', $this->nomeusuario])
             ->andFilterWhere(['like', 'codigoOcorrencia', $this->codigoOcorrencia]);
         return $dataProvider;
-    }
+    }*/
     
     public function searchMinhasFrequencias($params, $idUser ,$ano,$mes)
     {

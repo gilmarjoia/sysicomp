@@ -1,7 +1,4 @@
 <?php
-
-
-
 use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
 use yii\widgets\ActiveForm;
@@ -29,7 +26,6 @@ $nomeusuario = Ferias::find()->select("j17_ferias.nomeusuario")->from('j17_feria
 //print_r($idUser);
 
 //var_dump($idUser);
-
 ?>
 
     <div class="frequencias-form">
@@ -71,6 +67,10 @@ $nomeusuario = Ferias::find()->select("j17_ferias.nomeusuario")->from('j17_feria
 
         <div class = "row">
             <?php echo $form->field($model, 'codigoOcorrencia' , ['options' => ['class' => 'col-md-6']])->dropDownlist($listData, ['prompt' => 'Selecione um código de Ocorrência'])->label("<font color='#FF0000'>*</font> <b>Código da Ocorrência:</b>");?>
+        </div>
+        
+        <div class = "row">
+            <?php echo $form->field($model, 'qtdDiasPagamento' , ['options' => ['class' => 'col-md-6']])->textInput(['min' => 0, 'max' => 30])->label("<font color='#FF0000'>*</font> <b>Quantidade de dias para pagamento:</b>");?>
         </div>
 
         <div class="form-group">

@@ -18,7 +18,7 @@ $this->params['breadcrumbs'][] = ['label' => 'Editar Férias '.$model->nomeusuar
 ?>
 <div class="frequencias-update">
     <p>
-        <?= Html::a('<span class="glyphicon glyphicon-arrow-left"></span> Voltar ', ['detalhar', "id" => $model->idusuario, "ano" => $_GET["ano"],"mes" => $_GET["mes"], "prof" => $ehProf], ['class' => 'btn btn-warning']) ?>
+        <?= Html::a('<span class="glyphicon glyphicon-arrow-left"></span>&nbsp;&nbsp;Voltar','#',['class' => 'btn btn-warning','onclick'=>"history.go(-1);"]); ?>
     </p>
     <?= $this->render('_formUpdate', [
         'model' => $model,

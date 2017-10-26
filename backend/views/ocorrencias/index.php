@@ -24,7 +24,13 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'codigo',
+            [
+             'label' => 'Codigo',
+             'value' => function($model){
+                            return $model->getCodigo();
+                        }    
+            ],
+            
             'ocorrencia:ntext',
 
             ['class' => 'yii\grid\ActionColumn'],
