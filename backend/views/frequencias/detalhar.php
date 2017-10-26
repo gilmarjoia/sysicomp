@@ -7,12 +7,9 @@ use yii\grid\CheckBoxColumn;
 use xj\bootbox\BootboxAsset;
 use yii\helpers\Url;
 use yii\web\View;
-use app\models\User;
 use app\models\Ocorrencias;
+use app\models\User;
 
-/* @var $this yii\web\View */
-/* @var $searchModel app\models\FrequenciasSearch */
-/* @var $dataProvider yii\data\ActiveDataProvider */
 BootboxAsset::register($this);
 BootboxAsset::registerWithOverride($this);
 
@@ -20,8 +17,6 @@ $this->title = 'Detalhes de Frequências';
 
 $this->params['breadcrumbs'][] = ['label' => 'Frequências', 'url' => ['listartodos',  "ano" => $_GET["ano"],"mes"=>$_GET["mes"] ]];
 $this->params['breadcrumbs'][] = $this->title;
-
-
 
 if( isset($_GET["ano"]) && isset($_GET["mes"]) && isset($_GET["prof"]) ){
     $anoVoltar = $_GET["ano"];
@@ -31,6 +26,20 @@ if( isset($_GET["ano"]) && isset($_GET["mes"]) && isset($_GET["prof"]) ){
 }
 
 ?>
+
+<script type="text/javascript">
+
+    function anoSelecionado(){
+        var x = document.getElementById("comboBoxAno").value;
+        var y = document.getElementById("comboBoxMes").value;
+        var id = <?= $id ?>;
+        var prof = <?= $profVoltar ?>;
+
+        window.location="index.php?r=frequencias/detalhar&ano="+x+"&mes="+y+"&id="+id+"&prof="+prof;
+
+    }
+
+</script>
 
 
 
@@ -89,6 +98,27 @@ if( isset($_GET["ano"]) && isset($_GET["mes"]) && isset($_GET["prof"]) ){
     ],
 ]) ?>
 
+<p>
+    Selecione um mes: <select id="comboBoxMes" onchange="anoSelecionado();" class="form-control" style="margin-bottom: 20px; width:10%;">
+        <?php for($i=0; $i<count($todosMesFrequencias); $i++){
+
+            $valores = $todosMesFrequencias[$i];
+
+            ?>
+            <option <?php if($valores == $_GET["mes"]){echo "SELECTED";} ?> > <?php echo $valores ?> </option>
+        <?php } ?>
+    </select>
+    Selecione um ano: <select id= "comboBoxAno" onchange="anoSelecionado();" class="form-control" style="margin-bottom: 20px; width:10%;">
+        <?php for($i=0; $i<count($todosAnosFrequencias); $i++){
+
+            $valores = $todosAnosFrequencias[$i];
+
+            ?>
+            <option <?php if($valores == $_GET["ano"]){echo "SELECTED";} ?> > <?php echo $valores ?> </option>
+        <?php } ?>
+    </select>
+</p>
+
 <?php
     $this->registerJS('$("#butt").click(function(){
                             var checked=$("#item-grid").yiiGridView("getSelectedRows"); 
@@ -140,6 +170,7 @@ if( isset($_GET["ano"]) && isset($_GET["mes"]) && isset($_GET["prof"]) ){
 </div>
 
 <div class="frequencias-index">
+
     <h5 style="background-color: lightblue">
         <?= GridView::widget([
             'id' => 'item-grid',

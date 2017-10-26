@@ -90,6 +90,27 @@ $this->params['breadcrumbs'][] = $this->title;
     ],
 ]) ?>
 
+<p>
+    Selecione um mes: <select id="comboBoxMes" onchange="anoSelecionado();" class="form-control" style="margin-bottom: 20px; width:10%;">
+        <?php for($i=0; $i<count($todosMesFrequencias); $i++){
+
+            $valores = $todosMesFrequencias[$i];
+
+            ?>
+            <option <?php if($valores == $_GET["mes"]){echo "SELECTED";} ?> > <?php echo $valores ?> </option>
+        <?php } ?>
+    </select>
+    Selecione um ano: <select id= "comboBoxAno" onchange="anoSelecionado();" class="form-control" style="margin-bottom: 20px; width:10%;">
+        <?php for($i=0; $i<count($todosAnosFrequencias); $i++){
+
+            $valores = $todosAnosFrequencias[$i];
+
+            ?>
+            <option <?php if($valores == $_GET["ano"]){echo "SELECTED";} ?> > <?php echo $valores ?> </option>
+        <?php } ?>
+    </select>
+</p>
+
 <?php
     $this->registerJS('$("#butt").click(function(){
                             var checked=$("#item-grid").yiiGridView("getSelectedRows"); 
@@ -145,26 +166,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-    <p>
-        Selecione um mes: <select id="comboBoxMes" onchange="anoSelecionado();" class="form-control" style="margin-bottom: 20px; width:10%;">
-            <?php for($i=0; $i<count($todosMesFrequencias); $i++){
-
-                $valores = $todosMesFrequencias[$i];
-
-                ?>
-                <option <?php if($valores == $_GET["mes"]){echo "SELECTED";} ?> > <?php echo $valores ?> </option>
-            <?php } ?>
-        </select>
-        Selecione um ano: <select id= "comboBoxAno" onchange="anoSelecionado();" class="form-control" style="margin-bottom: 20px; width:10%;">
-            <?php for($i=0; $i<count($todosAnosFrequencias); $i++){
-
-                $valores = $todosAnosFrequencias[$i];
-
-                ?>
-                <option <?php if($valores == $_GET["ano"]){echo "SELECTED";} ?> > <?php echo $valores ?> </option>
-            <?php } ?>
-        </select>
-    </p>
     <h5 style="background-color: lightblue">
         <?= GridView::widget([
    	        'id' => 'item-grid',

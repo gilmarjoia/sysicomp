@@ -501,17 +501,48 @@ class FrequenciasController extends Controller
         $dataFinal = $model->dataFinal;
         
         if ($dataInicial == $dataFinal){
+            //adicionando 1 dia
             $dataInicial = new DateTime($dataInicial);
             $dataInicial->add(new DateInterval('P1D'));
             $novaFrequencia->dataInicial = date_format($dataInicial, 'Y-m-d');
             $novaFrequencia->dataFinal = $novaFrequencia->dataInicial;
         }else{
+            //verifica se é um registro de 1 mês inteiro
+            $diferenca = strtotime($dataFinal) - strtotime($dataInicial);
+            $dias = floor($diferenca / (60 * 60 * 24))+1;
+            
+            //adicionando 1 mês
             $dataInicial = new DateTime($dataInicial);
             $dataInicial->add(new DateInterval('P1M'));
-            $novaFrequencia->dataInicial = date_format($dataInicial, 'Y-m-d');
+                
             $dataFinal = new DateTime($dataFinal);
             $dataFinal->add(new DateInterval('P1M'));
-            $novaFrequencia->dataFinal = date_format($dataFinal, 'Y-m-d');;
+
+            if($dias>27){//caso seja 1 mês inteiro replica para o próximo mês inteiro
+                $mesInicial= date_format($dataInicial, 'm');
+                $ultimoDiaMes = date("Y-m-t", mktime(0,0,0,$mesInicial,'01',$ano));
+                $dataFinal = new DateTime($ultimoDiaMes);
+            }else{ //caso seja menos que 1 mês inteiro só replica o intervalo de data requerido
+                
+                //verificando se o proximo mes tem os dias que estao sendo replicados
+                $dataDeOrigem = new DateTime($model->dataInicial);
+                $mesDeOrigem = date_format($dataDeOrigem, 'm');
+                $mesInicial = date_format($dataInicial, 'm');
+                $mesFinal = date_format($dataFinal, 'm');
+                $diferencaMes = $mesInicial - $mesDeOrigem;
+                            
+                if ($mesInicial != $mesFinal || $diferencaMes>1){
+                    $ultimoDiaMes = date("Y-m-t", mktime(0,0,0,$mesInicial,'01',$ano));
+                    $dataFinal = new DateTime($ultimoDiaMes);
+                    
+                    if($dataInicial > $dataFinal || $diferencaMes>1){
+                        $this->mensagens('danger', 'Registro Frequências', 'Falha no Registro de Frequência, A data solicitada não existe no mês seguinte!');
+                        return $this->redirect(['detalhar', 'id' => $idUsuario, 'ano' => $ano, 'mes' => $mes, 'prof' => $prof]); 
+                    }
+                }
+            }    
+            $novaFrequencia->dataInicial = date_format($dataInicial, 'Y-m-d');
+            $novaFrequencia->dataFinal = date_format($dataFinal, 'Y-m-d');
         }
 
         $anoSaida = date('Y', strtotime($novaFrequencia->dataInicial));

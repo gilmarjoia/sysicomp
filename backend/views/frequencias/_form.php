@@ -18,7 +18,7 @@ $arrayOcorrencias = Ocorrencias::find()->select("codigo,ocorrencia")->all();
 $numOcorrencias = count($arrayOcorrencias);
 
 for ($i = 0; $i < $numOcorrencias; $i++) {
-    $arrayOcorrencias[$i]->ocorrencia =  Ocorrencias::find()->where("codigo" => [$arrayOcorrencias[$i]->codigo])->one()->getCodigo().' - '.$arrayOcorrencias[$i]->ocorrencia; 
+    $arrayOcorrencias[$i]->ocorrencia =  Ocorrencias::find()->where(["codigo" => $arrayOcorrencias[$i]->codigo])->one()->getCodigo().' - '.$arrayOcorrencias[$i]->ocorrencia; 
 }
 
 $listData = ArrayHelper::map($arrayOcorrencias,'codigo','ocorrencia','codigo');
