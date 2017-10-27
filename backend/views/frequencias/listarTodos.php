@@ -35,7 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <p>
     <?= Html::a('<span class="glyphicon glyphicon-arrow-left"></span> Voltar  ', ['site/index'], ['class' => 'btn btn-warning']) ?>
-    <?= Html::a('<span class="glyphicon glyphicon-list-alt"></span> Gerar Relatório', ['frequencias/index'] , ['target' => '_blank', 'class' => 'btn btn-info'])?>
+    <?= Html::a('<span class="glyphicon glyphicon-list-alt"></span> Gerar Relatório', ['Frequencias/printreport', "ano" => $_GET["ano"], "mes" => $_GET["mes"]] , ['target' => '_blank', 'class' => 'btn btn-info'])?>
 </p>
 </p>
 
