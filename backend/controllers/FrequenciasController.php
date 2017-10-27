@@ -3,11 +3,12 @@
 namespace backend\controllers;
 
 use Yii;
+use mPDF;
 use DateTime;
 use DatePeriod;
 use DateInterval;
 use app\models\Frequencias;
-use app\models\Afastamentos;
+use app\models\Ocorrencias;
 use yii\filters\AccessControl;
 use common\models\User;
 use app\models\FrequenciasSearch;
@@ -202,8 +203,6 @@ class FrequenciasController extends Controller
         $model->idusuario = Yii::$app->user->identity->id;
         $model->nomeusuario = Yii::$app->user->identity->nome;
 
-        $dataAfastamento = Afastamentos::find()->where(["idusuario" => $model->idusuario])->all();
-
         $ehProfessor = Yii::$app->user->identity->professor;
         $ehSecretario = Yii::$app->user->identity->secretaria;
 
@@ -237,33 +236,6 @@ class FrequenciasController extends Controller
                 return $this->render('create', [
                     'model' => $model,
                 ]);
-            }
-
-            $cont = 0;
-            if ($dataAfastamento != null) {
-
-                foreach ($dataAfastamento as $value) {
-                    if ($value->datasaida <= $model->dataInicial and $value->dataretorno >= $model->dataFinal) {
-                        $cont++;
-                    }
-                    if ($value->datasaida >= $model->dataInicial and $value->datasaida <= $model->dataFinal and $value->dataretorno >= $model->dataFinal){
-                        $cont++;
-                    }
-                    if ($value->datasaida <= $model->dataInicial and $value->datasaida <= $model->dataFinal and $value->dataretorno >= $model->dataFinal) {
-                        $cont++;
-                    }
-                    if ($value->datasaida >= $model->dataInicial and $value->dataretorno <= $model->dataFinal) {
-                        $cont++;
-                    }
-                }
-                if ($cont != 0) {
-                    $this->mensagens('danger', 'Registro Frequências', 'Datas inválidas, afastamento cadastrado no mesmo período !');
-                    $model->dataInicial = date('d-m-Y', strtotime($model->dataInicial));
-                    $model->dataFinal = date('d-m-Y', strtotime($model->dataFinal));
-                    return $this->render('create', [
-                        'model' => $model,
-                    ]);
-                }
             }
         
             if( $diferencaDias < 0 || $interval->format('%R') == "-" ){
@@ -334,7 +306,6 @@ class FrequenciasController extends Controller
         $model->idusuario;
         $model->nomeusuario = $model_User->nome;
 
-        $dataAfastamento = Afastamentos::find()->where(["idusuario" => $model->idusuario])->all();
         //print_r($dataRegistro);
 
         if ($model->load(Yii::$app->request->post())) {
@@ -362,33 +333,6 @@ class FrequenciasController extends Controller
                 return $this->render('createsecretaria', [
                     'model' => $model,
                 ]);
-            }
-
-            $cont = 0;
-            if ($dataAfastamento != null) {
-
-                foreach ($dataAfastamento as $value) {
-                    if ($value->datasaida <= $model->dataInicial and $value->dataretorno >= $model->dataFinal) {
-                        $cont++;
-                    }
-                    if ($value->datasaida >= $model->dataInicial and $value->datasaida <= $model->dataFinal and $value->dataretorno >= $model->dataFinal){
-                        $cont++;
-                    }
-                    if ($value->datasaida <= $model->dataInicial and $value->datasaida <= $model->dataFinal and $value->dataretorno >= $model->dataFinal) {
-                        $cont++;
-                    }
-                    if ($value->datasaida >= $model->dataInicial and $value->dataretorno <= $model->dataFinal) {
-                        $cont++;
-                    }
-                }
-                if ($cont != 0) {
-                    $this->mensagens('danger', 'Registro Frequências', 'Datas inválidas, afastamento cadastrado no mesmo período !');
-                    $model->dataInicial = date('d-m-Y', strtotime($model->dataInicial));
-                    $model->dataFinal = date('d-m-Y', strtotime($model->dataFinal));
-                    return $this->render('create', [
-                        'model' => $model,
-                    ]);
-                }
             }
 
             if ($diferencaDias < 0 || $interval->format('%R') == "-") {
@@ -458,7 +402,6 @@ class FrequenciasController extends Controller
         $intervalAnterior = $datetime1Anterior->diff($datetime2Anterior);
         $AnteriordiferencaDias = $intervalAnterior->format('%a');
         $AnteriordiferencaDias++;
-        $dataAfastamento = Afastamentos::find()->where(["idusuario" => $model->idusuario])->all();
 
         //$anteriorTipo = $model->tipo;
 
@@ -480,44 +423,6 @@ class FrequenciasController extends Controller
             $interval = $datetime1->diff($datetime2);
             $diferencaDias = $interval->format('%a');
             $diferencaDias++;
-
-            if($model->verificarSeDataEhValida($model->idusuario,$anoSaida,$mesSaida,$model->dataInicial,$model->dataFinal)==0){
-                $this->mensagens('danger', 'Registro Frequências',  'Falha no Registro de Frequência, já existe uma ocorrência dentro da data especificada!');
-
-                $model->dataInicial = date('d-m-Y', strtotime($model->dataInicial));
-                $model->dataFinal =  date('d-m-Y', strtotime($model->dataFinal));
-
-                return $this->render('create', [
-                    'model' => $model,
-                ]);
-            }
-
-            $cont = 0;
-            if ($dataAfastamento != null) {
-
-                foreach ($dataAfastamento as $value) {
-                    if ($value->datasaida <= $model->dataInicial and $value->dataretorno >= $model->dataFinal) {
-                        $cont++;
-                    }
-                    if ($value->datasaida >= $model->dataInicial and $value->datasaida <= $model->dataFinal and $value->dataretorno >= $model->dataFinal){
-                        $cont++;
-                    }
-                    if ($value->datasaida <= $model->dataInicial and $value->datasaida <= $model->dataFinal and $value->dataretorno >= $model->dataFinal) {
-                        $cont++;
-                    }
-                    if ($value->datasaida >= $model->dataInicial and $value->dataretorno <= $model->dataFinal) {
-                        $cont++;
-                    }
-                }
-                if ($cont != 0) {
-                    $this->mensagens('danger', 'Registro Frequências', 'Datas inválidas, afastamento cadastrado no mesmo período !');
-                    $model->dataInicial = date('d-m-Y', strtotime($model->dataInicial));
-                    $model->dataFinal = date('d-m-Y', strtotime($model->dataFinal));
-                    return $this->render('create', [
-                        'model' => $model,
-                    ]);
-                }
-            }
 
 
 
@@ -687,6 +592,146 @@ class FrequenciasController extends Controller
         $this->mensagens('success', 'Registro Frequências', 'Registro de Frequências excluído com sucesso!');
 
         return $this->redirect(['detalhar', 'id' => $idUsuario, 'ano' => $ano,'mes' => $mes, 'prof' => $prof]);
+    }
+
+    public function actionPrintreport($ano,$mes)
+    {
+        $pdf = new mPDF('utf-8','A4-L','','','15','15','40','30');
+        
+        $pdf->SetHTMLHeader
+        ('
+            <table width="100%" style="vertical-align: bottom; font-family: serif; font-size: 8pt;">
+                <tr width="100%">
+                    <td width="10%" align="left" style="font-family: serif;font-weight: bold; font-size: 175%;"> <img src = "img/logo-brasil.jpg" height="60px" width="60px"> </td>
+                    <td width="35%" align="center" style="vertical-align: middle; font-family: Times New Roman; font-weight: bold; font-size: 150%;">  UNIVERSIDADE FEDERAL DO AMAZONAS <br> PRÓ - REITORIA DE GESTÃO DE PESSOAS 
+                        <div align="center" width="75%" style="vertical-align: middle; font-family: Times New Roman; font-size: 75%;">Amazonas - Brasil | depes@ufam.edu.br | +55 (92) 3305-1478/1479</div>
+                    </td>
+                    <td width="10%" align="right" style="font-family: serif;font-weight: bold; font-size: 175%;"> <img src = "img/ufam.jpg" height="60px" width="50px"> </td>
+                    <td width="30%" align="right">          
+                        <table border="1" width="100%" style="border-collapse: collapse;font-family: Arial;">
+                            <tr>
+                                <td height="35px" align="left" style="font-size:75%; font-weight: bold; vertical-align: top;">UNIDADE:</td>
+                            </tr>
+                            <tr>
+                                <td height="35px" align="left" style="font-size:75%; font-weight: bold; vertical-align: top;">DEPARTAMENTO/COORDENAÇÃO:</td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>            
+        ');
+        $pdf->SetHTMLFooter
+        ('
+        <table border="1" width="100%" style="border-collapse: collapse;font-family: Arial;">
+            <tr>
+                <td height="50px" align="center">  '.date('d-m-Y').'  </td>
+                <td align="center"></td>
+                <td align="center"></td>
+                <td align="center"></td>
+            </tr>
+            <tr>
+                <td align="center" style="font-size:75%; font-weight: bold;">Data de Elaboração</td>
+                <td align="center" style="font-size:75%; font-weight: bold;">Responsável pela elaboração do Boletim</td>
+                <td align="center" style="font-size:75%; font-weight: bold;">Assinatura/Carimbo<br>Chefia Imediata da Unidade de Exercício</td>
+                <td align="center" style="font-size:75%; font-weight: bold;">Assinatura/Carimbo<br>Direção da Unidade de Lotação</td>
+            </tr>
+        </table>
+        ');
+        $pdf->WriteHTML
+        ('
+        <table border="1" width="100%" style="border-collapse: collapse;font-family: Arial;">
+            <tr>
+                <th height="40px" align="center" colspan="4" style="font-weight: bold;font-size: 150%;"> BOLETIM  DE  FREQUÊNCIA </th>    
+                <th height="40px" align="center" colspan="1" style="font-weight: bold;font-size: 80%;">MÊS:<br>10 </th>
+                <th height="40px" align="center" colspan="1" style="font-weight: bold;font-size: 80%;">ANO:<br>2017</th>
+                <th height="40px" align="center" colspan="1" style="font-weight: bold;font-size: 80%;">FOLHA:<br>00/00</th>
+            </tr>
+            <tr style="background-color: #E6E6FA;">
+                <th align="center" colspan="7" style="color:red;font-size: 90%;font-weight: normal;"><b>ATENÇÃO:</b> ESTE BOLETIM DEVE SER PREENCHIDO EM DUAS VIAS E UMA DELAS SERÁ ENTREGUE AO DAPES/PROGESP ATÉ O 5º DIA ÚTIL DO MÊS SEGUINTE.</th>
+            </tr>
+            <tr>
+                <th height="30px" align="center" colspan="3" style="font-weight: bold;font-size: 100%;">IDENTIFICAÇÃO DO SERVIDOR</th>
+                <th height="30px" align="center" colspan="4" style="font-weight: bold;font-size: 100%;">ANÁLISE DO PONTO</th>
+            </tr>
+            <tr align="center">
+                <!-- Planilha -->
+                <th width="8%" rowspan="2" style="font-size: 70%; font-weight: bold;">MATRÍCULA<br>SIAPE</th>
+                <th width="30%" rowspan="2" style="font-size: 70%; font-weight: bold;">NOME</th>
+                <th width="12%" rowspan="2" style="font-size: 70%; font-weight: bold;">CARGO/FUNÇÃO</th>
+                <th width="7%" rowspan="2" style="font-size: 70%; font-weight: bold;">N° de dias<br>para<br>pagamento</th>
+                <th align="center" width="23%" colspan=2 style="font-size: 70%; font-weight: bold;">OCORRÊNCIAS</th>
+                <th width="20%" rowspan="2" style="font-size: 70%; font-weight: bold;">CITE AQUI OS DIAS OU PERÍODO DA OCORRÊNCIA ASSINALADA</th>
+            </tr>  
+            <tr>
+                <th width="5%" align="center" style="font-size: 70%; font-weight: bold;">CÓDIGO</td>
+                <th width="18%" align="center" style="font-size: 70%; font-weight: bold;">ASSUNTO</td>
+            </tr>
+            
+        ');
+
+        $servidores = User::find()->where('professor=1 or secretaria=1')->all();
+        
+        foreach($servidores as $servidor)
+        {
+            $Frequencias = Frequencias::find()->where(["idusuario" => $servidor->id])->andWhere(["Year(dataInicial)" => $ano])->andWhere(["Month(dataInicial)" => $mes])->all();
+            
+            $diasPagamento = 30;
+            $countFrequencias = count($Frequencias);
+            $rowspan=$countFrequencias;
+
+            if($countFrequencias==0){
+                $rowspan=1;
+            }else{
+                foreach ($Frequencias as $frequencia) {
+                    if ($frequencia->qtdDiasPagamento<$diasPagamento){
+                        $diasPagamento = $frequencia->qtdDiasPagamento;
+                    }
+                }
+            }
+            
+            $pdf->WriteHtml
+            ('
+            <tr>
+                <td align="center" height="20px" rowspan="'.$rowspan.'">'.$servidor->siape.'<!-- Matrícula SIAPE--></td>
+                <td rowspan="'.$rowspan.'">'.$servidor->nome.'<!-- Nome do Servidor--></td>
+                <td align="center" rowspan="'.$rowspan.'">'.$servidor->cargo.'<!-- Cargo/Função--></td>
+                <td align="center" rowspan="'.$rowspan.'">'.$diasPagamento.'<!-- N° Dias para Pagamento--></td>
+
+                <td height="20px">'.($countFrequencias == 0 || Ocorrencias::find()->where(["codigo" => $Frequencias[0]->codigoOcorrencia])->one()->naooficial ? "" : $Frequencias[0]->codigoOcorrencia).'<!-- Codigo--></td>
+                <td style="font-size: 70%;">'.($countFrequencias > 0 ? Ocorrencias::find()->where(["codigo" => $Frequencias[0]->codigoOcorrencia])->one()->ocorrencia : "").'<!-- Assunto--></td>
+                <td align="center">'.($countFrequencias > 0 ? date("d/m/Y",strtotime($Frequencias[0]->dataInicial))." a ".date("d/m/Y",strtotime($Frequencias[0]->dataFinal)) : "").'<!-- Periodo da Ocorrencia--></td> 
+            </tr>
+            ');
+
+            if($countFrequencias>1){
+                for ($i = 1; $i < $countFrequencias; $i++){
+                    $pdf->WriteHtml
+                    ('
+                    <tr>
+                        <td height="20px">'.$Frequencias[$i]->codigoOcorrencia.'<!-- Codigo--></td>
+                        <td style="font-size: 70%;">'.Ocorrencias::find()->where(["codigo" => $Frequencias[$i]->codigoOcorrencia])->one()->ocorrencia.'<!-- Assunto--></td>
+                        <td align="center">'.date("d/m/Y",strtotime($Frequencias[$i]->dataInicial))." a ".date("d/m/Y",strtotime($Frequencias[$i]->dataFinal)).'<!-- Periodo da Ocorrencia--></td> 
+                    </tr>
+                    ');
+                }    
+            }                
+        }
+
+        $pdf->WriteHtml
+        ('
+        <tr>
+            <td colspan="7" height="100px" align="left" style="font-size:65%; vertical-align: top; font-weight: normal;"><b>OBSERVAÇÕES:</b> <u>(1.indique aqui os dados do documento sobre a ocorrência assinalada para o servidor/ 2.Servidor que exerça CD em setor diverso da lotação, indique para localização/ 3.Se não houver qualquer ausência para o servidor, mantenha os dias de pagamento inalterados):</u>
+            </td>
+        </tr>
+        ');
+    
+        $pdf->WriteHtml
+        ('
+            </table>
+        ');
+        
+        $pdf->Output('');
+        $pdfcode = $pdf->output();
     }
 
     /**
