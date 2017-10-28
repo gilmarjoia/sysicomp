@@ -766,6 +766,7 @@ class FeriasController extends Controller
 
         public function actionPrintvacationreport($ano)
         {
+            define('_MPDF_TTFONTDATAPATH',Yii::getAlias('@runtime/mpdf'));
             $pdf = new mPDF('utf-8','A4-L','','','15','15','40','30');
             // Aqui que mudei tirei o group by
             //$dataFerias = Ferias::find()->where('dataSaida LIKE :substr', array(':substr' => $ano.'%'))->groupBy(['idusuario'])->all();
