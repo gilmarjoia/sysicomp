@@ -95,17 +95,17 @@ $this->registerJs("
         }
     });
 ");
-?>
 
-<?php
-if (Ferias::find()->where(['idusuario' => $model->idusuario])->one() != null){
-    $this->registerJs("
-        $('#ferias-tipo').change(function () {
-             if ($('#ferias-tipo').val() == 2) {
-                $('#adiantamento_decimo').bootstrapSwitch('disabled',true);
-                $('#adiantamento_ferias').bootstrapSwitch('disabled',true);
-             }
-        });    
-    ");
+if (Ferias::find()->where(['idusuario' => $model->idusuario])->andWhere(['tipo' => 2])->one() != null) {
+    if(Ferias::find()->where(['idusuario' =>$model->idusuario])->andWhere(['adiantamentoDecimo' => 1])->orWhere(['adiantamentoFerias' => 1])->one() != null){
+        $this->registerJs("
+            $('#ferias-tipo').change(function () {
+                 if ($('#ferias-tipo').val() == 2) {
+                    $('#adiantamento_decimo').bootstrapSwitch('disabled',true);
+                    $('#adiantamento_ferias').bootstrapSwitch('disabled',true);
+                } 
+            });    
+        ");
+    }
 }
 ?>

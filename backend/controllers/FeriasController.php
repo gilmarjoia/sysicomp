@@ -256,9 +256,9 @@ class FeriasController extends Controller
                         $model->dataSaida = date('d-m-Y', strtotime($model->dataSaida));
                         $model->dataRetorno =  date('d-m-Y', strtotime($model->dataRetorno));
 
-                    return $this->render('create', [
+                    /*return $this->render('create', [
                             'model' => $model,
-                        ]);
+                        ]);*/
 
                 }
 
@@ -286,9 +286,9 @@ class FeriasController extends Controller
                     $this->mensagens('danger', 'Registro Férias', 'Datas inválidas, registro já realizado nesta data !');
                     $model->dataSaida = date('d-m-Y', strtotime($model->dataSaida));
                     $model->dataRetorno = date('d-m-Y', strtotime($model->dataRetorno));
-                    return $this->render('create', [
+                    /*return $this->render('create', [
                         'model' => $model,
-                    ]);
+                    ]);*/
                 }
             }
 
@@ -313,9 +313,9 @@ class FeriasController extends Controller
                     $this->mensagens('danger', 'Registro Férias', 'Datas inválidas, registro já realizado nesta data !');
                     $model->dataSaida = date('d-m-Y', strtotime($model->dataSaida));
                     $model->dataRetorno = date('d-m-Y', strtotime($model->dataRetorno));
-                    return $this->render('create', [
+                    /*return $this->render('create', [
                         'model' => $model,
-                    ]);
+                    ]);*/
                 }
             }
 
