@@ -768,14 +768,12 @@ class FeriasController extends Controller
         {
             define('_MPDF_TTFONTDATAPATH',Yii::getAlias('@runtime/mpdf'));
             $pdf = new mPDF('utf-8','A4-L','','','15','15','40','30');
-            // Aqui que mudei tirei o group by
-            //$dataFerias = Ferias::find()->where('dataSaida LIKE :substr', array(':substr' => $ano.'%'))->groupBy(['idusuario'])->all();
-            $dataFerias = Ferias::find()->where('dataSaida LIKE :substr', array(':substr' => $ano.'%'))->all();
+            $dataFerias = Ferias::find()->select(['idusuario', 'nomeusuario', 'adiantamentoDecimo', 'AdiantamentoFerias'])->where('dataSaida LIKE :substr', array(':substr' => $ano.'%'))->groupBy(['idusuario'])->all();
             
             $pdf->SetHTMLHeader
             ('
                 <table width="100%" style="vertical-align: bottom; font-family: serif; font-size: 8pt; color: #000000; font-weight: bold;">
-                    <tr width="100%">
+                    <tr width="100%">s
                         <td width="25%" align="right" style="font-family: serif;font-weight: bold; font-size: 175%;"> <img src = "img/logo-brasil.jpg" height="60px" width="60px"> </td>
                         <td width="50%" align="center" style="vertical-align: middle; font-family: Times New Roman; font-weight: bold; font-size: 175%;">  UNIVERSIDADE FEDERAL DO AMAZONAS <br> PRÓ - REITORIA DE GESTÃO DE PESSOAS </td>
                         <td width="25%" align="left" style="font-family: serif;font-weight: bold; font-size: 175%;"> <img src = "img/ufam.jpg" height="60px" width="50px"> </td>
