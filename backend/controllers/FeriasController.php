@@ -769,7 +769,8 @@ class FeriasController extends Controller
             define('_MPDF_TTFONTDATAPATH',Yii::getAlias('@runtime/mpdf'));
             $pdf = new mPDF('utf-8','A4-L','','','15','15','40','30');
             $dataFerias = Ferias::find()->select(['idusuario', 'nomeusuario', 'adiantamentoDecimo', 'AdiantamentoFerias'])->where('dataSaida LIKE :substr', array(':substr' => $ano.'%'))->groupBy(['idusuario'])->all();
-            
+            $dataUser = User::find()->all();
+
             $pdf->SetHTMLHeader
             ('
                 <table width="100%" style="vertical-align: bottom; font-family: serif; font-size: 8pt; color: #000000; font-weight: bold;">
@@ -829,29 +830,28 @@ class FeriasController extends Controller
                 </tr>
             ');
 
-            foreach($dataFerias as $dFerias)
+            foreach($dataUser as $dUser)
             {
-                $dataUsuario = User::find()->where(["id" => $dFerias->idusuario])->one();
-                $dataDatas = Ferias::find()->where(["idusuario" => $dataUsuario->id])->andWhere('dataSaida LIKE :substr', array(':substr' => $ano.'%'))->all();
+                $dataFerias = Ferias::find()->where(["idusuario" => $dUser->id])->andWhere('dataSaida LIKE :substr', array(':substr' => $ano.'%'))->all();
                 $pdf->WriteHtml
                 ('
                 <tr>
-                    <td align="center" height="60px" rowspan="3">'.$dataUsuario->siape.'<!-- Matrícula SIAPE--></td>
-                    <td rowspan="3">'.$dFerias->nomeusuario.'<!-- Nome do Servidor--></td>
-                    <td align="center" rowspan="3">'.$dataUsuario->cargo.'<!-- Cargo/Função--></td>
-                    <td align="center" rowspan="3">'.($dFerias->adiantamentoDecimo == 1 ? "SIM" : "NÃO").'<!-- Antecipação 50% 13º--></td>
-                    <td align="center" rowspan="3">'.($dFerias->adiantamentoFerias == 1 ? "SIM" : "NÃO").'<!-- Antecipação Férias--></td>
-                    <td height="20px">'.($dataDatas[0]->dataSaida == "" || null ? "" : date("d-m-Y", strtotime($dataDatas[0]->dataSaida))).'<!-- Início--></td>
-                    <td>'.($dataDatas[0]->dataSaida == "" || null ? "" : date("d-m-Y", strtotime($dataDatas[0]->dataRetorno))).'<!-- Fim--></td>
+                    <td align="center" height="60px" rowspan="3">'.$dUser->siape.'<!-- Matrícula SIAPE--></td>
+                    <td rowspan="3">'.$dUser->nome.'<!-- Nome do Servidor--></td>
+                    <td align="center" rowspan="3">'.$dUser->cargo.'<!-- Cargo/Função--></td>
+                    <td align="center" rowspan="3">'.($dataFerias[0]->adiantamentoDecimo == 1 ? "SIM" : "NÃO").'<!-- Antecipação 50% 13º--></td>
+                    <td align="center" rowspan="3">'.($dataFerias[0]->adiantamentoFerias == 1 ? "SIM" : "NÃO").'<!-- Antecipação Férias--></td>
+                    <td height="20px">'.($dataFerias[0]->dataSaida == "" || null ? "" : date("d-m-Y", strtotime($dataFerias[0]->dataSaida))).'<!-- Início--></td>
+                    <td>'.($dataFerias[0]->dataSaida == "" || null ? "" : date("d-m-Y", strtotime($dataFerias[0]->dataRetorno))).'<!-- Fim--></td>
                     <td rowspan="3"><!-- Assinatura--></td>
                 </tr>
                 <tr>
-                    <td height="20px">'.($dataDatas[1]->dataSaida == "" ? "" : date("d-m-Y", strtotime($dataDatas[1]->dataSaida))).'</td>
-                    <td>'.($dataDatas[1]->dataSaida == "" || null ? "" : date("d-m-Y", strtotime($dataDatas[1]->dataRetorno))).'</td>
+                    <td height="20px">'.($dataFerias[1]->dataSaida == "" ? "" : date("d-m-Y", strtotime($dataFerias[1]->dataSaida))).'</td>
+                    <td>'.($dataFerias[1]->dataSaida == "" || null ? "" : date("d-m-Y", strtotime($dataFerias[1]->dataRetorno))).'</td>
                 </tr>
                 <tr>
-                    <td height="20px">'.($dataDatas[2]->dataSaida == "" ? "" : date("d-m-Y", strtotime($dataDatas[2]->dataSaida))).'</td>
-                    <td>'.($dataDatas[2]->dataSaida == "" || null ? "" : date("d-m-Y", strtotime($dataDatas[2]->dataRetorno))).'</td>
+                    <td height="20px">'.($dataFerias[2]->dataSaida == "" ? "" : date("d-m-Y", strtotime($dataFerias[2]->dataSaida))).'</td>
+                    <td>'.($dataFerias[2]->dataSaida == "" || null ? "" : date("d-m-Y", strtotime($dataFerias[2]->dataRetorno))).'</td>
                 </tr>
                 ');
             }
