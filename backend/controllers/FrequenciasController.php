@@ -596,6 +596,7 @@ class FrequenciasController extends Controller
 
     public function actionPrintreport($ano,$mes)
     {
+        define('_MPDF_TTFONTDATAPATH',Yii::getAlias('@runtime/mpdf'));
         $pdf = new mPDF('utf-8','A4-L','','','15','15','40','30');
         
         $pdf->SetHTMLHeader
