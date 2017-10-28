@@ -768,7 +768,6 @@ class FeriasController extends Controller
         {
             define('_MPDF_TTFONTDATAPATH',Yii::getAlias('@runtime/mpdf'));
             $pdf = new mPDF('utf-8','A4-L','','','15','15','40','30');
-            $dataFerias = Ferias::find()->select(['idusuario', 'nomeusuario', 'adiantamentoDecimo', 'AdiantamentoFerias'])->where('dataSaida LIKE :substr', array(':substr' => $ano.'%'))->groupBy(['idusuario'])->all();
             $dataUser = User::find()->all();
 
             $pdf->SetHTMLHeader
