@@ -222,13 +222,16 @@ class Frequencias extends \yii\db\ActiveRecord
         $ehvalida = 1;
 
 		for ($i = 0; $i < $totalfrequencias; $i++){
-			if ($dataInicial == $frequencias[$i]->dataInicial || $dataInicial == $frequencias[$i]->dataFinal ||
+			if (($dataInicial == $frequencias[$i]->dataInicial || $dataInicial == $frequencias[$i]->dataFinal) ||
 				($dataInicial>$frequencias[$i]->dataInicial && $dataInicial <$frequencias[$i]->dataFinal)){
 				$ehvalida = 0;
-			}else if ($dataFinal == $frequencias[$i]->dataInicial || $dataFinal == $frequencias[$i]->dataFinal ||
+			}elseif (($dataFinal == $frequencias[$i]->dataInicial || $dataFinal == $frequencias[$i]->dataFinal) ||
 				($dataFinal>$frequencias[$i]->dataInicial && $dataFinal <$frequencias[$i]->dataFinal)) {
 				$ehvalida = 0;
-			}
+			}elseif (($dataInicial<$frequencias[$i]->dataInicial && $dataFinal >$frequencias[$i]->dataInicial) ||
+                    ($dataInicial<$frequencias[$i]->dataFinal && $dataFinal >$frequencias[$i]->dataFinal)){
+                $ehvalida = 0;
+            }
 		}        
 
         return $ehvalida;
