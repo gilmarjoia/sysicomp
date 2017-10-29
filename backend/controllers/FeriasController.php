@@ -533,7 +533,7 @@ class FeriasController extends Controller
         $ehProfessor = User::find()->where(['id' => $idUsuarioFerias])->one()->professor;
         $ehCoordenador = User::find()->where(['id' => $idUsuarioFerias])->one()->coordenador;
         $ehSecretario = User::find()->where(['id' => $idUsuarioFerias])->one()->secretaria;
-
+ 
 
         //print_r($ehProfessor);
         //print_r($ehSecretario);
