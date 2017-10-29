@@ -227,7 +227,7 @@ class FrequenciasController extends Controller
             $diferencaDias =  $interval->format('%a');
             $diferencaDias++;
 
-            if($model->verificarSeDataEhValida($model->idusuario,$anoSaida,$mesSaida,$model->dataInicial,$model->dataFinal)!=-1){
+            if($model->verificarSeDataEhValida($model->idusuario,$anoSaida,$mesSaida,$model->dataInicial,$model->dataFinal)==0){
                 $this->mensagens('danger', 'Registro Frequências',  'Falha no Registro de Frequência, já existe uma ocorrência dentro da data especificada!');
 
                 $model->dataInicial = date('d-m-Y', strtotime($model->dataInicial));
@@ -324,7 +324,7 @@ class FrequenciasController extends Controller
             $diferencaDias = $interval->format('%a');
             $diferencaDias++;
 
-            if($model->verificarSeDataEhValida($model->idusuario,$anoInicio,$mesInicio,$model->dataInicial,$model->dataFinal)!=-1){
+            if($model->verificarSeDataEhValida($model->idusuario,$anoInicio,$mesInicio,$model->dataInicial,$model->dataFinal)==0){
                 $this->mensagens('danger', 'Registro Frequências',  'Falha no Registro de Frequência, já existe uma ocorrência dentro da data especificada!!');
 
                 $model->dataInicial = date('d-m-Y', strtotime($model->dataInicial));
@@ -455,31 +455,19 @@ class FrequenciasController extends Controller
                 ]);
             }
 
-            $idFrequencia = $model->verificarSeDataEhValida($model->idusuario,$ano,$mes,$model->dataInicial,$model->dataFinal);
-
-            if($idFrequencia != -1 && $idFrequencia != $id){
-                $this->mensagens('danger', 'Registro Frequências',  'Falha no Registro de Frequência, já existe uma ocorrência dentro da data especificada!!');
-
-                $model->dataInicial = date('d-m-Y', strtotime($model->dataInicial));
-                $model->dataFinal =  date('d-m-Y', strtotime($model->dataFinal));
-
-                return $this->render('update', [
-                    'model' => $model,
-                ]);
-            }
-
-
 
             if (($ehProfessor == 1) && $model->save()) {
 
                 $this->mensagens('success', 'Registro Frequências', 'Registro de Frequências realizado com sucesso!');
 
                 return $this->redirect(['detalhar', "id" => $model->idusuario, "ano" => $_GET["ano"],"mes" =>$_GET["mes"], "prof" => $model_User->professor]);
+
             } else if ($ehSecretario == 1 && $model->save()) {
 
-                $this->mensagens('success', 'Registro Frequências', 'Registro de Frequências realizado com sucesso!');
+                $this->mensagens('success', 'Registro Frequências', 'Registro de Freqências realizado com sucesso!');
 
                 return $this->redirect(['detalhar', "id" => $model->idusuario, "ano" => $_GET["ano"], "mes" =>$_GET["mes"], "prof" => $model_User->secretaria]);
+
             }
 
             $model->dataInicial = date('d-m-Y', strtotime($model->dataInicial));
@@ -562,7 +550,7 @@ class FrequenciasController extends Controller
         $anoSaida = date('Y', strtotime($novaFrequencia->dataInicial));
         $mesSaida = date('m',strtotime($novaFrequencia->dataInicial));
 
-        if($novaFrequencia->verificarSeDataEhValida($novaFrequencia->idusuario,$anoSaida,$mesSaida,$novaFrequencia->dataInicial,$novaFrequencia->dataFinal)!=-1){
+        if($novaFrequencia->verificarSeDataEhValida($novaFrequencia->idusuario,$anoSaida,$mesSaida,$novaFrequencia->dataInicial,$novaFrequencia->dataFinal)==0){
             $this->mensagens('danger', 'Registro Frequências', 'Falha no Registro de Frequência, já existe uma ocorrência dentro da data especificada!');
         }else{
             if ($novaFrequencia->save()) {
@@ -682,7 +670,7 @@ class FrequenciasController extends Controller
             
         ');
 
-        $servidores = User::find()->where('professor=1 or secretaria=1')->all();
+        $servidores = User::find()->orderBy('nome ASC')->all();
         
         foreach($servidores as $servidor)
         {
