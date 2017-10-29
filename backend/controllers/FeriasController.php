@@ -526,9 +526,17 @@ class FeriasController extends Controller
 
         $model = $this->findModel($id);
 
-        $ehProfessor = Yii::$app->user->identity->professor;
-        $ehCoordenador = Yii::$app->user->identity->coordenador;
-        $ehSecretario = Yii::$app->user->identity->secretaria;
+        //$ehProfessor = Yii::$app->user->identity->professor;
+        //$ehCoordenador = Yii::$app->user->identity->coordenador;
+        //$ehSecretario = Yii::$app->user->identity->secretaria;
+
+        $ehProfessor = User::find()->where(['id' => $idUsuarioFerias])->one()->professor;
+        $ehCoordenador = User::find()->where(['id' => $idUsuarioFerias])->one()->coordenador;
+        $ehSecretario = User::find()->where(['id' => $idUsuarioFerias])->one()->secretaria;
+
+
+        //print_r($ehProfessor);
+        //print_r($ehSecretario);
 
         $datetime1Anterior = new \DateTime($model->dataSaida);
         $datetime2Anterior = new \DateTime($model->dataRetorno);
@@ -667,21 +675,21 @@ class FeriasController extends Controller
 
                 $this->mensagens('success', 'Registro Férias', 'Registro de Férias realizado com sucesso!');
 
-                return $this->redirect(['detalhar', "id" => $model->idusuario, "ano" => $_GET["ano"], "prof" => $model->tipo]);
+                return $this->redirect(['detalhar', "id" => $model->idusuario, "ano" => $_GET["ano"], "prof" => $ehProfessor]);
 
-            } else if ($ehSecretario == 1 && ($totalDiasFeriasAno + $diferencaDiasUpdate) <= 30 && $model->save()) {
+            } if ($ehSecretario == 1 && ($totalDiasFeriasAno + $diferencaDiasUpdate) <= 30 && $model->save()) {
 
                 $model->adiantamentoDecimo;
                 $model->adiantamentoFerias;
 
                 $this->mensagens('success', 'Registro Férias', 'Registro de Férias realizado com sucesso!');
 
-                return $this->redirect(['detalhar', "id" => $model->idusuario, "ano" => $_GET["ano"], "prof" => $model->tipo]);
+                return $this->redirect(['detalhar', "id" => $model->idusuario, "ano" => $_GET["ano"], "prof" => $ehProfessor]);
 
-            } else if ((($ehProfessor == 1) && ($totalDiasFeriasAno + $diferencaDiasUpdate) > 45)) {
+            } if ((($ehProfessor == 1) && ($totalDiasFeriasAno + $diferencaDiasUpdate) > 45)) {
 
                 $this->mensagens('danger', 'Registro Férias', 'Não foi possível registrar o pedido de férias. Você ultrapassou o limite de 45 dias');
-            } else if (($ehSecretario == 1 && ($totalDiasFeriasAno + $diferencaDiasUpdate) > 30)) {
+            } if (($ehSecretario == 1 && ($totalDiasFeriasAno + $diferencaDiasUpdate) > 30)) {
 
                 $this->mensagens('danger', 'Registro Férias', 'Não foi possível registrar o pedido de férias. Você ultrapassou o limite de 30 dias');
 
