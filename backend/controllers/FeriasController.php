@@ -581,6 +581,7 @@ class FeriasController extends Controller
                     'model' => $model,
                 ]);
 
+
             }
 
             /*$contRegistro = 0;

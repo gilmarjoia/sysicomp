@@ -387,8 +387,7 @@ class FrequenciasController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionUpdate($id,$ano,$mes)
-    {
+    public function actionUpdate($id,$ano,$mes){
 
         $model = $this->findModel($id);
         $model_User = User::find()->where(["id" => $model->idusuario])->one();

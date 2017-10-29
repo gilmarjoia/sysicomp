@@ -8,6 +8,7 @@ use xj\bootbox\BootboxAsset;
 use yii\helpers\Url;
 use yii\web\View;
 
+
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\FeriasSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
