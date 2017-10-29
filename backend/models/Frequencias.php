@@ -221,21 +221,44 @@ class Frequencias extends \yii\db\ActiveRecord
         $totalfrequencias = count($frequencias);
         $id=-1;
 
+        for ($i = 0; $i < $totalfrequencias; $i++){
+            if ($frequencias[$i]->dataInicial <= $dataInicial and $frequencias[$i]->dataFinal >= $dataInicial){
+                $id = $frequencias[$i]->id;
+            }if ($frequencias[$i]->dataInicial >= $dataInicial and $frequencias[$i]->dataInicial <= $dataFinal and $frequencias[$i]->dataFinal >= $dataFinal) {
+                $id = $frequencias[$i]->id;
+            }if ($frequencias[$i]->dataInicial <= $dataInicial and $frequencias[$i]->dataInicial <= $dataFinal and $frequencias[$i]->dataFinal >= $dataFinal){
+                $id = $frequencias[$i]->id;
+            }if($frequencias[$i]->dataInicial >= $dataInicial and $frequencias[$i]->dataFinal <= $dataFinal){
+                $id = $frequencias[$i]->id;
+            }
+        }
+
+        return $id;
+    }
+
+    //verifica se a data que se pretende cadastrar está dentro de [ou adentrando] um intervalo que já está cadastrado, caso já exista registra o id do registro de frequência que já possui a data cadatrado, caso não exista retorna '-1', para ser tratado no controller
+    /*public function verificarSeDataEhValida($idusuario,$ano,$mes,$dataInicial,$dataFinal){
+
+        $frequencias = Frequencias::find()->select("j17_frequencias.*")->where(["idusuario" => $idusuario,"YEAR(dataInicial)" => $ano, "MONTH(dataInicial)" => $mes])->all();
+
+        $totalfrequencias = count($frequencias);
+        $id=-1;
+
 		for ($i = 0; $i < $totalfrequencias; $i++){
 			if (($dataInicial == $frequencias[$i]->dataInicial || $dataInicial == $frequencias[$i]->dataFinal) ||
 				($dataInicial>$frequencias[$i]->dataInicial && $dataInicial <$frequencias[$i]->dataFinal)){
 				$id = $frequencias[$i]->id;
-			}elseif (($dataFinal == $frequencias[$i]->dataInicial || $dataFinal == $frequencias[$i]->dataFinal) ||
+			}if (($dataFinal == $frequencias[$i]->dataInicial || $dataFinal == $frequencias[$i]->dataFinal) ||
 				($dataFinal>$frequencias[$i]->dataInicial && $dataFinal <$frequencias[$i]->dataFinal)) {
 				$id = $frequencias[$i]->id;
-			}elseif (($dataInicial<$frequencias[$i]->dataInicial && $dataFinal >$frequencias[$i]->dataInicial) ||
+			}if (($dataInicial<$frequencias[$i]->dataInicial && $dataFinal >$frequencias[$i]->dataInicial) ||
                     ($dataInicial<$frequencias[$i]->dataFinal && $dataFinal >$frequencias[$i]->dataFinal)){
                 $id = $frequencias[$i]->id;
             }
 		}        
 
         return $id;
-    }
+    }*/
 
     public function contarOcorrencias($idusuario,$ano,$mes){
         $ocorrencias = Frequencias::find()->where("idusuario = '".$idusuario."' 

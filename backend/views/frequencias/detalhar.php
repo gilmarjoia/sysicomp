@@ -187,12 +187,12 @@ if( isset($_GET["ano"]) && isset($_GET["mes"]) && isset($_GET["prof"]) ){
                 
                 ['attribute' => 'dataInicial',
                     'value' => function ($model){
-                        return date('d-m-Y', strtotime($model->dataInicial));
+                        return date('d/m/Y', strtotime($model->dataInicial));
                     },
                 ],
                 ['attribute' => 'dataFinal',
                     'value' => function ($model){
-                        return date('d-m-Y', strtotime($model->dataFinal));
+                        return date('d/m/Y', strtotime($model->dataFinal));
                     },
                 ],
 

@@ -393,9 +393,17 @@ class FrequenciasController extends Controller
         $model = $this->findModel($id);
         $model_User = User::find()->where(["id" => $model->idusuario])->one();
 
-        $ehProfessor = Yii::$app->user->identity->professor;
-        $ehCoordenador = Yii::$app->user->identity->coordenador;
-        $ehSecretario = Yii::$app->user->identity->secretaria;
+        //$ehProfessor = Yii::$app->user->identity->professor;
+        //$ehCoordenador = Yii::$app->user->identity->coordenador;
+        //$ehSecretario = Yii::$app->user->identity->secretaria;
+
+        $ehProfessor = User::find()->where(['id' => $model->idusuario])->one()->professor;
+        $ehCoordenador = User::find()->where(['id' => $model->idusuario])->one()->coordenador;
+        $ehSecretario = User::find()->where(['id' => $model->idusuario])->one()->secretaria;
+
+        //print_r($ehProfessor);
+
+
 
         $datetime1Anterior = new \DateTime($model->dataInicial);
         $datetime2Anterior = new \DateTime($model->dataFinal);
@@ -475,7 +483,7 @@ class FrequenciasController extends Controller
                 $this->mensagens('success', 'Registro Frequências', 'Registro de Frequências realizado com sucesso!');
 
                 return $this->redirect(['detalhar', "id" => $model->idusuario, "ano" => $_GET["ano"],"mes" =>$_GET["mes"], "prof" => $model_User->professor]);
-            } else if ($ehSecretario == 1 && $model->save()) {
+            } elseif ($ehSecretario == 1 && $model->save()) {
 
                 $this->mensagens('success', 'Registro Frequências', 'Registro de Frequências realizado com sucesso!');
 

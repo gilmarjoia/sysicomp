@@ -143,7 +143,7 @@ if( isset($_GET["ano"]) && isset($_GET["prof"]) ){
             //'id',
              ['attribute' => 'dataPedido',
              'value' => function ($model){
-                        return date('d-m-Y', strtotime($model->dataPedido));
+                        return date('d/m/Y', strtotime($model->dataPedido));
              },
              ],
             //'idusuario',

@@ -184,8 +184,19 @@ $this->params['breadcrumbs'][] = $this->title;
                 //'id',
                 //'idusuario',
                 //'nomeusuario',
-                'dataInicial',
-                'dataFinal',
+                //'dataInicial',
+                //'dataFinal',
+                ['attribute' => 'dataInicial',
+                    'value' => function ($model){
+                        return date('d/m/Y', strtotime($model->dataInicial));
+                    },
+                ],
+                ['attribute' => 'dataFinal',
+                    'value' => function ($model){
+                        return date('d/m/Y', strtotime($model->dataFinal));
+                    },
+                ],
+
                 [
                  'label' => 'Código da Ocorrência',
                  'value' => function($model){
