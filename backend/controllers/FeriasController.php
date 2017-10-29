@@ -256,9 +256,7 @@ class FeriasController extends Controller
                         $model->dataSaida = date('d-m-Y', strtotime($model->dataSaida));
                         $model->dataRetorno =  date('d-m-Y', strtotime($model->dataRetorno));
 
-                    /*return $this->render('create', [
-                            'model' => $model,
-                        ]);*/
+                    return $this->redirect(['listar', 'ano' => $anoSaida]);
 
                 }
 
@@ -286,9 +284,7 @@ class FeriasController extends Controller
                     $this->mensagens('danger', 'Registro Férias', 'Datas inválidas, registro já realizado nesta data !');
                     $model->dataSaida = date('d-m-Y', strtotime($model->dataSaida));
                     $model->dataRetorno = date('d-m-Y', strtotime($model->dataRetorno));
-                    /*return $this->render('create', [
-                        'model' => $model,
-                    ]);*/
+                    return $this->redirect(['listar', 'ano' => $anoSaida]);
                 }
             }
 
@@ -313,9 +309,7 @@ class FeriasController extends Controller
                     $this->mensagens('danger', 'Registro Férias', 'Datas inválidas, registro já realizado nesta data !');
                     $model->dataSaida = date('d-m-Y', strtotime($model->dataSaida));
                     $model->dataRetorno = date('d-m-Y', strtotime($model->dataRetorno));
-                    /*return $this->render('create', [
-                        'model' => $model,
-                    ]);*/
+                    return $this->redirect(['listar', 'ano' => $anoSaida]);
                 }
             }
 
@@ -340,9 +334,7 @@ class FeriasController extends Controller
                     $this->mensagens('danger', 'Registro Férias', 'Datas inválidas, afastamento cadastrado no mesmo período !');
                     $model->dataSaida = date('d-m-Y', strtotime($model->dataSaida));
                     $model->dataRetorno = date('d-m-Y', strtotime($model->dataRetorno));
-                    return $this->render('create', [
-                        'model' => $model,
-                    ]);
+                    return $this->redirect(['listar', 'ano' => $anoSaida]);
                 }
             }
 
@@ -367,7 +359,7 @@ class FeriasController extends Controller
 
                 return $this->render('create', [
                         'model' => $model,
-                    ]);
+                ]);
 
 
         } else {
@@ -418,9 +410,7 @@ class FeriasController extends Controller
                 $this->mensagens('danger', 'Registro Férias', 'Datas inválidas!');
                 $model->dataSaida = date('d-m-Y', strtotime($model->dataSaida));
                 $model->dataRetorno = date('d-m-Y', strtotime($model->dataRetorno));
-                return $this->render('createsecretaria', [
-                    'model' => $model,
-                ]);
+                return $this->redirect(['detalhar', 'id' => $model->idusuario, 'ano' => date("Y") ,"prof" => $model_User->professor]);
             }
 
 
@@ -445,10 +435,7 @@ class FeriasController extends Controller
                     $this->mensagens('danger', 'Registro Férias', 'Datas inválidas, registro já realizado nesta data !');
                     $model->dataSaida = date('d-m-Y', strtotime($model->dataSaida));
                     $model->dataRetorno = date('d-m-Y', strtotime($model->dataRetorno));
-                    return $this->render('createsecretaria', [
-                        'model' => $model,
-                        'nome' => $model->nomeusuario,
-                    ]);
+                    return $this->redirect(['detalhar', 'id' => $model->idusuario, 'ano' => date("Y") ,"prof" => $model_User->professor]);
                 }
             }
 
@@ -473,10 +460,7 @@ class FeriasController extends Controller
                     $this->mensagens('danger', 'Registro Férias', 'Datas inválidas, registro já realizado nesta data !');
                     $model->dataSaida = date('d-m-Y', strtotime($model->dataSaida));
                     $model->dataRetorno = date('d-m-Y', strtotime($model->dataRetorno));
-                    return $this->render('createsecretaria', [
-                        'model' => $model,
-                        'nome' => $model->nomeusuario,
-                    ]);
+                    return $this->redirect(['detalhar', 'id' => $model->idusuario, 'ano' => date("Y") ,"prof" => $model_User->professor]);
                 }
             }
 
@@ -501,10 +485,7 @@ class FeriasController extends Controller
                     $this->mensagens('danger', 'Registro Férias', 'Datas inválidas, afastamento cadastrado no mesmo período !');
                     $model->dataSaida = date('d-m-Y', strtotime($model->dataSaida));
                     $model->dataRetorno = date('d-m-Y', strtotime($model->dataRetorno));
-                    return $this->render('createsecretaria', [
-                        'model' => $model,
-                        'nome' => $model->nomeusuario,
-                    ]);
+                    return $this->redirect(['detalhar', 'id' => $model->idusuario, 'ano' => date("Y") ,"prof" => $model_User->professor]);
                 }
             }
 
@@ -520,10 +501,7 @@ class FeriasController extends Controller
             }
             $model->dataSaida = date('d-m-Y', strtotime($model->dataSaida));
             $model->dataRetorno =  date('d-m-Y', strtotime($model->dataRetorno));
-            return $this->render('createsecretaria', [
-                    'model' => $model,
-                    'nome' => $model->nomeusuario,
-                ]);
+            return $this->redirect(['detalhar', 'id' => $model->idusuario, 'ano' => date("Y") ,"prof" => $model_User->professor]);
         } else {
             return $this->render('createsecretaria', [
                 'model' => $model,
