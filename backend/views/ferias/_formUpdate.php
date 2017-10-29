@@ -18,7 +18,7 @@ $arrayTipoferias = array ("1" => "Usufruto", "2" => "Oficial");
     <?php $form = ActiveForm::begin(); ?>
 
     <div class = "row" id="tipo">
-    <?= $form->field($model, 'tipo' , ['options' => ['class' => 'col-md-3']])->dropDownlist($arrayTipoferias, ['prompt' => 'Selecione um tipo de Férias'])->label("<font color='#FF0000'>*</font> <b>Tipo:</b>")?>
+        <?= $form->field($model, 'tipo' , ['options' => ['class' => 'col-md-3']])->dropDownlist($arrayTipoferias, ['prompt' => 'Selecione um tipo de Férias'])->label("<font color='#FF0000'>*</font> <b>Tipo:</b>")?>
     </div>
 
     <!--Não mudar a forma da data de dd-mm-yyyy para dd/mm/yyyy, ocorre bug na hora de pegar ano atual -->
@@ -53,6 +53,7 @@ $arrayTipoferias = array ("1" => "Usufruto", "2" => "Oficial");
     <div class="row">
         <?= $form->field($model, 'adiantamentoDecimo', ['options' => ['class' => 'col-md-3']])->widget(SwitchInput::className(), [
             'type' => SwitchInput::CHECKBOX,
+            'options' => ['id' => 'adiantamentodecimo'],
             'pluginOptions' => [
                 'onText' => 'Sim',
                 'offText' => 'Não'
@@ -64,6 +65,7 @@ $arrayTipoferias = array ("1" => "Usufruto", "2" => "Oficial");
     <div class="row">
         <?= $form->field($model, 'adiantamentoFerias', ['options' => ['class' => 'col-md-3']])->widget(SwitchInput::className(), [
             'type' => SwitchInput::CHECKBOX,
+            'options' => ['id' => 'adiantamentoferias'],
             'pluginOptions' => [
                 'onText' => 'Sim',
                 'offText' => 'Não'
@@ -85,27 +87,25 @@ $arrayTipoferias = array ("1" => "Usufruto", "2" => "Oficial");
 <?php
 
 $this->registerJs("
-    $('#ferias-tipo').change(function () {
         if ($('#ferias-tipo').val() == 1) {
-            $('#adiantamento_decimo').bootstrapSwitch('disabled',true);
-            $('#adiantamento_ferias').bootstrapSwitch('disabled',true);
+            $('#adiantamentodecimo').bootstrapSwitch('disabled',true);
+            $('#adiantamentoferias').bootstrapSwitch('disabled',true);
         } else {
-            $('#adiantamento_decimo').bootstrapSwitch('disabled',false);
-            $('#adiantamento_ferias').bootstrapSwitch('disabled',false);
+            $('#adiantamentodecimo').bootstrapSwitch('disabled',false);
+            $('#adiantamentoferias').bootstrapSwitch('disabled',false);
         }
-    });
 ");
 
-if (Ferias::find()->where(['idusuario' => $model->idusuario])->andWhere(['tipo' => 2])->one() != null) {
+/*if (Ferias::find()->where("idusuario = '".$model->idusuario."'AND YEAR(dataSaida) = ".$_GET["ano"])->andWhere(['tipo' => 2])->one() != null) {
     if(Ferias::find()->where(['idusuario' =>$model->idusuario])->andWhere(['adiantamentoDecimo' => 1])->orWhere(['adiantamentoFerias' => 1])->one() != null){
         $this->registerJs("
             $('#ferias-tipo').change(function () {
                  if ($('#ferias-tipo').val() == 2) {
-                    $('#adiantamento_decimo').bootstrapSwitch('disabled',true);
-                    $('#adiantamento_ferias').bootstrapSwitch('disabled',true);
+                    $('#adiantamentodecimo').bootstrapSwitch('disabled',true);
+                    $('#adiantamentoferias').bootstrapSwitch('disabled',true);
                 } 
             });    
         ");
     }
-}
+}*/
 ?>
