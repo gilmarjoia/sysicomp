@@ -196,7 +196,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'label' => 'Descrição',
                     'content' => function($model){
                         //print_r($model->codigoOcorrencia);
-                        return Ocorrencias::find()->select('j17_ocorrencias.ocorrencia')->from('j17_ocorrencias')->where(['codigo' => $model->pegarCodigoOcorrencia($model->codigoOcorrencia)])->one()->ocorrencia;
+                        return Ocorrencias::find()->where(['codigo' => $model->codigoOcorrencia])->one()->ocorrencia;
                     },
                 ],
 
