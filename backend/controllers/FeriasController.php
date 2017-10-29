@@ -746,8 +746,8 @@ class FeriasController extends Controller
         {
             define('_MPDF_TTFONTDATAPATH',Yii::getAlias('@runtime/mpdf'));
             $pdf = new mPDF('utf-8','A4-L','','','15','15','40','30');
-            $dataUser = User::find()->all();
-
+            $dataUser = User::find()->orderBy('nome ASC')->all();
+            
             $pdf->SetHTMLHeader
             ('
                 <table width="100%" style="vertical-align: bottom; font-family: serif; font-size: 8pt; color: #000000; font-weight: bold;">
@@ -809,7 +809,7 @@ class FeriasController extends Controller
 
             foreach($dataUser as $dUser)
             {
-                $dataFerias = Ferias::find()->where(["idusuario" => $dUser->id])->andWhere('dataSaida LIKE :substr', array(':substr' => $ano.'%'))->all();
+                $dataFerias = Ferias::find()->where(["idusuario" => $dUser->id])->andWhere('dataSaida LIKE :substr', array(':substr' => $ano.'%'))->andWhere(["tipo" => 2])->all();
                 $pdf->WriteHtml
                 ('
                 <tr>
