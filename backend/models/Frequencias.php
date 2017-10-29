@@ -235,7 +235,7 @@ class Frequencias extends \yii\db\ActiveRecord
 
         return $id;
     }
-    
+
 
     //verifica se a data que se pretende cadastrar está dentro de [ou adentrando] um intervalo que já está cadastrado, caso já exista registra o id do registro de frequência que já possui a data cadatrado, caso não exista retorna '-1', para ser tratado no controller
     /*public function verificarSeDataEhValida($idusuario,$ano,$mes,$dataInicial,$dataFinal){

@@ -468,12 +468,8 @@ class FrequenciasController extends Controller
                 $this->mensagens('success', 'Registro Frequências', 'Registro de Frequências realizado com sucesso!');
 
                 return $this->redirect(['detalhar', "id" => $model->idusuario, "ano" => $_GET["ano"],"mes" =>$_GET["mes"], "prof" => $model_User->professor]);
-<<<<<<< HEAD
-            } elseif ($ehSecretario == 1 && $model->save()) {
-=======
 
-            } else if ($ehSecretario == 1 && $model->save()) {
->>>>>>> 6375287e5530ba6219f197c6a92e49f319ecfcc8
+            } elseif ($ehSecretario == 1 && $model->save()) {
 
                 $this->mensagens('success', 'Registro Frequências', 'Registro de Freqências realizado com sucesso!');
 

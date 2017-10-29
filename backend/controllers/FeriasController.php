@@ -584,6 +584,7 @@ class FeriasController extends Controller
 
             }
 
+
             /*$contRegistro = 0;
             if ($dataRegistro != null and $model->tipo == 2) {
 
