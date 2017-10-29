@@ -38,7 +38,7 @@ class Frequencias extends \yii\db\ActiveRecord
     {
         return [
             [['idusuario', 'nomeusuario', 'dataInicial', 'dataFinal', 'codigoOcorrencia','qtdDiasPagamento'], 'required'],
-            [['idusuario'], 'integer'],
+            [['idusuario','id'], 'integer'],
             [['dataInicial', 'dataFinal'], 'safe'],
             [['nomeusuario'], 'string', 'max' => 60],
             [['codigoOcorrencia'], 'string'],
@@ -213,28 +213,28 @@ class Frequencias extends \yii\db\ActiveRecord
         return $ehProfessor;
     }
 
-    //verifica se a data que se pretende cadastrar está dentro de [ou adentrando] um intervalo que já está cadastrado
+    //verifica se a data que se pretende cadastrar está dentro de [ou adentrando] um intervalo que já está cadastrado, caso já exista registra o id do registro de frequência que já possui a data cadatrado, caso não exista retorna '-1', para ser tratado no controller
     public function verificarSeDataEhValida($idusuario,$ano,$mes,$dataInicial,$dataFinal){
 
         $frequencias = Frequencias::find()->select("j17_frequencias.*")->where(["idusuario" => $idusuario,"YEAR(dataInicial)" => $ano, "MONTH(dataInicial)" => $mes])->all();
 
         $totalfrequencias = count($frequencias);
-        $ehvalida = 1;
+        $id=-1;
 
 		for ($i = 0; $i < $totalfrequencias; $i++){
 			if (($dataInicial == $frequencias[$i]->dataInicial || $dataInicial == $frequencias[$i]->dataFinal) ||
 				($dataInicial>$frequencias[$i]->dataInicial && $dataInicial <$frequencias[$i]->dataFinal)){
-				$ehvalida = 0;
+				$id = $frequencias[$i]->id;
 			}elseif (($dataFinal == $frequencias[$i]->dataInicial || $dataFinal == $frequencias[$i]->dataFinal) ||
 				($dataFinal>$frequencias[$i]->dataInicial && $dataFinal <$frequencias[$i]->dataFinal)) {
-				$ehvalida = 0;
+				$id = $frequencias[$i]->id;
 			}elseif (($dataInicial<$frequencias[$i]->dataInicial && $dataFinal >$frequencias[$i]->dataInicial) ||
                     ($dataInicial<$frequencias[$i]->dataFinal && $dataFinal >$frequencias[$i]->dataFinal)){
-                $ehvalida = 0;
+                $id = $frequencias[$i]->id;
             }
 		}        
 
-        return $ehvalida;
+        return $id;
     }
 
     public function contarOcorrencias($idusuario,$ano,$mes){
