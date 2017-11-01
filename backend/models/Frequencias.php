@@ -213,27 +213,32 @@ class Frequencias extends \yii\db\ActiveRecord
         return $ehProfessor;
     }
 
-    //verifica se a data que se pretende cadastrar está dentro de [ou adentrando] um intervalo que já está cadastrado, caso já exista registra o id do registro de frequência que já possui a data cadatrado, caso não exista retorna '-1', para ser tratado no controller
+    //verifica se a data que se pretende cadastrar está dentro de [ou adentrando] um intervalo que já está cadastrado, caso esteja retorna 0 indicando que a data é Inválida, caso contrário retorna 1 indicando que a data é Válida
     public function verificarSeDataEhValida($idusuario,$ano,$mes,$dataInicial,$dataFinal){
 
         $frequencias = Frequencias::find()->select("j17_frequencias.*")->where(["idusuario" => $idusuario,"YEAR(dataInicial)" => $ano, "MONTH(dataInicial)" => $mes])->all();
 
         $totalfrequencias = count($frequencias);
-        $id=-1;
+        $valida=1;
 
         for ($i = 0; $i < $totalfrequencias; $i++){
-            if ($frequencias[$i]->dataInicial <= $dataInicial and $frequencias[$i]->dataFinal >= $dataInicial){
-                $id = $frequencias[$i]->id;
-            }if ($frequencias[$i]->dataInicial >= $dataInicial and $frequencias[$i]->dataInicial <= $dataFinal and $frequencias[$i]->dataFinal >= $dataFinal) {
-                $id = $frequencias[$i]->id;
-            }if ($frequencias[$i]->dataInicial <= $dataInicial and $frequencias[$i]->dataInicial <= $dataFinal and $frequencias[$i]->dataFinal >= $dataFinal){
-                $id = $frequencias[$i]->id;
-            }if($frequencias[$i]->dataInicial >= $dataInicial and $frequencias[$i]->dataFinal <= $dataFinal){
-                $id = $frequencias[$i]->id;
-            }
+            //var_dump($frequencias[$i]->id);
+            //var_dump($this->id);
+            //exit;
+            if($frequencias[$i]->id != $this->id){
+                if ($frequencias[$i]->dataInicial <= $dataInicial and $frequencias[$i]->dataFinal >= $dataInicial){
+                    $valida = 0;
+                }if ($frequencias[$i]->dataInicial >= $dataInicial and $frequencias[$i]->dataInicial <= $dataFinal and $frequencias[$i]->dataFinal >= $dataFinal) {
+                    $valida = 0;
+                }if ($frequencias[$i]->dataInicial <= $dataInicial and $frequencias[$i]->dataInicial <= $dataFinal and $frequencias[$i]->dataFinal >= $dataFinal){
+                    $valida = 0;
+                }if($frequencias[$i]->dataInicial >= $dataInicial and $frequencias[$i]->dataFinal <= $dataFinal){
+                    $valida = 0;
+                }
+            }    
         }
 
-        return $id;
+        return $valida;
     }
 
 
