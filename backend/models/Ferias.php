@@ -31,6 +31,7 @@ class Ferias extends \yii\db\ActiveRecord
     public $detalharRestoUsufruto;
     public $totalFeriasOficial;
     public $dias;
+    public $nome;
 
 	
 
