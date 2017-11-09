@@ -62,8 +62,9 @@ class Frequencias extends \yii\db\ActiveRecord
         ];
     }
 
+    //metodo alterado para listar todos os meses do anos no filtro das telas de detalhamento de frequencia
     public function mesFrequencias($idusuario){
-
+        /*
         if($idusuario == null){
             $mes_model = Frequencias::find()->select("MONTH(dataInicial) as mesInicial")->all();
         }else{
@@ -76,11 +77,12 @@ class Frequencias extends \yii\db\ActiveRecord
         for($i=0; $i<count($mes_model); $i++){
             $mes[$i] = $mes_model[$i]->mesInicial;
         }
-
+        
 
         $mes = array_unique($mes);
         rsort($mes);
-
+        */
+        $mes = array(1,2,3,4,5,6,7,8,9,10,11,12);
 
         return $mes;
 
