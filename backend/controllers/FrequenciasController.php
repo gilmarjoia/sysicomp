@@ -226,17 +226,6 @@ class FrequenciasController extends Controller
             $interval = $datetime1->diff($datetime2);
             $diferencaDias =  $interval->format('%a');
             $diferencaDias++;
-
-            if($model->verificarSeDataEhValida($model->idusuario,$anoSaida,$mesSaida,$model->dataInicial,$model->dataFinal)==0){
-                $this->mensagens('danger', 'Registro Frequências',  'Falha no Registro de Frequência, já existe uma ocorrência dentro da data especificada!');
-
-                $model->dataInicial = date('d-m-Y', strtotime($model->dataInicial));
-                $model->dataFinal =  date('d-m-Y', strtotime($model->dataFinal));
-
-                return $this->render('create', [
-                    'model' => $model,
-                ]);
-            }
         
             if( $diferencaDias < 0 || $interval->format('%R') == "-" ){
 
@@ -258,6 +247,28 @@ class FrequenciasController extends Controller
             if( $dataInicialFrequencia > $dataAtual){
 
                 $this->mensagens('danger', 'Registro Frequências',  'Falha no Registro de Frequência, você não pode lançar em uma data futura!');
+
+                $model->dataInicial = date('d-m-Y', strtotime($model->dataInicial));
+                $model->dataFinal =  date('d-m-Y', strtotime($model->dataFinal));
+
+                return $this->render('create', [
+                    'model' => $model,
+                ]);
+            }
+
+            if($model->verificarSeDataEhValida($model->idusuario,$anoSaida,$mesSaida,$model->dataInicial,$model->dataFinal)==0){
+                $this->mensagens('danger', 'Registro Frequências',  'Falha no Registro de Frequência, já existe uma ocorrência dentro da data especificada!');
+
+                $model->dataInicial = date('d-m-Y', strtotime($model->dataInicial));
+                $model->dataFinal =  date('d-m-Y', strtotime($model->dataFinal));
+
+                return $this->render('create', [
+                    'model' => $model,
+                ]);
+            }
+
+            if($model->verificarSeDataNaoConflitaComFerias($model->idusuario,$anoSaida,$mesSaida,$model->dataInicial,$model->dataFinal)==0){
+                $this->mensagens('danger', 'Registro Frequências',  'Falha no Registro de Frequência, existem FÉRIAS cadastradas neste período para este servidor!');
 
                 $model->dataInicial = date('d-m-Y', strtotime($model->dataInicial));
                 $model->dataFinal =  date('d-m-Y', strtotime($model->dataFinal));
@@ -324,17 +335,6 @@ class FrequenciasController extends Controller
             $diferencaDias = $interval->format('%a');
             $diferencaDias++;
 
-            if($model->verificarSeDataEhValida($model->idusuario,$anoInicio,$mesInicio,$model->dataInicial,$model->dataFinal)==0){
-                $this->mensagens('danger', 'Registro Frequências',  'Falha no Registro de Frequência, já existe uma ocorrência dentro da data especificada!!');
-
-                $model->dataInicial = date('d-m-Y', strtotime($model->dataInicial));
-                $model->dataFinal =  date('d-m-Y', strtotime($model->dataFinal));
-
-                return $this->render('createsecretaria', [
-                    'model' => $model,
-                ]);
-            }
-
             if ($diferencaDias < 0 || $interval->format('%R') == "-") {
                 $this->mensagens('danger', 'Registro de Frequências', 'Datas inválidas!');
                 $model->dataInicial = date('d-m-Y', strtotime($model->dataInicial));
@@ -351,6 +351,28 @@ class FrequenciasController extends Controller
             if( $dataInicialFrequencia > $dataAtual){
 
                 $this->mensagens('danger', 'Registro Frequências',  'Falha no Registro de Frequência, você não pode lançar em uma data futura!');
+
+                $model->dataInicial = date('d-m-Y', strtotime($model->dataInicial));
+                $model->dataFinal =  date('d-m-Y', strtotime($model->dataFinal));
+
+                return $this->render('createsecretaria', [
+                    'model' => $model,
+                ]);
+            }
+
+            if($model->verificarSeDataEhValida($model->idusuario,$anoInicio,$mesInicio,$model->dataInicial,$model->dataFinal)==0){
+                $this->mensagens('danger', 'Registro Frequências',  'Falha no Registro de Frequência, já existe uma ocorrência dentro da data especificada!!');
+
+                $model->dataInicial = date('d-m-Y', strtotime($model->dataInicial));
+                $model->dataFinal =  date('d-m-Y', strtotime($model->dataFinal));
+
+                return $this->render('createsecretaria', [
+                    'model' => $model,
+                ]);
+            }
+
+            if($model->verificarSeDataNaoConflitaComFerias($model->idusuario,$anoInicio,$mesInicio,$model->dataInicial,$model->dataFinal)==0){
+                $this->mensagens('danger', 'Registro Frequências',  'Falha no Registro de Frequência, existem FÉRIAS cadastradas neste período para este servidor!');
 
                 $model->dataInicial = date('d-m-Y', strtotime($model->dataInicial));
                 $model->dataFinal =  date('d-m-Y', strtotime($model->dataFinal));
@@ -461,7 +483,6 @@ class FrequenciasController extends Controller
                     'model' => $model,
                 ]);
             }
-
             
             if($model->verificarSeDataEhValida($model->idusuario,$ano,$mes,$model->dataInicial,$model->dataFinal)==0){
                     $this->mensagens('danger', 'Registro Frequências',  'Falha no Registro de Frequência, já existe uma ocorrência dentro da data especificada!!');
@@ -472,7 +493,18 @@ class FrequenciasController extends Controller
                     return $this->render('update', [
                             'model' => $model,
                        ]);
-             }
+            }
+
+            if($model->verificarSeDataNaoConflitaComFerias($model->idusuario,$ano,$mes,$model->dataInicial,$model->dataFinal)==0){
+                $this->mensagens('danger', 'Registro Frequências',  'Falha no Registro de Frequência, existem FÉRIAS cadastradas neste período para este servidor!');
+
+                $model->dataInicial = date('d-m-Y', strtotime($model->dataInicial));
+                $model->dataFinal =  date('d-m-Y', strtotime($model->dataFinal));
+
+                return $this->render('update', [
+                    'model' => $model,
+                ]);
+            }
 
 
             if (($ehProfessor == 1) && $model->save()) {

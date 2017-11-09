@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use app\models\Ferias;
 
 /**
  * This is the model class for table "j17_frequencias".
@@ -224,9 +225,6 @@ class Frequencias extends \yii\db\ActiveRecord
         $valida=1;
 
         for ($i = 0; $i < $totalfrequencias; $i++){
-            //var_dump($frequencias[$i]->id);
-            //var_dump($this->id);
-            //exit;
             if($frequencias[$i]->id != $this->id){
                 if ($frequencias[$i]->dataInicial <= $dataInicial and $frequencias[$i]->dataFinal >= $dataInicial){
                     $valida = 0;
@@ -242,6 +240,31 @@ class Frequencias extends \yii\db\ActiveRecord
 
         return $valida;
     }
+
+    public function verificarSeDataNaoConflitaComFerias($idusuario,$ano,$mes,$dataInicial,$dataFinal){
+
+        $ferias = Ferias::find()->where(["idusuario" => $idusuario,"YEAR(dataSaida)" => $ano, "MONTH(dataSaida)" => $mes])->all();
+
+        $totalferias = count($ferias);
+        $valida=1;
+
+        for ($i = 0; $i < $totalferias; $i++){
+            if($ferias[$i]->id != $this->id){
+                if ($ferias[$i]->dataSaida <= $dataInicial and $ferias[$i]->dataRetorno >= $dataInicial){
+                    $valida = 0;
+                }if ($ferias[$i]->dataSaida >= $dataInicial and $ferias[$i]->dataRetorno <= $dataFinal and $ferias[$i]->dataRetorno >= $dataFinal) {
+                    $valida = 0;
+                }if ($ferias[$i]->dataSaida <= $dataInicial and $ferias[$i]->dataSaida <= $dataFinal and $ferias[$i]->dataRetorno >= $dataFinal){
+                    $valida = 0;
+                }if($ferias[$i]->dataSaida >= $dataInicial and $ferias[$i]->dataRetorno <= $dataFinal){
+                    $valida = 0;
+                }
+            }    
+        }
+
+        return $valida;
+    }
+
 
 
     //verifica se a data que se pretende cadastrar está dentro de [ou adentrando] um intervalo que já está cadastrado, caso já exista registra o id do registro de frequência que já possui a data cadatrado, caso não exista retorna '-1', para ser tratado no controller
