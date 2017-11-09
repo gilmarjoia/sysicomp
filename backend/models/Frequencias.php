@@ -244,6 +244,7 @@ class Frequencias extends \yii\db\ActiveRecord
     public function verificarSeDataNaoConflitaComFerias($idusuario,$ano,$mes,$dataInicial,$dataFinal){
 
         $ferias = Ferias::find()->where(["idusuario" => $idusuario,"YEAR(dataSaida)" => $ano, "MONTH(dataSaida)" => $mes])->all();
+         $ferias = Ferias::find()->where(["idusuario" => $idusuario , "tipo" => 1 ])->all();
 
         $totalferias = count($ferias);
         $valida=1;
