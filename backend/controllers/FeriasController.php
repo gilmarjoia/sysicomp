@@ -357,9 +357,7 @@ class FeriasController extends Controller
                 $model->dataSaida = date('d-m-Y', strtotime($model->dataSaida));
                 $model->dataRetorno =  date('d-m-Y', strtotime($model->dataRetorno));
 
-                return $this->render('create', [
-                        'model' => $model,
-                ]);
+                return $this->redirect(['listar', 'ano' => $anoSaida]);
 
 
         } else {
