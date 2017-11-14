@@ -222,7 +222,7 @@ class FeriasController extends Controller
         $dataAfastamento = Afastamentos::find()->where(["idusuario" => $model->idusuario])->all();
         $dataRegistro = Ferias::find()->where(['idusuario' => $model->idusuario])->andWhere(['tipo' => 2])->all();
         $dataRegistro2 = Ferias::find()->where(['idusuario' => $model->idusuario])->andWhere(['tipo' => 1])->all();
-
+        $registro = Ferias::find()->where("idusuario = '".$model->idusuario."'AND YEAR(dataSaida) = ".$ano)->andWhere(['tipo' => 2])->all();
 
         if($ehProfessor == 1){
             $limiteDias = 45;
@@ -261,7 +261,9 @@ class FeriasController extends Controller
                 }
 
             $contRegistro = 0;
-            $contRegistro2 =0;
+            $contRegistro2 = 0;
+
+
 
             if ($dataRegistro != null and $model->tipo == 2) {
 
@@ -338,7 +340,8 @@ class FeriasController extends Controller
                 }
             }
 
-                if( ($totalDiasFeriasAno+$diferencaDias) <= $limiteDias && $model->save()){
+                if(($totalDiasFeriasAno+$diferencaDias) <= $limiteDias && $model->verificarSolicitacao($model->idusuario,$anoSaida) && $model->save()){
+
 
                     $model->adiantamentoDecimo;
                     $model->adiantamentoFerias;
@@ -348,15 +351,14 @@ class FeriasController extends Controller
 
                     return $this->redirect(['listar', 'ano' => $anoSaida]);
 
-                } else {
-
+                } elseif(!$model->verificarSolicitacao($model->idusuario,$anoSaida)) {
+                    $this->mensagens('danger', 'Registro Férias', 'Não foi possível registrar o pedido de férias. Você ultrapassou realizou 3 pedidos de ferias');
+                }else{
                     $this->mensagens('danger', 'Registro Férias', 'Não foi possível registrar o pedido de férias. Você ultrapassou o limite de '.$limiteDias.'  dias');
-
                 }
 
                 $model->dataSaida = date('d-m-Y', strtotime($model->dataSaida));
                 $model->dataRetorno =  date('d-m-Y', strtotime($model->dataRetorno));
-
                 return $this->redirect(['listar', 'ano' => $anoSaida]);
 
 
@@ -488,19 +490,25 @@ class FeriasController extends Controller
             }
 
 
-            if(($totalDiasFeriasAno + $diferencaDias) <= $limiteDias && $model->save()){
+            if(($totalDiasFeriasAno + $diferencaDias) <= $limiteDias && $model->verificarSolicitacao($model->idusuario,$anoSaida) && $model->save()){
+
                 $model->adiantamentoDecimo;
                 $model->adiantamentoFerias;
+
                 $this->mensagens('success', 'Registro Férias',  'Registro de Férias realizado com sucesso!');
                 return $this->redirect(['detalhar', 'id' => $model->idusuario, 'ano' => date("Y") ,"prof" => $model_User->professor]);
+
+            } elseif(!$model->verificarSolicitacao($model->idusuario,$anoSaida)){
+                $this->mensagens('danger', 'Registro Férias', 'Não foi possível registrar o pedido de férias. Você realizou 3 pedidos de férias');
+            }else{
+                $this->mensagens('danger', 'Registro Férias', 'Não foi possível registrar o pedido de férias. Você ultrapassou o limite de ' . $limiteDias . ' dias');
             }
-            else {
-                $this->mensagens('danger', 'Registro Férias', 'Não foi possível registrar o pedido de férias. Você ultrapassou o limite de '.$limiteDias.' dias');
-            }
+
             $model->dataSaida = date('d-m-Y', strtotime($model->dataSaida));
             $model->dataRetorno =  date('d-m-Y', strtotime($model->dataRetorno));
             return $this->redirect(['detalhar', 'id' => $model->idusuario, 'ano' => date("Y") ,"prof" => $model_User->professor]);
-        } else {
+
+        }else {
             return $this->render('createsecretaria', [
                 'model' => $model,
                 'nome' => $model->nomeusuario,

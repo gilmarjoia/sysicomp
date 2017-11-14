@@ -32,7 +32,7 @@ class Ferias extends \yii\db\ActiveRecord
     public $totalFeriasOficial;
     public $dias;
     public $nome;
-
+    public $solicitacao;
 	
 
     
@@ -93,6 +93,24 @@ class Ferias extends \yii\db\ActiveRecord
                 $interval = $datetime1->diff($datetime2);
                 $diferencaDias =  $interval->format('%a');
                 return $diferencaDias;
+    }
+
+    public function pegarSolicitacao($idusuario,$ano){
+        $registro = Ferias::find()->where(['idusuario' => $idusuario])->andWhere(['tipo' => 2])->andWhere(['YEAR(dataSaida)' => $ano])->all();
+        $this->solicitacao = 0;
+        foreach ($registro as $value){
+            $this->solicitacao = $this->solicitacao + 1;
+        };
+
+        return $this->solicitacao;
+    }
+
+    public function verificarSolicitacao($idusuario,$ano){
+        if($this->pegarSolicitacao($idusuario,$ano) < 3){
+            return true;
+        }else{
+            return false;
+        }
     }
 
     public function anosFerias($idusuario){

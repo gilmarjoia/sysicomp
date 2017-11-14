@@ -15,6 +15,7 @@ use app\models\Ferias;
 //$registro = Ferias::find()->where(['idusuario' => $model->idusuario])->andWhere(['tipo' => 2])->one();
 //var_dump($registro);
 //var_dump($dataRegistro);
+//var_dump($model->pegarSolicitacao(72, $_GET['ano']));
 
 $arrayTipoferias = ["1" => "Usufruto", "2" => "Oficial"];
 ?>
@@ -92,6 +93,10 @@ $arrayTipoferias = ["1" => "Usufruto", "2" => "Oficial"];
 </div>
 
 <?php
+
+$this->registerJs("
+    
+");
 
 $this->registerJs("
     $('#ferias-tipo').change(function () {
