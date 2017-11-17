@@ -413,7 +413,7 @@ class FeriasController extends Controller
         $dataAfastamento = Afastamentos::find()->where(["idusuario" => $model->idusuario])->all();
         $dataRegistro = Ferias::find()->where(['idusuario' => $id])->andWhere(['tipo' => 2])->all();
         $dataRegistro2 = Ferias::find()->where(['idusuario' => $id])->andWhere(['tipo' => 1])->all();
-        
+
 
         //print_r($dataRegistro);
 
@@ -586,6 +586,7 @@ class FeriasController extends Controller
         //$ehCoordenador = Yii::$app->user->identity->coordenador;
         //$ehSecretario = Yii::$app->user->identity->secretaria;
 
+        $funcionario = User::find()->where(['id' => $idUsuarioFerias])->one();
         $ehProfessor = User::find()->where(['id' => $idUsuarioFerias])->one()->professor;
         $ehCoordenador = User::find()->where(['id' => $idUsuarioFerias])->one()->coordenador;
         $ehSecretario = User::find()->where(['id' => $idUsuarioFerias])->one()->secretaria;
@@ -726,7 +727,11 @@ class FeriasController extends Controller
             }
 
 
-            if (($ehProfessor == 1) && ($totalDiasFeriasAno + $diferencaDiasUpdate) <= 45 && $model->save()) {
+
+
+
+
+            if (($ehProfessor == 1) && ($totalDiasFeriasAno + $diferencaDiasUpdate) == 45 && $model->save()) {
 
                 $model->adiantamentoDecimo;
                 $model->adiantamentoFerias;
@@ -735,7 +740,7 @@ class FeriasController extends Controller
 
                 return $this->redirect(['detalhar', "id" => $model->idusuario, "ano" => $_GET["ano"], "prof" => $ehProfessor]);
 
-            } if ($ehSecretario == 1 && ($totalDiasFeriasAno + $diferencaDiasUpdate) <= 30 && $model->save()) {
+            } if ($ehSecretario == 1 && ($totalDiasFeriasAno + $diferencaDiasUpdate) == 30 && $model->save()) {
 
                 $model->adiantamentoDecimo;
                 $model->adiantamentoFerias;
@@ -751,6 +756,12 @@ class FeriasController extends Controller
 
                 $this->mensagens('danger', 'Registro Férias', 'Não foi possível registrar o pedido de férias. Você ultrapassou o limite de 30 dias');
 
+            }if(($ehProfessor == 1) && ($totalDiasFeriasAno + $diferencaDiasUpdate) < 45){
+                $diasRestantes = 45 - $totalDiasFeriasAno;
+                $this->mensagens('danger', 'Registro Férias', 'Não foi possível registrar o pedido de férias. Você precisa registrar '.$diasRestantes.' dias');
+            }if(($ehSecretario == 1 && ($totalDiasFeriasAno + $diferencaDiasUpdate) < 30)){
+                $diasRestantes = 30 - $totalDiasFeriasAno;
+                $this->mensagens('danger', 'Registro Férias', 'Não foi possível registrar o pedido de férias. Você precisa registrar '.$diasRestantes.' dias');
             }
 
             $model->dataSaida = date('d-m-Y', strtotime($model->dataSaida));
@@ -760,7 +771,7 @@ class FeriasController extends Controller
                 'model' => $model,
             ]);
 
-            } else {
+            }else {
 
                 $model->dataSaida = date('d-m-Y', strtotime($model->dataSaida));
                 $model->dataRetorno = date('d-m-Y', strtotime($model->dataRetorno));
