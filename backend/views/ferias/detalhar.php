@@ -242,6 +242,6 @@ if( isset($_GET["ano"]) && isset($_GET["prof"]) ){
               ]                            
             ],
         ],
-    ]); ?>,
+    ]); ?>
 </h5>
 </div>
