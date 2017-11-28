@@ -131,7 +131,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'buttons'=>[
                   'view' => function ($url, $model) {
                     return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['detalhar', 
-                        'id' => $model->id , 'ano' => $_GET["ano"], "prof" => 1], [
+                        'id' => $model->id , 'ano' => $_GET["ano"], "prof" => User::find()->where(["id" => $model->id])->one()->professor], [
                             'title' => Yii::t('yii', 'Visualizar Detalhes'),
                     ]);   
                   }
