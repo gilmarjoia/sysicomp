@@ -105,6 +105,7 @@ $this->registerJs("
 
 ");
 
+//Permite que o usuário modifique um pedido de adiantamento, somente se a solicitação que se estiver trabalhando for a PRIMEIRA feita no ano
 if (Ferias::find()->where("idusuario = '".$model->idusuario."'AND YEAR(dataSaida) = ".$_GET["ano"])->andWhere(['tipo' => 2])->one() != null) {
     if(Ferias::find()->where(['idusuario' =>$model->idusuario])->andWhere(['YEAR(dataSaida)' => $_GET["ano"]])->andWhere('id != '.$model->id)->andFilterWhere(['or',['adiantamentoDecimo' => 1],['adiantamentoFerias' => 1]])->one() != null){
         $this->registerJs("
@@ -123,25 +124,4 @@ if (Ferias::find()->where("idusuario = '".$model->idusuario."'AND YEAR(dataSaida
     }
 }
 
-//(JOSE VALENTE): Comentei esta parte do código porque não vi utilidade após utilizar o trecho de código acima que foi feito no _form (create), fazendo algumas poucas modificações
-/* 
-$searchUser = Ferias::find()->where("id = ".$_GET["id"])->one();
-$searchFerias = Ferias::find()->where("idusuario = '".$searchUser->idusuario."'AND YEAR(dataSaida) = ".$_GET["ano"])->orderBy('id ASC')->one();
-if($searchFerias != null)
-{
-    //Existem férias registradas
-    if($searchFerias->id == $_GET["id"])
-    {
-        //Primeira solicitação, pode editar
-        $this->registerJs(" $('#adiantamentodecimo').bootstrapSwitch('disabled',false);
-        $('#adiantamentoferias').bootstrapSwitch('disabled',false);");
-    }
-    else
-    {
-        //N]ao é a primeira solicitação, Não pode editar
-        $this->registerJs(" $('#adiantamentodecimo').bootstrapSwitch('disabled',true);
-        $('#adiantamentoferias').bootstrapSwitch('disabled',true);");
-    }
-}
-*/
 ?>

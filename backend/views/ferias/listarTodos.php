@@ -34,6 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>
         <?= Html::a('<span class="glyphicon glyphicon-arrow-left"></span> Voltar  ', ['site/index'], ['class' => 'btn btn-warning']) ?> 
+        <!-- Botão para criação do relatório de férias, recebe o ano que está selecionado na página -->
         <?= Html::a('<span class="glyphicon glyphicon-list-alt"></span> Gerar Relatório', ['ferias/printvacationreport', "ano" => $_GET["ano"]] , ['target' => '_blank', 'class' => 'btn btn-info'])?>
     </p>
 

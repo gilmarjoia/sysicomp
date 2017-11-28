@@ -819,12 +819,17 @@ class FeriasController extends Controller
             return $this->redirect(['detalhar', 'id' => $idUsuario, 'ano' => $ano, 'prof' => $prof]);
         }
 
+        //Função usada para gerar o relatório de Férias, usando o mPDF, cria-se a página em HTML
+        //Quebra de Página, cabeçalhos e rodapés são feitos automaticamente
         public function actionPrintvacationreport($ano)
         {
             define('_MPDF_TTFONTDATAPATH',Yii::getAlias('@runtime/mpdf'));
+            //Especificações da página (margens, orientação, etc)
             $pdf = new mPDF('utf-8','A4-L','','','15','15','40','30');
+            //Recupera todos os Servidores
             $dataUser = User::find()->orderBy('nome ASC')->all();
             
+            //Adicionando Header
             $pdf->SetHTMLHeader
             ('
                 <table width="100%" style="vertical-align: bottom; font-family: serif; font-size: 8pt; color: #000000; font-weight: bold;">
@@ -837,6 +842,8 @@ class FeriasController extends Controller
                 <div align="center" style="vertical-align: middle; font-family: Times New Roman; font-size: 80%;">Amazonas - Brasil | depes@ufam.edu.br | crmdapes@ufam.edu.br | +55 (92) 3305-1478/1479</div>
                 <hr>
             ');
+
+            //Adicionando Rodapé
             $pdf->SetHTMLFooter
             ('
             <table border="1" width="100%" style="border-collapse: collapse;font-family: Arial;">
@@ -854,6 +861,8 @@ class FeriasController extends Controller
                 </tr>
             </table>
             ');
+
+            //Corpo do Relatório (quebra de página automática)
             $pdf->WriteHTML
             ('
             <table border="1" width="100%" style="border-collapse: collapse;font-family: Arial;">
@@ -883,7 +892,9 @@ class FeriasController extends Controller
                     <td style="font-weight: bold;">Fim</td>
                 </tr>
             ');
-
+            
+            //Resgatando Matrícula do SIAPE, Nome, Cargo, Pedido de Adiantamento de Férias, Pedido de Adiantamento de 13º e as datas estabelecidas das férias
+            //Existe uma tupla no relatório por Servidor.
             foreach($dataUser as $dUser)
             {
                 $dataFerias = Ferias::find()->where(["idusuario" => $dUser->id])->andWhere('dataSaida LIKE :substr', array(':substr' => $ano.'%'))->andWhere(["tipo" => 2])->all();
@@ -910,11 +921,13 @@ class FeriasController extends Controller
                 ');
             }
 
+            //Fechando a tabela
             $pdf->WriteHtml
             ('
                 </table>
             ');
             
+            //Finalizando relatório e Mostrando na Tela
             $pdf->Output('');
             $pdfcode = $pdf->output();
         }
