@@ -670,6 +670,9 @@ class FeriasController extends Controller
 
             if ((($ehProfessor == 1) && ($totalDiasFeriasAno + $diferencaDiasUpdate) > 45)) {
                 $this->mensagens('danger', 'Registro Férias', 'Não foi possível registrar o pedido de férias. Você ultrapassou o limite de 45 dias');
+                
+                $model->dataSaida = date('d-m-Y', strtotime($model->dataSaida));
+                $model->dataRetorno = date('d-m-Y', strtotime($model->dataRetorno));
                 return $this->render('update', [
                     'model' => $model,
                 ]);
@@ -677,6 +680,9 @@ class FeriasController extends Controller
 
             if (($ehSecretario == 1 && ($totalDiasFeriasAno + $diferencaDiasUpdate) > 30)) {
                 $this->mensagens('danger', 'Registro Férias', 'Não foi possível registrar o pedido de férias. Você ultrapassou o limite de 30 dias');
+                
+                $model->dataSaida = date('d-m-Y', strtotime($model->dataSaida));
+                $model->dataRetorno = date('d-m-Y', strtotime($model->dataRetorno));
                 return $this->render('update', [
                     'model' => $model,
                 ]);
@@ -687,12 +693,17 @@ class FeriasController extends Controller
                     $diasRestantes = 45 - $totalDiasFeriasAno;
                     $this->mensagens('danger', 'Registro Férias', 'Não foi possível registrar o pedido de férias. Você precisa registrar '.$diasRestantes.' dias');
                     
+                    $model->dataSaida = date('d-m-Y', strtotime($model->dataSaida));
+                    $model->dataRetorno = date('d-m-Y', strtotime($model->dataRetorno));
                     return $this->render('update', ['model' => $model]);
                 }
 
                 if(($ehSecretario == 1 && ($totalDiasFeriasAno + $diferencaDiasUpdate) < 30)){
                     $diasRestantes = 30 - $totalDiasFeriasAno;
                     $this->mensagens('danger', 'Registro Férias', 'Não foi possível registrar o pedido de férias. Você precisa registrar '.$diasRestantes.' dias');
+                    
+                    $model->dataSaida = date('d-m-Y', strtotime($model->dataSaida));
+                    $model->dataRetorno = date('d-m-Y', strtotime($model->dataRetorno));
                     return $this->render('update', ['model' => $model]);
                 }
             }
