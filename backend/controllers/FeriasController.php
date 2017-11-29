@@ -635,64 +635,8 @@ class FeriasController extends Controller
                 return $this->render('update', [
                     'model' => $model,
                 ]);
-
-
             }
 
-
-            /*$contRegistro = 0;
-            if ($dataRegistro != null and $model->tipo == 2) {
-
-                foreach ($dataRegistro as $value) {
-                    if ($value->dataSaida <= $model->dataSaida and $value->dataRetorno >= $model->dataSaida) {
-                        $contRegistro++;
-                    }
-                    if ($value->dataSaida >= $model->dataSaida and $value->dataSaida <= $model->dataRetorno and $value->dataRetorno >= $model->dataRetorno) {
-                        $contRegistro++;
-                    }
-                    if ($value->dataSaida <= $model->dataSaida and $value->dataSaida <= $model->dataRetorno and $value->dataRetorno >= $model->dataRetorno) {
-                        $contRegistro++;
-                    }
-                    if ($value->dataSaida >= $model->dataSaida and $value->dataRetorno <= $model->dataRetorno) {
-                        $contRegistro++;
-                    }
-                }
-                if ($contRegistro != 0) {
-                    $this->mensagens('danger', 'Registro Férias', 'Datas inválidas, não pode cadastrar férias na mesma data');
-                    $model->dataSaida = date('d-m-Y', strtotime($model->dataSaida));
-                    $model->dataRetorno = date('d-m-Y', strtotime($model->dataRetorno));
-                    return $this->render('update', [
-                        'model' => $model,
-                    ]);
-                }
-            }
-
-            $contRegistro2 = 0;
-            if ($dataRegistro2 != null and $model->tipo == 1) {
-
-                foreach ($dataRegistro2 as $value) {
-                    if ($value->dataSaida <= $model->dataSaida and $value->dataRetorno >= $model->dataSaida) {
-                        $contRegistro2++;
-                    }
-                    if ($value->dataSaida >= $model->dataSaida and $value->dataSaida <= $model->dataRetorno and $value->dataRetorno >= $model->dataRetorno) {
-                        $contRegistro2++;
-                    }
-                    if ($value->dataSaida <= $model->dataSaida and $value->dataSaida <= $model->dataRetorno and $value->dataRetorno >= $model->dataRetorno) {
-                        $contRegistro2++;
-                    }
-                    if ($value->dataSaida >= $model->dataSaida and $value->dataRetorno <= $model->dataRetorno) {
-                        $contRegistro2++;
-                    }
-                }
-                if ($contRegistro2 != 0) {
-                    $this->mensagens('danger', 'Registro Férias', 'Datas inválidas, não pode cadastrar férias na mesma data');
-                    $model->dataSaida = date('d-m-Y', strtotime($model->dataSaida));
-                    $model->dataRetorno = date('d-m-Y', strtotime($model->dataRetorno));
-                    return $this->render('update', [
-                        'model' => $model,
-                    ]);
-                }
-            }*/
 
             $cont = 0;
 
@@ -724,287 +668,277 @@ class FeriasController extends Controller
                 ]);
             }
 
-
-
-
-
-
-            if (($ehProfessor == 1) && ($totalDiasFeriasAno + $diferencaDiasUpdate) == 45 && $model->save()) {
-
-                $model->adiantamentoDecimo;
-                $model->adiantamentoFerias;
-
-                $this->mensagens('success', 'Registro Férias', 'Registro de Férias realizado com sucesso!');
-
-                return $this->redirect(['detalhar', "id" => $model->idusuario, "ano" => $_GET["ano"], "prof" => $ehProfessor]);
-
-            } if ($ehSecretario == 1 && ($totalDiasFeriasAno + $diferencaDiasUpdate) == 30 && $model->save()) {
-
-                $model->adiantamentoDecimo;
-                $model->adiantamentoFerias;
-
-                $this->mensagens('success', 'Registro Férias', 'Registro de Férias realizado com sucesso!');
-
-                return $this->redirect(['detalhar', "id" => $model->idusuario, "ano" => $_GET["ano"], "prof" => $ehProfessor]);
-
-            } if ((($ehProfessor == 1) && ($totalDiasFeriasAno + $diferencaDiasUpdate) > 45)) {
-
+            if ((($ehProfessor == 1) && ($totalDiasFeriasAno + $diferencaDiasUpdate) > 45)) {
                 $this->mensagens('danger', 'Registro Férias', 'Não foi possível registrar o pedido de férias. Você ultrapassou o limite de 45 dias');
-            } if (($ehSecretario == 1 && ($totalDiasFeriasAno + $diferencaDiasUpdate) > 30)) {
-
-                $this->mensagens('danger', 'Registro Férias', 'Não foi possível registrar o pedido de férias. Você ultrapassou o limite de 30 dias');
-
-            }if(($ehProfessor == 1) && ($totalDiasFeriasAno + $diferencaDiasUpdate) < 45){
-                $diasRestantes = 45 - $totalDiasFeriasAno;
-                $this->mensagens('danger', 'Registro Férias', 'Não foi possível registrar o pedido de férias. Você precisa registrar '.$diasRestantes.' dias');
-            }if(($ehSecretario == 1 && ($totalDiasFeriasAno + $diferencaDiasUpdate) < 30)){
-                $diasRestantes = 30 - $totalDiasFeriasAno;
-                $this->mensagens('danger', 'Registro Férias', 'Não foi possível registrar o pedido de férias. Você precisa registrar '.$diasRestantes.' dias');
+                return $this->render('update', [
+                    'model' => $model,
+                ]);
             }
 
+            if (($ehSecretario == 1 && ($totalDiasFeriasAno + $diferencaDiasUpdate) > 30)) {
+                $this->mensagens('danger', 'Registro Férias', 'Não foi possível registrar o pedido de férias. Você ultrapassou o limite de 30 dias');
+                return $this->render('update', [
+                    'model' => $model,
+                ]);
+            }
+
+            if($model->tipo == 2 && $model->pegarSolicitacao($model->idusuario,$anoSaida)==3){        
+                if(($ehProfessor == 1) && ($totalDiasFeriasAno + $diferencaDiasUpdate) < 45){
+                    $diasRestantes = 45 - $totalDiasFeriasAno;
+                    $this->mensagens('danger', 'Registro Férias', 'Não foi possível registrar o pedido de férias. Você precisa registrar '.$diasRestantes.' dias');
+                    
+                    return $this->render('update', ['model' => $model]);
+                }
+
+                if(($ehSecretario == 1 && ($totalDiasFeriasAno + $diferencaDiasUpdate) < 30)){
+                    $diasRestantes = 30 - $totalDiasFeriasAno;
+                    $this->mensagens('danger', 'Registro Férias', 'Não foi possível registrar o pedido de férias. Você precisa registrar '.$diasRestantes.' dias');
+                    return $this->render('update', ['model' => $model]);
+                }
+            }
+
+            if ($model->save()) {
+
+                $model->adiantamentoDecimo;
+                $model->adiantamentoFerias;
+
+                $this->mensagens('success', 'Registro Férias', 'Registro de Férias realizado com sucesso!');
+
+                return $this->redirect(['detalhar', "id" => $model->idusuario, "ano" => $_GET["ano"], "prof" => $ehProfessor]);
+            }
+        }else{    
             $model->dataSaida = date('d-m-Y', strtotime($model->dataSaida));
             $model->dataRetorno = date('d-m-Y', strtotime($model->dataRetorno));
 
             return $this->render('update', [
                 'model' => $model,
             ]);
-
-            }else {
-
-                $model->dataSaida = date('d-m-Y', strtotime($model->dataSaida));
-                $model->dataRetorno = date('d-m-Y', strtotime($model->dataRetorno));
-
-                return $this->render('update', [
-                    'model' => $model,
-                ]);
-            }
         }
+    } 
 
+    /**
+     * Deletes an existing Ferias model.
+     * If deletion is successful, the browser will be redirected to the 'index' page.
+     * @param integer $id
+     * @return mixed
+     */
 
-        /**
-         * Deletes an existing Ferias model.
-         * If deletion is successful, the browser will be redirected to the 'index' page.
-         * @param integer $id
-         * @return mixed
-         */
+    //funcao usada por cada professor/técnico
+    public function actionDelete($id, $ano)
+    {
+        $this->findModel($id)->delete();
 
-        //funcao usada por cada professor/técnico
-        public function actionDelete($id, $ano)
-        {
+        $this->mensagens('success', 'Registro Férias', 'Registro de Férias excluído com sucesso!');
+
+        return $this->redirect(['listar', 'ano' => $ano]);
+    }
+
+    public function actionRemove()
+    {
+        $checkedIDs=$_GET['checked'];
+        foreach($checkedIDs as $id)
             $this->findModel($id)->delete();
+        $this->mensagens('success', 'Registro Férias', 'Registros de Férias excluídos com sucesso!');
+    }
+    
+    //função usada na view da Secretaria, o qual lista todos os membros
+    public function actionDeletesecretaria($id, $ano, $idUsuario, $prof)
+    {
 
-            $this->mensagens('success', 'Registro Férias', 'Registro de Férias excluído com sucesso!');
+        $this->findModel($id)->delete();
 
-            return $this->redirect(['listar', 'ano' => $ano]);
-        }
+        $this->mensagens('success', 'Registro Férias', 'Registro de Férias excluído com sucesso!');
 
-        public function actionRemove()
-        {
-            $checkedIDs=$_GET['checked'];
-            foreach($checkedIDs as $id)
-                $this->findModel($id)->delete();
-            $this->mensagens('success', 'Registro Férias', 'Registros de Férias excluídos com sucesso!');
-        }
+        return $this->redirect(['detalhar', 'id' => $idUsuario, 'ano' => $ano, 'prof' => $prof]);
+    }
+
+    //Função usada para gerar o relatório de Férias, usando o mPDF, cria-se a página em HTML
+    //Quebra de Página, cabeçalhos e rodapés são feitos automaticamente
+    public function actionPrintvacationreport($ano)
+    {
+        define('_MPDF_TTFONTDATAPATH',Yii::getAlias('@runtime/mpdf'));
+        //Especificações da página (margens, orientação, etc)
+        $pdf = new mPDF('utf-8','A4-L','','','15','15','40','30');
+        //Recupera todos os Servidores
+        $dataUser = User::find()->orderBy('nome ASC')->all();
         
-        //função usada na view da Secretaria, o qual lista todos os membros
-        public function actionDeletesecretaria($id, $ano, $idUsuario, $prof)
-        {
-
-            $this->findModel($id)->delete();
-
-            $this->mensagens('success', 'Registro Férias', 'Registro de Férias excluído com sucesso!');
-
-            return $this->redirect(['detalhar', 'id' => $idUsuario, 'ano' => $ano, 'prof' => $prof]);
-        }
-
-        //Função usada para gerar o relatório de Férias, usando o mPDF, cria-se a página em HTML
-        //Quebra de Página, cabeçalhos e rodapés são feitos automaticamente
-        public function actionPrintvacationreport($ano)
-        {
-            define('_MPDF_TTFONTDATAPATH',Yii::getAlias('@runtime/mpdf'));
-            //Especificações da página (margens, orientação, etc)
-            $pdf = new mPDF('utf-8','A4-L','','','15','15','40','30');
-            //Recupera todos os Servidores
-            $dataUser = User::find()->orderBy('nome ASC')->all();
-            
-            //Adicionando Header
-            $pdf->SetHTMLHeader
-            ('
-                <table width="100%" style="vertical-align: bottom; font-family: serif; font-size: 8pt; color: #000000; font-weight: bold;">
-                    <tr width="100%">s
-                        <td width="25%" align="right" style="font-family: serif;font-weight: bold; font-size: 175%;"> <img src = "img/logo-brasil.jpg" height="60px" width="60px"> </td>
-                        <td width="50%" align="center" style="vertical-align: middle; font-family: Times New Roman; font-weight: bold; font-size: 175%;">  UNIVERSIDADE FEDERAL DO AMAZONAS <br> PRÓ - REITORIA DE GESTÃO DE PESSOAS </td>
-                        <td width="25%" align="left" style="font-family: serif;font-weight: bold; font-size: 175%;"> <img src = "img/ufam.jpg" height="60px" width="50px"> </td>
-                    </tr>
-                </table>
-                <div align="center" style="vertical-align: middle; font-family: Times New Roman; font-size: 80%;">Amazonas - Brasil | depes@ufam.edu.br | crmdapes@ufam.edu.br | +55 (92) 3305-1478/1479</div>
-                <hr>
-            ');
-
-            //Adicionando Rodapé
-            $pdf->SetHTMLFooter
-            ('
-            <table border="1" width="100%" style="border-collapse: collapse;font-family: Arial;">
-                <tr>
-                    <td height="30px" align="center">  '.date('d-m-Y').'  </td>
-                    <td align="center"></td>
-                    <td align="center"></td>
-                    <td align="center"></td>
-                </tr>
-                <tr style="background-color: #6699ff">
-                    <td align="center" style="font-size:75%; font-weight: bold;">Data de Elaboração</td>
-                    <td align="center" style="font-size:75%; font-weight: bold;">Responsável pela elaboração do Boletim</td>
-                    <td align="center" style="font-size:75%; font-weight: bold;">Assinatura/Carimbo<br>Chefia Imediata do Departamento</td>
-                    <td align="center" style="font-size:75%; font-weight: bold;">Assinatura/Carimbo<br>Direção da Unidade de Lotação</td>
+        //Adicionando Header
+        $pdf->SetHTMLHeader
+        ('
+            <table width="100%" style="vertical-align: bottom; font-family: serif; font-size: 8pt; color: #000000; font-weight: bold;">
+                <tr width="100%">s
+                    <td width="25%" align="right" style="font-family: serif;font-weight: bold; font-size: 175%;"> <img src = "img/logo-brasil.jpg" height="60px" width="60px"> </td>
+                    <td width="50%" align="center" style="vertical-align: middle; font-family: Times New Roman; font-weight: bold; font-size: 175%;">  UNIVERSIDADE FEDERAL DO AMAZONAS <br> PRÓ - REITORIA DE GESTÃO DE PESSOAS </td>
+                    <td width="25%" align="left" style="font-family: serif;font-weight: bold; font-size: 175%;"> <img src = "img/ufam.jpg" height="60px" width="50px"> </td>
                 </tr>
             </table>
-            ');
+            <div align="center" style="vertical-align: middle; font-family: Times New Roman; font-size: 80%;">Amazonas - Brasil | depes@ufam.edu.br | crmdapes@ufam.edu.br | +55 (92) 3305-1478/1479</div>
+            <hr>
+        ');
 
-            //Corpo do Relatório (quebra de página automática)
-            $pdf->WriteHTML
-            ('
-            <table border="1" width="100%" style="border-collapse: collapse;font-family: Arial;">
-                <tr >
-                    <td align="center" colspan="8" style="font-weight: bold;background-color: #6699ff;font-size: 120%;"> ESCALA ANUAL DE FÉRIAS <br> ANO CIVIL 2017 </td>
-                </tr>
-                <tr aling="left">
-                    <td colspan="2">Unidade:</td>
-                    <td colspan="3">Departamento:</td>
-                    <td colspan="3">Folha:</td>
-                </tr>
-                <tr>
-                    <td align="center" colspan="8" style="color:red;font-weight: bold">SERVIDOR, LEIA AS ORIENTAÇÕES DE FÉRIAS E AS INSTRUÇÕES DO VERSO ANTES DE ASSINAR SEU PEDIDO.</td>
-                </tr>
-                <tr  align="center" style="background-color: #6699ff; font-size: 150%">
-                    <!-- Planilha -->
-                    <th width="8%" rowspan="2">Matrícula<br>SIAPE</th>
-                    <th width="20%" rowspan="2">Nome do Servidor</th>
-                    <th width="10%" rowspan="2">Cargo/<br>Função</th>
-                    <th width="10%" rowspan="2">Antecipação<br>50% 13º</th>
-                    <th width="10%"  rowspan="2">Antecipação<br>Férias</th>
-                    <th width="17%" colspan="2">Período de<br>Férias</th>
-                    <th width="25%" rowspan="2">Assinatura</th>
-                </tr>
-                <tr style="background-color: #6699ff;font-weight: bold;">
-                    <td style="font-weight: bold;">Início</td>
-                    <td style="font-weight: bold;">Fim</td>
-                </tr>
-            ');
-            
-            //Resgatando Matrícula do SIAPE, Nome, Cargo, Pedido de Adiantamento de Férias, Pedido de Adiantamento de 13º e as datas estabelecidas das férias
-            //Existe uma tupla no relatório por Servidor.
-            foreach($dataUser as $dUser)
-            {
-                $dataFerias = Ferias::find()->where(["idusuario" => $dUser->id])->andWhere('dataSaida LIKE :substr', array(':substr' => $ano.'%'))->andWhere(["tipo" => 2])->all();
-                $pdf->WriteHtml
-                ('
-                <tr>
-                    <td align="center" height="60px" rowspan="3">'.$dUser->siape.'<!-- Matrícula SIAPE--></td>
-                    <td rowspan="3">'.$dUser->nome.'<!-- Nome do Servidor--></td>
-                    <td align="center" rowspan="3">'.$dUser->cargo.'<!-- Cargo/Função--></td>
-                    <td align="center" rowspan="3">'.($dataFerias[0]->adiantamentoDecimo == 1 ? "SIM" : "NÃO").'<!-- Antecipação 50% 13º--></td>
-                    <td align="center" rowspan="3">'.($dataFerias[0]->adiantamentoFerias == 1 ? "SIM" : "NÃO").'<!-- Antecipação Férias--></td>
-                    <td height="20px">'.($dataFerias[0]->dataSaida == "" || null ? "" : date("d-m-Y", strtotime($dataFerias[0]->dataSaida))).'<!-- Início--></td>
-                    <td>'.($dataFerias[0]->dataSaida == "" || null ? "" : date("d-m-Y", strtotime($dataFerias[0]->dataRetorno))).'<!-- Fim--></td>
-                    <td rowspan="3"><!-- Assinatura--></td>
-                </tr>
-                <tr>
-                    <td height="20px">'.($dataFerias[1]->dataSaida == "" ? "" : date("d-m-Y", strtotime($dataFerias[1]->dataSaida))).'</td>
-                    <td>'.($dataFerias[1]->dataSaida == "" || null ? "" : date("d-m-Y", strtotime($dataFerias[1]->dataRetorno))).'</td>
-                </tr>
-                <tr>
-                    <td height="20px">'.($dataFerias[2]->dataSaida == "" ? "" : date("d-m-Y", strtotime($dataFerias[2]->dataSaida))).'</td>
-                    <td>'.($dataFerias[2]->dataSaida == "" || null ? "" : date("d-m-Y", strtotime($dataFerias[2]->dataRetorno))).'</td>
-                </tr>
-                ');
-            }
+        //Adicionando Rodapé
+        $pdf->SetHTMLFooter
+        ('
+        <table border="1" width="100%" style="border-collapse: collapse;font-family: Arial;">
+            <tr>
+                <td height="30px" align="center">  '.date('d-m-Y').'  </td>
+                <td align="center"></td>
+                <td align="center"></td>
+                <td align="center"></td>
+            </tr>
+            <tr style="background-color: #6699ff">
+                <td align="center" style="font-size:75%; font-weight: bold;">Data de Elaboração</td>
+                <td align="center" style="font-size:75%; font-weight: bold;">Responsável pela elaboração do Boletim</td>
+                <td align="center" style="font-size:75%; font-weight: bold;">Assinatura/Carimbo<br>Chefia Imediata do Departamento</td>
+                <td align="center" style="font-size:75%; font-weight: bold;">Assinatura/Carimbo<br>Direção da Unidade de Lotação</td>
+            </tr>
+        </table>
+        ');
 
-            //Fechando a tabela
+        //Corpo do Relatório (quebra de página automática)
+        $pdf->WriteHTML
+        ('
+        <table border="1" width="100%" style="border-collapse: collapse;font-family: Arial;">
+            <tr >
+                <td align="center" colspan="8" style="font-weight: bold;background-color: #6699ff;font-size: 120%;"> ESCALA ANUAL DE FÉRIAS <br> ANO CIVIL 2017 </td>
+            </tr>
+            <tr aling="left">
+                <td colspan="2">Unidade:</td>
+                <td colspan="3">Departamento:</td>
+                <td colspan="3">Folha:</td>
+            </tr>
+            <tr>
+                <td align="center" colspan="8" style="color:red;font-weight: bold">SERVIDOR, LEIA AS ORIENTAÇÕES DE FÉRIAS E AS INSTRUÇÕES DO VERSO ANTES DE ASSINAR SEU PEDIDO.</td>
+            </tr>
+            <tr  align="center" style="background-color: #6699ff; font-size: 150%">
+                <!-- Planilha -->
+                <th width="8%" rowspan="2">Matrícula<br>SIAPE</th>
+                <th width="20%" rowspan="2">Nome do Servidor</th>
+                <th width="10%" rowspan="2">Cargo/<br>Função</th>
+                <th width="10%" rowspan="2">Antecipação<br>50% 13º</th>
+                <th width="10%"  rowspan="2">Antecipação<br>Férias</th>
+                <th width="17%" colspan="2">Período de<br>Férias</th>
+                <th width="25%" rowspan="2">Assinatura</th>
+            </tr>
+            <tr style="background-color: #6699ff;font-weight: bold;">
+                <td style="font-weight: bold;">Início</td>
+                <td style="font-weight: bold;">Fim</td>
+            </tr>
+        ');
+        
+        //Resgatando Matrícula do SIAPE, Nome, Cargo, Pedido de Adiantamento de Férias, Pedido de Adiantamento de 13º e as datas estabelecidas das férias
+        //Existe uma tupla no relatório por Servidor.
+        foreach($dataUser as $dUser)
+        {
+            $dataFerias = Ferias::find()->where(["idusuario" => $dUser->id])->andWhere('dataSaida LIKE :substr', array(':substr' => $ano.'%'))->andWhere(["tipo" => 2])->all();
             $pdf->WriteHtml
             ('
-                </table>
+            <tr>
+                <td align="center" height="60px" rowspan="3">'.$dUser->siape.'<!-- Matrícula SIAPE--></td>
+                <td rowspan="3">'.$dUser->nome.'<!-- Nome do Servidor--></td>
+                <td align="center" rowspan="3">'.$dUser->cargo.'<!-- Cargo/Função--></td>
+                <td align="center" rowspan="3">'.($dataFerias[0]->adiantamentoDecimo == 1 ? "SIM" : "NÃO").'<!-- Antecipação 50% 13º--></td>
+                <td align="center" rowspan="3">'.($dataFerias[0]->adiantamentoFerias == 1 ? "SIM" : "NÃO").'<!-- Antecipação Férias--></td>
+                <td height="20px">'.($dataFerias[0]->dataSaida == "" || null ? "" : date("d-m-Y", strtotime($dataFerias[0]->dataSaida))).'<!-- Início--></td>
+                <td>'.($dataFerias[0]->dataSaida == "" || null ? "" : date("d-m-Y", strtotime($dataFerias[0]->dataRetorno))).'<!-- Fim--></td>
+                <td rowspan="3"><!-- Assinatura--></td>
+            </tr>
+            <tr>
+                <td height="20px">'.($dataFerias[1]->dataSaida == "" ? "" : date("d-m-Y", strtotime($dataFerias[1]->dataSaida))).'</td>
+                <td>'.($dataFerias[1]->dataSaida == "" || null ? "" : date("d-m-Y", strtotime($dataFerias[1]->dataRetorno))).'</td>
+            </tr>
+            <tr>
+                <td height="20px">'.($dataFerias[2]->dataSaida == "" ? "" : date("d-m-Y", strtotime($dataFerias[2]->dataSaida))).'</td>
+                <td>'.($dataFerias[2]->dataSaida == "" || null ? "" : date("d-m-Y", strtotime($dataFerias[2]->dataRetorno))).'</td>
+            </tr>
             ');
-            
-            //Finalizando relatório e Mostrando na Tela
-            $pdf->Output('');
-            $pdfcode = $pdf->output();
-        }
-        /**
-         * Finds the Ferias model based on its primary key value.
-         * If the model is not found, a 404 HTTP exception will be thrown.
-         * @param integer $id
-         * @return Ferias the loaded model
-         * @throws NotFoundHttpException if the model cannot be found
-         */
-        protected function findModel($id)
-        {
-            if (($model = Ferias::findOne($id)) !== null) {
-                return $model;
-            } else {
-                throw new NotFoundHttpException('The requested page does not exist.');
-            }
         }
 
-        public function enviarEmailFerias($model){
-
-            $tipoViagem = array(1 => "Usufruto", 2 => "Ferias");
-            // subject
-            $subject = "[IComp/UFAM] Registro de Ferias para " . $model->nomeusuario;
-
-            $mime_boundary = "<<<--==-->>>";
-
-            $message = '';
-            // message
-
-            $message .= "O(A) funcionario(a) " . $model->nomeusuario . " enviou um registro de ferias.\r\n\n";
-            $message .= "Nome: " . $model->nomeusuario . "\r\n";
-            $message .= "E-mail: " . $model->emailusuario . "\r\n";
-            $message .= "Data de Saída: " . date("d/m/Y", strtotime($model->dataSaida)) . "\r\n";
-            $message .= "Data de Retorno: " . date("d/m/Y", strtotime($model->dataRetorno)) . "\r\n";
-            $message .= "Adiantamento do Décimo Terceiro:" . $model->adiantamentoDecimo . "\r\n";
-            $message .= "Adiantamento do Próximo Salário:" . $model->adiantamentoFerias . "\r\n";
-            $message .= "Data e Hora do envio: " . date("d/m/Y H:i:s", strtotime($model->dataPedido)) . "\r\n";
-
-            $chefe = "tanara@icomp.ufam.edu.br";
-            $secretaria = "secretaria@icomp.ufam.edu.br";
-
-            $email[] = $chefe;
-            $email[] = $secretaria;
-
-
-            $message .= $mime_boundary . "\r\n";
-
-            try {
-                Yii::$app->mailer->compose()
-                    ->setFrom("secretaria@icomp.ufam.edu.br")
-                    ->setTo($email)
-                    ->setSubject($subject)
-                    ->setTextBody($message)
-                    ->send();
-            } catch (Exception $e) {
-                $this->mensagens('warning', 'Erro ao enviar Email(s)', 'Ocorreu um Erro ao Enviar o Registro de Ferias.
-                    Tente novamente ou contate o adminstrador do sistema');
-                return false;
-            }
-            return true;
+        //Fechando a tabela
+        $pdf->WriteHtml
+        ('
+            </table>
+        ');
+        
+        //Finalizando relatório e Mostrando na Tela
+        $pdf->Output('');
+        $pdfcode = $pdf->output();
+    }
+    /**
+     * Finds the Ferias model based on its primary key value.
+     * If the model is not found, a 404 HTTP exception will be thrown.
+     * @param integer $id
+     * @return Ferias the loaded model
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    protected function findModel($id)
+    {
+        if (($model = Ferias::findOne($id)) !== null) {
+            return $model;
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+
+    public function enviarEmailFerias($model){
+
+        $tipoViagem = array(1 => "Usufruto", 2 => "Ferias");
+        // subject
+        $subject = "[IComp/UFAM] Registro de Ferias para " . $model->nomeusuario;
+
+        $mime_boundary = "<<<--==-->>>";
+
+        $message = '';
+        // message
+
+        $message .= "O(A) funcionario(a) " . $model->nomeusuario . " enviou um registro de ferias.\r\n\n";
+        $message .= "Nome: " . $model->nomeusuario . "\r\n";
+        $message .= "E-mail: " . $model->emailusuario . "\r\n";
+        $message .= "Data de Saída: " . date("d/m/Y", strtotime($model->dataSaida)) . "\r\n";
+        $message .= "Data de Retorno: " . date("d/m/Y", strtotime($model->dataRetorno)) . "\r\n";
+        $message .= "Adiantamento do Décimo Terceiro:" . $model->adiantamentoDecimo . "\r\n";
+        $message .= "Adiantamento do Próximo Salário:" . $model->adiantamentoFerias . "\r\n";
+        $message .= "Data e Hora do envio: " . date("d/m/Y H:i:s", strtotime($model->dataPedido)) . "\r\n";
+
+        $chefe = "tanara@icomp.ufam.edu.br";
+        $secretaria = "secretaria@icomp.ufam.edu.br";
+
+        $email[] = $chefe;
+        $email[] = $secretaria;
 
 
-        /* Envio de mensagens para views
-        Tipo: success, danger, warning*/
-        protected function mensagens($tipo, $titulo, $mensagem)
-        {
-            Yii::$app->session->setFlash($tipo, [
-                'type' => $tipo,
-                'icon' => 'home',
-                'duration' => 5000,
-                'message' => $mensagem,
-                'title' => $titulo,
-                'positonY' => 'top',
-                'positonX' => 'center',
-                'showProgressbar' => true,
-            ]);
+        $message .= $mime_boundary . "\r\n";
+
+        try {
+            Yii::$app->mailer->compose()
+                ->setFrom("secretaria@icomp.ufam.edu.br")
+                ->setTo($email)
+                ->setSubject($subject)
+                ->setTextBody($message)
+                ->send();
+        } catch (Exception $e) {
+            $this->mensagens('warning', 'Erro ao enviar Email(s)', 'Ocorreu um Erro ao Enviar o Registro de Ferias.
+                Tente novamente ou contate o adminstrador do sistema');
+            return false;
         }
+        return true;
+    }
 
+
+    /* Envio de mensagens para views
+    Tipo: success, danger, warning*/
+    protected function mensagens($tipo, $titulo, $mensagem)
+    {
+        Yii::$app->session->setFlash($tipo, [
+            'type' => $tipo,
+            'icon' => 'home',
+            'duration' => 5000,
+            'message' => $mensagem,
+            'title' => $titulo,
+            'positonY' => 'top',
+            'positonX' => 'center',
+            'showProgressbar' => true,
+        ]);
+    }
 }
 
