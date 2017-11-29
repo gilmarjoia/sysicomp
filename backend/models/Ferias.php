@@ -96,7 +96,7 @@ class Ferias extends \yii\db\ActiveRecord
     }
 
     public function pegarSolicitacao($idusuario,$ano){
-        $registro = Ferias::find()->where(['idusuario' => $idusuario])->andWhere(['tipo' => 2])->andWhere(['YEAR(dataSaida)' => $ano])->all();
+        $registro = Ferias::find()->where(['idusuario' => $idusuario])->andWhere(['tipo' => 2])->andWhere(['YEAR(dataSaida)' => $ano, 'tipo' => 2])->all();
         $this->solicitacao = 0;
         foreach ($registro as $value){
             $this->solicitacao = $this->solicitacao + 1;

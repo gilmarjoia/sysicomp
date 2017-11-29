@@ -539,17 +539,18 @@ class FeriasController extends Controller
                 }
             }
 
-
-            if(($totalDiasFeriasAno + $diferencaDias) <= $limiteDias && $model->verificarSolicitacao($model->idusuario,$anoSaida) && $model->save()){
-
-                $model->adiantamentoDecimo;
-                $model->adiantamentoFerias;
-
-                $this->mensagens('success', 'Registro Férias',  'Registro de Férias realizado com sucesso!');
+            
+            //Se as férias a serem cadastradas são do tipo 'OFICIAL' verifica se já existem 3 pedidos, se já existir então bloqueia esta tentativa de cadastro
+            if(!$model->verificarSolicitacao($model->idusuario,$anoSaida) && $model->tipo == 2){
+                $this->mensagens('danger', 'Registro Férias', 'Não foi possível registrar o pedido de férias. Você já realizou 3 pedidos de férias Oficiais');    
                 return $this->redirect(['detalhar', 'id' => $model->idusuario, 'ano' => date("Y") ,"prof" => $model_User->professor]);
+            }
 
-            } elseif(!$model->verificarSolicitacao($model->idusuario,$anoSaida)){
-                $this->mensagens('danger', 'Registro Férias', 'Não foi possível registrar o pedido de férias. Você realizou 3 pedidos de férias');
+            if(($totalDiasFeriasAno + $diferencaDias) <= $limiteDias && $model->save()){
+                    $model->adiantamentoDecimo;
+                    $model->adiantamentoFerias;
+
+                    $this->mensagens('success', 'Registro Férias',  'Registro de Férias realizado com sucesso!');            
             }else{
                 $this->mensagens('danger', 'Registro Férias', 'Não foi possível registrar o pedido de férias. Você ultrapassou o limite de ' . $limiteDias . ' dias');
             }
