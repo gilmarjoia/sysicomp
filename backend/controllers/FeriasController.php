@@ -364,27 +364,24 @@ class FeriasController extends Controller
                 }
             }
 
-            if(($totalDiasFeriasAno+$diferencaDias) <= $limiteDias && $model->verificarSolicitacao($model->idusuario,$anoSaida) && $model->save()){
-
-
-                $model->adiantamentoDecimo;
-                $model->adiantamentoFerias;
-
-                $this->enviarEmailFerias($model);
-                $this->mensagens('success', 'Registro Férias',  'Registro de Férias realizado com sucesso!');
-
+            //Se as férias a serem cadastradas são do tipo 'OFICIAL' verifica se já existem 3 pedidos, se já existir então bloqueia esta tentativa de cadastro
+            if(!$model->verificarSolicitacao($model->idusuario,$anoSaida) && $model->tipo == 2){
+                $this->mensagens('danger', 'Registro Férias', 'Não foi possível registrar o pedido de férias. Você já realizou 3 pedidos de férias Oficiais');    
                 return $this->redirect(['listar', 'ano' => $anoSaida]);
+            }
 
-            }elseif(!$model->verificarSolicitacao($model->idusuario,$anoSaida)) {
-                $this->mensagens('danger', 'Registro Férias', 'Não foi possível registrar o pedido de férias. Você ultrapassou realizou 3 pedidos de ferias');
+            if(($totalDiasFeriasAno + $diferencaDias) <= $limiteDias && $model->save()){
+                    $model->adiantamentoDecimo;
+                    $model->adiantamentoFerias;
+
+                    $this->mensagens('success', 'Registro Férias',  'Registro de Férias realizado com sucesso!');            
             }else{
-                $this->mensagens('danger', 'Registro Férias', 'Não foi possível registrar o pedido de férias. Você ultrapassou o limite de '.$limiteDias.'  dias');
+                $this->mensagens('danger', 'Registro Férias', 'Não foi possível registrar o pedido de férias. Você ultrapassou o limite de ' . $limiteDias . ' dias');
             }
 
             $model->dataSaida = date('d-m-Y', strtotime($model->dataSaida));
             $model->dataRetorno =  date('d-m-Y', strtotime($model->dataRetorno));
             return $this->redirect(['listar', 'ano' => $anoSaida]);
-
 
         } else {
             return $this->render('create', [
