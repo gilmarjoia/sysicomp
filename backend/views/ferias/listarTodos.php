@@ -34,6 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>
         <?= Html::a('<span class="glyphicon glyphicon-arrow-left"></span> Voltar  ', ['site/index'], ['class' => 'btn btn-warning']) ?> 
+        <!-- Botão para criação do relatório de férias, recebe o ano que está selecionado na página -->
         <?= Html::a('<span class="glyphicon glyphicon-list-alt"></span> Gerar Relatório', ['ferias/printvacationreport', "ano" => $_GET["ano"]] , ['target' => '_blank', 'class' => 'btn btn-info'])?>
     </p>
 
@@ -130,7 +131,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'buttons'=>[
                   'view' => function ($url, $model) {
                     return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['detalhar', 
-                        'id' => $model->id , 'ano' => $_GET["ano"], "prof" => 1], [
+                        'id' => $model->id , 'ano' => $_GET["ano"], "prof" => User::find()->where(["id" => $model->id])->one()->professor], [
                             'title' => Yii::t('yii', 'Visualizar Detalhes'),
                     ]);   
                   }

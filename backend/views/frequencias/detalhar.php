@@ -77,7 +77,7 @@ if( isset($_GET["ano"]) && isset($_GET["mes"]) && isset($_GET["prof"]) ){
         [
             'attribute' => 'categoria',
             'label' => 'Categoria',
-            'value' => $profVoltar != 0 ? "Professor" : "Secretaria"
+            'value' => $profVoltar != 0 ? "Professor" : "Técnico Administrativo"
         ],
 
         [

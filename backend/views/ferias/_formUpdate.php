@@ -85,22 +85,43 @@ $arrayTipoferias = array ("1" => "Usufruto", "2" => "Oficial");
 </div>
 
 <?php
-$searchUser = Ferias::find()->where("id = ".$_GET["id"])->one();
-$searchFerias = Ferias::find()->where("idusuario = '".$searchUser->idusuario."'AND YEAR(dataSaida) = ".$_GET["ano"])->orderBy('id ASC')->one();
-if($searchFerias != null)
-{
-    //Existem férias registradas
-    if($searchFerias->id == $_GET["id"])
-    {
-        //Primeira solicitação, pode editar
-        $this->registerJs(" $('#adiantamentodecimo').bootstrapSwitch('disabled',false);
-        $('#adiantamentoferias').bootstrapSwitch('disabled',false);");
-    }
-    else
-    {
-        //N]ao é a primeira solicitação, Não pode editar
-        $this->registerJs(" $('#adiantamentodecimo').bootstrapSwitch('disabled',true);
-        $('#adiantamentoferias').bootstrapSwitch('disabled',true);");
+
+$this->registerJs("
+    $('#ferias-tipo').change(function () {
+        if ($('#ferias-tipo').val() == 1) {
+            $('#adiantamentodecimo').bootstrapSwitch('disabled',true);
+            $('#adiantamentoferias').bootstrapSwitch('disabled',true);
+        } else {
+            $('#adiantamentodecimo').bootstrapSwitch('disabled',false);
+            $('#adiantamentoferias').bootstrapSwitch('disabled',false);
+        }
+    });
+
+    if ($('#ferias-tipo').val() == 1) {
+        $('#adiantamentodecimo').bootstrapSwitch('disabled',true);
+        $('#adiantamentoferias').bootstrapSwitch('disabled',true);
+	} 
+
+
+");
+
+//Permite que o usuário modifique um pedido de adiantamento, somente se a solicitação que se estiver trabalhando for a PRIMEIRA feita no ano
+if (Ferias::find()->where("idusuario = '".$model->idusuario."'AND YEAR(dataSaida) = ".$_GET["ano"])->andWhere(['tipo' => 2])->one() != null) {
+    if(Ferias::find()->where(['idusuario' =>$model->idusuario])->andWhere(['YEAR(dataSaida)' => $_GET["ano"]])->andWhere('id != '.$model->id)->andFilterWhere(['or',['adiantamentoDecimo' => 1],['adiantamentoFerias' => 1]])->one() != null){
+        $this->registerJs("
+            $('#ferias-tipo').change(function () {
+                if ($('#ferias-tipo').val() == 2) {
+                    $('#adiantamentodecimo').bootstrapSwitch('disabled',true);
+                    $('#adiantamentoferias').bootstrapSwitch('disabled',true);
+                } 
+            });  
+
+            if ($('#ferias-tipo').val() == 2) {
+                $('#adiantamentodecimo').bootstrapSwitch('disabled',true);
+                $('#adiantamentoferias').bootstrapSwitch('disabled',true);
+        	}  
+        ");
     }
 }
+
 ?>

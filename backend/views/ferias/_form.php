@@ -1,7 +1,5 @@
 <?php
 
-
-
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use kartik\widgets\DatePicker;
@@ -17,6 +15,7 @@ use app\models\Ferias;
 //$registro = Ferias::find()->where(['idusuario' => $model->idusuario])->andWhere(['tipo' => 2])->one();
 //var_dump($registro);
 //var_dump($dataRegistro);
+//var_dump($model->pegarSolicitacao(72, $_GET['ano']));
 
 $arrayTipoferias = ["1" => "Usufruto", "2" => "Oficial"];
 ?>
@@ -96,6 +95,10 @@ $arrayTipoferias = ["1" => "Usufruto", "2" => "Oficial"];
 <?php
 
 $this->registerJs("
+    
+");
+
+$this->registerJs("
     $('#ferias-tipo').change(function () {
         if ($('#ferias-tipo').val() == 1) {
             $('#adiantamento_decimo').bootstrapSwitch('disabled',true);
@@ -105,20 +108,27 @@ $this->registerJs("
             $('#adiantamento_ferias').bootstrapSwitch('disabled',false);
         }
     });
+
+    if ($('#ferias-tipo').val() == 1) {
+        $('#adiantamento_decimo').bootstrapSwitch('disabled',true);
+        $('#adiantamento_ferias').bootstrapSwitch('disabled',true);
+    } 
 ");
 
-
-
 if (Ferias::find()->where("idusuario = '".$model->idusuario."'AND YEAR(dataSaida) = ".$_GET["ano"])->andWhere(['tipo' => 2])->one() != null) {
-    if(Ferias::find()->where(['idusuario' =>$model->idusuario])->andWhere(['adiantamentoDecimo' => 1])->orWhere(['adiantamentoFerias' => 1])->one() != null){
+    if(Ferias::find()->where(['idusuario' =>$model->idusuario])->andWhere(['YEAR(dataSaida)' => $_GET["ano"]])->andFilterWhere(['or',['adiantamentoDecimo' => 1],['adiantamentoFerias' => 1]])->one() != null){
         $this->registerJs("
             $('#ferias-tipo').change(function () {
                  if ($('#ferias-tipo').val() == 2) {
                     $('#adiantamento_decimo').bootstrapSwitch('disabled',true);
                     $('#adiantamento_ferias').bootstrapSwitch('disabled',true);
                 } 
-            });    
+            });   
+
+            $('#adiantamento_decimo').bootstrapSwitch('disabled',true);
+            $('#adiantamento_ferias').bootstrapSwitch('disabled',true); 
         ");
     }
 }
+
 ?>
