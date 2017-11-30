@@ -153,6 +153,15 @@ use app\models\MembrosBanca;
                     ],
                 ],
                 [
+                    'label' => 'Menu Ajuda',
+                    'icon' => 'fa fa-umbrella',
+                    'url' => '#',
+                    'visible' => Yii::$app->user->identity->checarAcesso('secretaria'),
+                    'items' => [
+                        ['label' => 'Guia SYSCOMP', 'icon' => 'fa fa-sun-o', 'url' => ['site/guia'],],
+                    ],
+                ],
+                [
                     'label' => 'Reserva de Sala',
                     'icon' => 'fa fa-calendar',
                     'url' => '#',

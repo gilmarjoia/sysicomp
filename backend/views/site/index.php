@@ -13,7 +13,6 @@ $this->title = 'Início';
         <p class="lead">Selecione uma das Opções na barra a esquerda.</p>
         <br><br>
     </div>
-
     <div class="body-content">
 
         <div class="row">
@@ -22,4 +21,3 @@ $this->title = 'Início';
         </div>
 
     </div>
-</div>
